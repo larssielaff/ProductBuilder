@@ -12,7 +12,10 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "IdentityConnectionString": "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=ProductBuilder.Identity;Integrated Security=True;MultipleActiveResultSets=True",
+        "DataConnectionString": "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=ProductBuilder.Data;Integrated Security=True;MultipleActiveResultSets=True",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "EventStoreConnectionString": "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=ProductBuilder.EventStore;Integrated Security=True;MultipleActiveResultSets=True"
       }
     },
     "ProductBuilder.AspNet": {

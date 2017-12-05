@@ -6,3 +6,7 @@ src/ProductBuilder.Infra.Data/obj/
 src/ProductBuilder.Domain/obj/
 src/ProductBuilder.CrossCutting.IoC/obj/
 src/ProductBuilder.AspNet/ProductBuilder.AspNet/bin/
+src/ProductBuilder.CrossCutting.IoC/bin/
+src/ProductBuilder.Application/bin/
+src/ProductBuilder.Domain/bin/
+src/ProductBuilder.Infra.Data/bin/

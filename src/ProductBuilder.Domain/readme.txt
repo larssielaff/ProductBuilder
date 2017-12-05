@@ -1,0 +1,1 @@
+.\nuget.exe pack .\src\Asd.Domain\Asd.Domain.csproj -properties Configuration=Release

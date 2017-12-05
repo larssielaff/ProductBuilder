@@ -1,0 +1,1 @@
+.\nuget.exe pack .\src\Asd.Application\Asd.Application.csproj -properties Configuration=Release

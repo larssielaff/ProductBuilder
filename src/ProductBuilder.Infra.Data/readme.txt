@@ -1,0 +1,1 @@
+.\nuget.exe pack .\src\Asd.Infra.Data\Asd.Infra.Data.csproj -properties Configuration=Release

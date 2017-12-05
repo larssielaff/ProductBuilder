@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using ProductBuilder.AspNet.Data;
 using ProductBuilder.AspNet.Models;
 using ProductBuilder.AspNet.Services;
+using ProductBuilder.Infra.CrossCutting.IoC;
 
 namespace ProductBuilder.AspNet
 {
@@ -39,15 +40,20 @@ namespace ProductBuilder.AspNet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var identityConnectionString = Environment.GetEnvironmentVariable("IdentityConnectionString");
+            var eventStoreConnectionString = Environment.GetEnvironmentVariable("EventStoreConnectionString");
+            var dataConnectionString = Environment.GetEnvironmentVariable("DataConnectionString");
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(identityConnectionString));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+            services.AddProductBuilderDDD(dataConnectionString, eventStoreConnectionString);
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
