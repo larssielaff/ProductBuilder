@@ -1,0 +1,8 @@
+.vs/
+packages/
+src/ProductBuilder.Application/obj/
+src/ProductBuilder.AspNet/ProductBuilder.AspNet/obj/
+src/ProductBuilder.Infra.Data/obj/
+src/ProductBuilder.Domain/obj/
+src/ProductBuilder.CrossCutting.IoC/obj/
+src/ProductBuilder.AspNet/ProductBuilder.AspNet/bin/
