@@ -1,0 +1,93 @@
+﻿@using ProductBuilder.Application.ViewModels.ProductApi
+
+@{
+    ViewData["Title"] = "MyProfile";
+}
+
+@section head{ 
+    <style>
+        .tab-content {
+            padding-top:16px;
+            padding-bottom:16px;
+        }
+    </style>
+}
+
+<div>
+    @* modal-create-Product *@
+    <div id="modal-create-Product" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-Product-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-create-Product-label" class="modal-title">Produkt erstellen</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-CreateProduct *@
+                    <form id="form-CreateProduct" action="@Url.RouteUrl(nameof(ProductApiController.CreateProduct))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateProduct-Product-Title">Produkttitel</label>
+                            <input id="input-CreateProduct-Product-Title" type="text" class="form-control" required="required" name="@nameof(CreateProductApiViewModel.Title)" />
+                        </div>
+                        <button id="button-CreateProduct" type="button" class="btn btn-success pull-right">CreateProduct</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <ul class="nav nav-pills nav-justified" role="tablist">
+            <li role="presentation" class="active"><a href="#products" role="tab" data-toggle="tab">Produkte</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="products">
+                <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-create-Product">Produkt erstellen</button>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{ 
+    <script>
+        $(function () { 
+            var $formCreateProduct = $('#form-CreateProduct'),
+                $buttonCreateProduct = $('#button-CreateProduct');
+
+            $buttonCreateProduct.click(function () {
+                $formCreateProduct.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formCreateProduct[0].checkValidity()) {
+                    $formCreateProduct.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formCreateProduct.attr('action'),
+                    data: $formCreateProduct.serialize(),
+                    success: function () {
+                        $formCreateProduct[0].reset();
+                        alert('success');
+                    }, error: function () {
+                        alert('error');
+                    }
+                });
+            });
+        });
+    </script>
+}

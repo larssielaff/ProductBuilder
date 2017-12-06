@@ -1,1 +1,1 @@
-.\nuget.exe pack .\src\Asd.Application\Asd.Application.csproj -properties Configuration=Release
+.\nuget.exe pack .\src\Asd.Infra.Data\Asd.Infra.Data.csproj -properties Configuration=Release

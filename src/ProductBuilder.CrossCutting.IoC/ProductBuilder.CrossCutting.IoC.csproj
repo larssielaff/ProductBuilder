@@ -43,7 +43,7 @@
       <HintPath>..\..\packages\Asd.Infra.CrossCutting.Bus.1.0.0\lib\net461\Asd.Infra.CrossCutting.Bus.dll</HintPath>
     </Reference>
     <Reference Include="Asd.Infra.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Asd.Infra.Data.1.0.1\lib\net461\Asd.Infra.Data.dll</HintPath>
+      <HintPath>..\..\packages\Asd.Infra.Data.1.0.2\lib\net461\Asd.Infra.Data.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper, Version=6.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\..\packages\AutoMapper.6.2.1\lib\net45\AutoMapper.dll</HintPath>

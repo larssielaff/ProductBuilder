@@ -1,8 +1,9 @@
-﻿namespace ProductBuilder.WebApp.Controllers
+﻿namespace ProductBuilder.AspNet.Controllers
 {
     using Asd.AspNet.Controllers;
     using Asd.Domain.Core.Notifications;
     using ProductBuilder.Application.Interfaces;
+    using ProductBuilder.Application.ViewModels.ProductApi;
     using Microsoft.AspNetCore.Mvc;
     using System;
     using Microsoft.AspNetCore.Authorization;
@@ -17,10 +18,25 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
-        [Route("5ed93f89-47c1-4506-9559-cbd3c1ecf73b", Name = nameof(ProductsDataTable))]
+        [Route("ProductsDataTable", Name = nameof(ProductsDataTable))]
         public IActionResult ProductsDataTable()
         {
             return Json(_appService.GetDataTableViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("CreateProduct", Name = nameof(CreateProduct))]
+        public IActionResult CreateProduct(CreateProductApiViewModel model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+            if (!ModelState.IsValid)
+                return BadRequest();
+            _appService.CreateProduct(model, User.Identity.Name);
+            if (IsValidOperation)
+                return Ok();
+            return BadRequest();
         }
     }
 }

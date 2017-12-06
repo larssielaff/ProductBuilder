@@ -13,6 +13,8 @@ using ProductBuilder.AspNet.Data;
 using ProductBuilder.AspNet.Models;
 using ProductBuilder.AspNet.Services;
 using ProductBuilder.Infra.CrossCutting.IoC;
+using Asd.Infra.CrossCutting.Bus;
+using Microsoft.AspNetCore.Http;
 
 namespace ProductBuilder.AspNet
 {
@@ -61,7 +63,7 @@ namespace ProductBuilder.AspNet
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IHttpContextAccessor accessor)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -89,6 +91,7 @@ namespace ProductBuilder.AspNet
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            AsdInMemoryBus.ContainerAccessor = () => accessor.HttpContext.RequestServices;
         }
     }
 }
