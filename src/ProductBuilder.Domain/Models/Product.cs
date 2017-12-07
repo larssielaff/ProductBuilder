@@ -12,6 +12,8 @@
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
 
+        public virtual ICollection<Epic> Epics { get; set; }
+
         public virtual ICollection<Team> Teams { get; set; }
 
         public Product(Guid id) 
@@ -25,6 +27,7 @@
         protected Product()
         {
             UserRoles = new HashSet<UserRole>();
+            Epics = new HashSet<Epic>();
             Teams = new HashSet<Team>();
         }
     }
