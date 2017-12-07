@@ -69,6 +69,7 @@
     <Compile Include="Repository\TeamMemberRepository.cs" />
     <Compile Include="Repository\TeamRepository.cs" />
     <Compile Include="Repository\UserProfileRepository.cs" />
+    <Compile Include="Repository\UserRoleRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProductBuilder.Domain\ProductBuilder.Domain.csproj">
