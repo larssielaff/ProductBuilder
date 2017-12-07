@@ -30,6 +30,8 @@
     using ProductBuilder.Domain.Events.UserRole;
     using AutoMapper;
     using Microsoft.Extensions.DependencyInjection;
+    using ProductBuilder.Domain.Commands.Epic;
+    using ProductBuilder.Domain.Events.Epic;
 
     public static class ProductBuilderInjectorBootStrapper
     {
@@ -39,7 +41,8 @@
             .RegisterProduct()?
             .RegisterTeam()?
             .RegisterTeamMember()?
-            .RegisterUserRole();
+            .RegisterUserRole()
+            .RegisterEpic();
 
         private static IServiceCollection RegisterDDD(this IServiceCollection services, string dataConnectionString, string eventStoreConnectionString)
         {
@@ -106,6 +109,19 @@
             services?.AddScoped<IAsdHandler<UserRoleUpdatedEvent>, UserRoleEventHandler>();
             services?.AddScoped<IAsdHandler<UserRoleCreatedEvent>, UserRoleEventHandler>();
             services?.AddScoped<IAsdHandler<UserRoleDeletedEvent>, UserRoleEventHandler>();
+            return services;
+        }
+
+        private static IServiceCollection RegisterEpic(this IServiceCollection services)
+        {
+            services?.AddScoped<IEpicAppService, EpicAppService>();
+            services?.AddScoped<IEpicRepository, EpicRepository>();
+            services?.AddScoped<IAsdHandler<DeleteEpicCommand>, EpicCommandHandler>();
+            services?.AddScoped<IAsdHandler<CreateEpicCommand>, EpicCommandHandler>();
+            services?.AddScoped<IAsdHandler<UpdateEpicCommand>, EpicCommandHandler>();
+            services?.AddScoped<IAsdHandler<EpicCreatedEvent>, EpicEventHandler>();
+            services?.AddScoped<IAsdHandler<EpicDeletedEvent>, EpicEventHandler>();
+            services?.AddScoped<IAsdHandler<EpicUpdatedEvent>, EpicEventHandler>();
             return services;
         }
     }

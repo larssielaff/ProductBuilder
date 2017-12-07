@@ -17,6 +17,7 @@
             CreateMapForTeam();
             CreateMapForTeamMember();
             CreateMapForUserRole();
+            CreateMapForEpic();
         }
 
         private void CreateMapForUserProfile()
@@ -77,5 +78,8 @@
                     })
                 });
         }
+
+        private void CreateMapForEpic()
+        { }
     }
 }

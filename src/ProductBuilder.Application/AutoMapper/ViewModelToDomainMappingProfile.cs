@@ -23,6 +23,7 @@
             CreateMapForTeam();
             CreateMapForTeamMember();
             CreateMapForUserRole();
+            CreateMapForEpic();
         }
 
         private void CreateMapForUserProfile() { }
@@ -56,5 +57,8 @@
             CreateMap<UpdateUserRoleApiViewModel, UpdateUserRoleCommand>()
                 .ConstructUsing(x => new UpdateUserRoleCommand(x.Id, x.Role, x.ProductId));
         }
+
+        private void CreateMapForEpic()
+        { }
     }
 }
