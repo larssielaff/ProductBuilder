@@ -65,6 +65,7 @@
     <Compile Include="Context\ProductBuilderSqlContext.cs" />
     <Compile Include="Context\ProductBuilderSqlMigrationsConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\EpicRepository.cs" />
     <Compile Include="Repository\ProductRepository.cs" />
     <Compile Include="Repository\TeamMemberRepository.cs" />
     <Compile Include="Repository\TeamRepository.cs" />

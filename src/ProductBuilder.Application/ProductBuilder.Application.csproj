@@ -58,10 +58,12 @@
   <ItemGroup>
     <Compile Include="AutoMapper\DomainToViewModelMappingProfile.cs" />
     <Compile Include="AutoMapper\ViewModelToDomainMappingProfile.cs" />
+    <Compile Include="Interfaces\IEpicAppService.cs" />
     <Compile Include="Interfaces\ITeamAppService.cs" />
     <Compile Include="Interfaces\ITeamMemberAppService.cs" />
     <Compile Include="Interfaces\IUserProfileAppService.cs" />
     <Compile Include="Interfaces\IUserRoleAppService.cs" />
+    <Compile Include="Services\EpicAppService.cs" />
     <Compile Include="Services\ProductAppService.cs" />
     <Compile Include="Services\TeamAppService.cs" />
     <Compile Include="Services\TeamMemberAppService.cs" />
@@ -70,6 +72,9 @@
     <Compile Include="ViewModels\AjaxDataTableViewModel.cs" />
     <Compile Include="Interfaces\IProductAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\EpicApi\CreateEpicApiViewModel.cs" />
+    <Compile Include="ViewModels\EpicApi\DeleteEpicApiViewModel.cs" />
+    <Compile Include="ViewModels\EpicApi\UpdateEpicApiViewModel.cs" />
     <Compile Include="ViewModels\ProductApi\CreateProductApiViewModel.cs" />
     <Compile Include="ViewModels\ProductApi\ProductTeamMembersApiViewModel.cs" />
     <Compile Include="ViewModels\TeamApi\CreateTeamApiViewModel.cs" />
