@@ -13,5 +13,6 @@
         void DeleteUserRole(DeleteUserRoleApiViewModel model);
 
         void UpdateUserRole(UpdateUserRoleApiViewModel model);
+        ProductUserRolesApiViewModel GetProductUserRolesApiViewModel(Guid productId);
     }
 }

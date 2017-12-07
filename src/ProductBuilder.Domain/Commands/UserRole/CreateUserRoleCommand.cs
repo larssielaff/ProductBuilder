@@ -6,9 +6,11 @@
 
     public class CreateUserRoleCommand : UserRoleCommand
     {
-        public CreateUserRoleCommand(Guid id, Guid aggregateId)
+        public CreateUserRoleCommand(Guid id, string role, Guid aggregateId)
         {
-            Id = id; AggregateId = aggregateId;
+            Id = id;
+            Role = role;
+            AggregateId = aggregateId;
         }
 
         public override bool IsValid()

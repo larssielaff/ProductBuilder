@@ -6,9 +6,10 @@
 
     public class UpdateUserRoleCommand : UserRoleCommand
     {
-        public UpdateUserRoleCommand(Guid id, Guid aggregateId)
+        public UpdateUserRoleCommand(Guid id, string role, Guid aggregateId)
         {
             Id = id;
+            Role = role;
             AggregateId = aggregateId;
         }
 

@@ -9,6 +9,7 @@
     using ProductBuilder.Application.ViewModels.UserRoleApi;
     using global::AutoMapper;
     using System;
+    using System.Linq;
 
     public class UserRoleAppService : AsdAppService, IUserRoleAppService
     {
@@ -25,10 +26,18 @@
             return Mapper.Map<AjaxDataTableViewModel>(_repository.GetAll());
         }
 
+        public ProductUserRolesApiViewModel GetProductUserRolesApiViewModel(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                throw new ArgumentNullException(nameof(productId));
+            return Mapper.Map<ProductUserRolesApiViewModel>(_repository.Find(x => x.ProductId == productId)?.ToList());
+        }
+
         public void CreateUserRole(CreateUserRoleApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
+            model.Id = Guid.NewGuid();
             Bus.SendCommand(Mapper.Map<CreateUserRoleCommand>(model));
         }
 

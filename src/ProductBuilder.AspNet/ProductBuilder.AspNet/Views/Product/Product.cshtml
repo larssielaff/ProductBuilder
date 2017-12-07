@@ -1,4 +1,5 @@
-﻿
+﻿@using ProductBuilder.Application.ViewModels.UserRoleApi
+
 @{
     ViewData["Title"] = "Product";
 }
@@ -11,6 +12,79 @@
         }
     </style>
 }
+
+<div>
+    @* modal-create-UserRole *@
+    <div id="modal-create-UserRole" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-UserRole-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-create-UserRole-label" class="modal-title">Benutzerrolle erstellen</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-CreateUserRole *@
+                    <form id="form-CreateUserRole" action="@Url.RouteUrl(nameof(UserRoleApiController.CreateUserRole))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateUserRole-UserRole-Role">Benutzerrolle</label>
+                            <input id="input-CreateUserRole-UserRole-Role" type="text" class="form-control" required="required" name="@nameof(CreateUserRoleApiViewModel.Role)" />
+                        </div>
+                        <button id="button-CreateUserRole" type="button" class="btn btn-success pull-right">Benutzerrolle erstellen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* modal-detail-UserRole *@
+    <div id="modal-detail-UserRole" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-detail-UserRole-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-detail-UserRole-label" class="modal-title">Benutzerrolle</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-DeleteUserRole *@
+                    <form id="form-DeleteUserRole" action="@Url.RouteUrl(nameof(UserRoleApiController.DeleteUserRole))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-DeleteUserRole-UserRole-Id" required="required" hidden="hidden" name="@nameof(DeleteUserRoleApiViewModel.Id)" />
+                        </div>
+                        <button id="button-DeleteUserRole" type="button" class="btn btn-danger pull-right">Benutzerrolle löschen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    @* form-UpdateUserRole *@
+                    <form id="form-UpdateUserRole" action="@Url.RouteUrl(nameof(UserRoleApiController.UpdateUserRole))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-UpdateUserRole-UserRole-Id" required="required" hidden="hidden" name="@nameof(UpdateUserRoleApiViewModel.Id)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-UpdateUserRole-UserRole-Role">Benutzerrolle</label>
+                            <input id="input-UpdateUserRole-UserRole-Role" type="text" class="form-control" required="required" name="@nameof(UpdateUserRoleApiViewModel.Role)" />
+                        </div>
+                        <button id="button-UpdateUserRole" type="button" class="btn btn-success pull-right">Benutzerrolle aktualisieren</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-xs-12">
@@ -47,7 +121,21 @@
                 Backlog
             </div>
             <div id="userroles" class="tab-pane" role="tabpanel">
-                Benutzerrollen
+                <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-create-UserRole" style="margin-bottom:16px;">Benutzerrolle erstellen</button>
+                <div class="clearfix"></div>
+                @* table-UserRoles *@
+                <table id="table-UserRoles" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Benutzerrolle</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Benutzerrolle</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
     </div>
@@ -56,23 +144,132 @@
 @section scripts{ 
     <script type="text/javascript">
         $(function () {
-            var $tableTeamMembers = $('#table-TeamMembers'),
+            var $formCreateUserRole = $('#form-CreateUserRole'),
+                $formDeleteUserRole = $('#form-DeleteUserRole'),
+                $formUpdateUserRole = $('#form-UpdateUserRole'),
+                $modalCreateUserRole = $('#modal-create-UserRole'),
+                $modalDetailUserRole = $('#modal-detail-UserRole'),
+                $inputDeleteUserRoleUserRoleId = $('#input-DeleteUserRole-UserRole-Id'),
+                $inputUpdateUserRoleUserRoleId = $('#input-UpdateUserRole-UserRole-Id'),
+                $inputUpdateUserRoleUserRoleRole = $('#input-UpdateUserRole-UserRole-Role'),
+                $tableTeamMembers = $('#table-TeamMembers'),
+                $tableUserRoles = $('#table-UserRoles'),
+                $buttonCreateUserRole = $('#button-CreateUserRole'),
+                $buttonDeleteUserRole = $('#button-DeleteUserRole'),
+                $buttonUpdateUserRole = $('#button-UpdateUserRole'),
                 $body = $('body'),
                 dataTableTeamMembers = $tableTeamMembers.DataTable(),
-                dataTableTeamMembersUrl = '@Url.RouteUrl(nameof(ProductApiController.ProductTeamMembers))';
+                dataTableUserRoles = $tableUserRoles.DataTable(),
+                dataTableTeamMembersUrl = '@Url.RouteUrl(nameof(ProductApiController.ProductTeamMembers))',
+                dataTableUserRolesUrl = '@Url.RouteUrl(nameof(UserRoleApiController.ProductUserRoles))';
 
             function initDataTableTeamMembers() {
                 dataTableTeamMembers.destroy();
                 dataTableTeamMembers = $tableTeamMembers.DataTable({ ajax: dataTableTeamMembersUrl });
             }
 
+            function initDataTableUserRoles()
+            {
+                dataTableUserRoles.destroy();
+                dataTableUserRoles = $tableUserRoles.DataTable({ ajax: dataTableUserRolesUrl });
+            }
+
+            $buttonCreateUserRole.click(function () {
+                $formCreateUserRole.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formCreateUserRole[0].checkValidity()) {
+                    $formCreateUserRole.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formCreateUserRole.attr('action'),
+                    data: $formCreateUserRole.serialize(),
+                    success: function () {
+                        $formCreateUserRole[0].reset();
+                        $modalCreateUserRole.modal('hide');
+                        initDataTableUserRoles();
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonDeleteUserRole.click(function () {
+                $formDeleteUserRole.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formDeleteUserRole[0].checkValidity()) {
+                    $formDeleteUserRole.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formDeleteUserRole.attr('action'),
+                    data: $formDeleteUserRole.serialize(),
+                    success: function () {
+                        $formDeleteUserRole[0].reset();
+                        initDataTableUserRoles();
+                        $modalDetailUserRole.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonUpdateUserRole.click(function () {
+                $formUpdateUserRole.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formUpdateUserRole[0].checkValidity()) {
+                    $formUpdateUserRole.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formUpdateUserRole.attr('action'),
+                    data: $formUpdateUserRole.serialize(),
+                    success: function () {
+                        $formUpdateUserRole[0].reset();
+                        initDataTableUserRoles();
+                        $modalDetailUserRole.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
             $body.on('click', '.ajax-data-table-TeamMember', function () {
                 var $this = $(this), id = $this.attr('data-Id');
             });
 
-            (function () { 
+            $body.on('click', '.ajax-data-table-UserRole', function () {
+                var $this = $(this),
+                    id = $this.attr('data-Id'),
+                    role = $this.attr('data-Role');
+
+                $inputDeleteUserRoleUserRoleId.val(id);
+                $inputUpdateUserRoleUserRoleId.val(id);
+                $inputUpdateUserRoleUserRoleRole.val(role);
+
+                $modalDetailUserRole.modal();
+            });
+
+            (function () {
                 initDataTableTeamMembers();
+                initDataTableUserRoles();
             })();
         });
+        
     </script>
 }

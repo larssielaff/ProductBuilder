@@ -11,6 +11,8 @@
     using ProductBuilder.Domain.Commands.Team;
     using ProductBuilder.Application.ViewModels.TeamMemberApi;
     using ProductBuilder.Domain.Commands.TeamMember;
+    using ProductBuilder.Application.ViewModels.UserRoleApi;
+    using ProductBuilder.Domain.Commands.UserRole;
 
     public class ViewModelToDomainMappingProfile : Profile
     {
@@ -20,6 +22,7 @@
             CreateMapForProduct();
             CreateMapForTeam();
             CreateMapForTeamMember();
+            CreateMapForUserRole();
         }
 
         private void CreateMapForUserProfile() { }
@@ -40,6 +43,18 @@
         {
             CreateMap<CreateTeamMemberApiViewModel, CreateTeamMemberCommand>()
                 .ConstructUsing(x => new CreateTeamMemberCommand(x.Id, x.Role, x.UserProfileId, x.TeamId, x.TeamId));
+        }
+
+        private void CreateMapForUserRole()
+        {
+            CreateMap<CreateUserRoleApiViewModel, CreateUserRoleCommand>()
+                .ConstructUsing(x => new CreateUserRoleCommand(x.Id, x.Role, x.ProductId));
+
+            CreateMap<DeleteUserRoleApiViewModel, DeleteUserRoleCommand>()
+                .ConstructUsing(x => new DeleteUserRoleCommand(x.Id, x.ProductId));
+
+            CreateMap<UpdateUserRoleApiViewModel, UpdateUserRoleCommand>()
+                .ConstructUsing(x => new UpdateUserRoleCommand(x.Id, x.Role, x.ProductId));
         }
     }
 }

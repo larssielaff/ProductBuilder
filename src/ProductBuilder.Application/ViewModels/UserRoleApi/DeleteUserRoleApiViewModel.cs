@@ -5,5 +5,7 @@
     public class DeleteUserRoleApiViewModel
     {
         public Guid Id { get; set; }
+        
+        public Guid ProductId { get; set; }
     }
 }

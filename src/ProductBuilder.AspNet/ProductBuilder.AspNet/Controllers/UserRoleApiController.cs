@@ -24,9 +24,17 @@
             return Json(_appService.GetDataTableViewModel());
         }
 
+        [Route("api/{productid}/productuserroles", Name = nameof(ProductUserRoles))]
+        public IActionResult ProductUserRoles(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetProductUserRolesApiViewModel(productId));
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/createuserrole", Name = nameof(CreateUserRole))]
+        [Route("api/{productid}/createuserrole", Name = nameof(CreateUserRole))]
         public IActionResult CreateUserRole(CreateUserRoleApiViewModel model)
         {
             if (model == null)
@@ -41,7 +49,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/deleteuserrole", Name = nameof(DeleteUserRole))]
+        [Route("api/{productid}/deleteuserrole", Name = nameof(DeleteUserRole))]
         public IActionResult DeleteUserRole(DeleteUserRoleApiViewModel model)
         {
             if (model == null)
@@ -56,7 +64,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/updateuserrole", Name = nameof(UpdateUserRole))]
+        [Route("api/{productid}/updateuserrole", Name = nameof(UpdateUserRole))]
         public IActionResult UpdateUserRole(UpdateUserRoleApiViewModel model)
         {
             if (model == null)

@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using ProductBuilder.Application.ViewModels.ProductApi;
+    using ProductBuilder.Application.ViewModels.UserRoleApi;
 
     public class DomainToViewModelMappingProfile : Profile
     {
@@ -15,6 +16,7 @@
             CreateMapForProduct();
             CreateMapForTeam();
             CreateMapForTeamMember();
+            CreateMapForUserRole();
         }
 
         private void CreateMapForUserProfile()
@@ -60,6 +62,18 @@
                         $"<div class=\"ajax-data-table-TeamMember\" data-Id=\"{y.Id}\" data-UserProfile-EmailAddress=\"{y.UserProfile?.EmailAddress}\" data-Team-Title=\"{y.Team.Title}\" data-Role=\"{y.Role}\">{y.UserProfile?.EmailAddress}</div>",
                         $"<div class=\"ajax-data-table-TeamMember\" data-Id=\"{y.Id}\" data-UserProfile-EmailAddress=\"{y.UserProfile?.EmailAddress}\" data-Team-Title=\"{y.Team.Title}\" data-Role=\"{y.Role}\">{y.Team?.Title}</div>",
                         $"<div class=\"ajax-data-table-TeamMember\" data-Id=\"{y.Id}\" data-UserProfile-EmailAddress=\"{y.UserProfile?.EmailAddress}\" data-Team-Title=\"{y.Team.Title}\" data-Role=\"{y.Role}\">{y.Role}</div>",
+                    })
+                });
+        }
+
+        private void CreateMapForUserRole()
+        {
+            CreateMap<IEnumerable<UserRole>, ProductUserRolesApiViewModel>()
+                .ConstructUsing(x => new ProductUserRolesApiViewModel()
+                {
+                    Data = x.Select(y => new string[] 
+                    {
+                        $"<div class=\"ajax-data-table-UserRole\" data-Id=\"{y.Id}\" data-Role=\"{y.Role}\">{y.Role}</div>"
                     })
                 });
         }
