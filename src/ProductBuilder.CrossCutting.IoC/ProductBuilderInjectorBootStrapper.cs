@@ -26,6 +26,8 @@
     using ProductBuilder.Domain.Events.Team;
     using ProductBuilder.Domain.Commands.TeamMember;
     using ProductBuilder.Domain.Events.TeamMember;
+    using ProductBuilder.Domain.Commands.UserRole;
+    using ProductBuilder.Domain.Events.UserRole;
     using AutoMapper;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -36,11 +38,13 @@
             .RegisterUserProfile()?
             .RegisterProduct()?
             .RegisterTeam()?
-            .RegisterTeamMember();
+            .RegisterTeamMember()?
+            .RegisterUserRole();
 
         private static IServiceCollection RegisterDDD(this IServiceCollection services, string dataConnectionString, string eventStoreConnectionString)
         {
-            services?.AddAutoMapper(x => {
+            services?.AddAutoMapper(x => 
+            {
                 x.AddProfile(new ViewModelToDomainMappingProfile());
                 x.AddProfile(new DomainToViewModelMappingProfile());
             });
@@ -89,6 +93,19 @@
             services?.AddScoped<ITeamMemberRepository, TeamMemberRepository>();
             services?.AddScoped<IAsdHandler<CreateTeamMemberCommand>, TeamMemberCommandHandler>();
             services?.AddScoped<IAsdHandler<TeamMemberCreatedEvent>, TeamMemberEventHandler>();
+            return services;
+        }
+
+        private static IServiceCollection RegisterUserRole(this IServiceCollection services)
+        {
+            services?.AddScoped<IUserRoleAppService, UserRoleAppService>();
+            services?.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            services?.AddScoped<IAsdHandler<CreateUserRoleCommand>, UserRoleCommandHandler>();
+            services?.AddScoped<IAsdHandler<DeleteUserRoleCommand>, UserRoleCommandHandler>();
+            services?.AddScoped<IAsdHandler<UpdateUserRoleCommand>, UserRoleCommandHandler>();
+            services?.AddScoped<IAsdHandler<UserRoleUpdatedEvent>, UserRoleEventHandler>();
+            services?.AddScoped<IAsdHandler<UserRoleCreatedEvent>, UserRoleEventHandler>();
+            services?.AddScoped<IAsdHandler<UserRoleDeletedEvent>, UserRoleEventHandler>();
             return services;
         }
     }
