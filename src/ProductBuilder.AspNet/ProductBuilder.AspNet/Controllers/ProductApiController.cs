@@ -18,15 +18,24 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
-        [Route("ProductsDataTable", Name = nameof(ProductsDataTable))]
+        [Route("api/ProductsDataTable", Name = nameof(ProductsDataTable))]
         public IActionResult ProductsDataTable()
         {
             return Json(_appService.GetDataTableViewModel());
         }
 
+        [Route("api/products/{productid}/productteammembers", Name = nameof(ProductTeamMembers))]
+        public IActionResult ProductTeamMembers(Guid productId)
+        {
+            if (productId == null)
+                return NotFound();
+            return Json(_appService.GetProductTeamMembersApiViewModel(productId));
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("CreateProduct", Name = nameof(CreateProduct))]
+        [Route("api/CreateProduct", Name = nameof(CreateProduct))]
         public IActionResult CreateProduct(CreateProductApiViewModel model)
         {
             if (model == null)

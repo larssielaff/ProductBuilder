@@ -53,8 +53,25 @@
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="products">
-                <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-create-Product">Produkt erstellen</button>
+                <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-create-Product" style="margin-bottom:16px;">Produkt erstellen</button>
                 <div class="clearfix"></div>
+                <div>
+                    @* table-Products *@
+                    <table id="table-Products" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Produkttitel</th>
+                                <th>Produktvision</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Produkttitel</th>
+                                <th>Produktvision</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -62,9 +79,27 @@
 
 @section scripts{ 
     <script>
-        $(function () { 
+        $(function () {
             var $formCreateProduct = $('#form-CreateProduct'),
-                $buttonCreateProduct = $('#button-CreateProduct');
+                $buttonCreateProduct = $('#button-CreateProduct'),
+                $tableProducts = $('#table-Products'),
+                $body = $('body'),
+                dataTableProducts = $tableProducts.DataTable(),
+                dataTableProductsUrl = '@Url.RouteUrl(nameof(ProductApiController.ProductsDataTable))',
+                productUrl = '@Url.RouteUrl(nameof(ProductController.Product), new { productid = "productid" })';
+
+            function initDataTableProducts() {
+                dataTableProducts.destroy();
+                dataTableProducts = $tableProducts.DataTable({
+                    ajax: dataTableProductsUrl
+                });
+            }
+
+            $body.on('click', '.ajax-data-table-Product', function () {
+                var $this = $(this),
+                    id = $this.attr('data-Id');
+                window.location.href = productUrl.replace('productid', id);
+            });
 
             $buttonCreateProduct.click(function () {
                 $formCreateProduct.find('.has-error').each(function () {
@@ -88,6 +123,10 @@
                     }
                 });
             });
+
+            (function () {
+                initDataTableProducts();
+            })();
         });
     </script>
 }

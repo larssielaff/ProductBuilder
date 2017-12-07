@@ -69,6 +69,7 @@
     <Compile Include="Interfaces\IProductAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ProductApi\CreateProductApiViewModel.cs" />
+    <Compile Include="ViewModels\ProductApi\ProductTeamMembersApiViewModel.cs" />
     <Compile Include="ViewModels\TeamApi\CreateTeamApiViewModel.cs" />
     <Compile Include="ViewModels\TeamMember\CreateTeamMemberApiViewModel.cs" />
     <Compile Include="ViewModels\UserProfileApi\CreateUserProfileApiViewModel.cs" />

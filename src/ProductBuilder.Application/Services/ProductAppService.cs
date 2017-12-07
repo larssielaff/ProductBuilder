@@ -32,6 +32,13 @@
             return Mapper.Map<AjaxDataTableViewModel>(_repository.GetAll());
         }
 
+        public ProductTeamMembersApiViewModel GetProductTeamMembersApiViewModel(Guid productId)
+        {
+            if (productId == null)
+                throw new ArgumentNullException(nameof(productId));
+            return Mapper.Map<ProductTeamMembersApiViewModel>(_repository.GetById(productId)?.Teams?.FirstOrDefault()?.TeamMembers);
+        }
+
         public void CreateProduct(CreateProductApiViewModel model, string userProfileEmailAddress)
         {
             if (model == null)

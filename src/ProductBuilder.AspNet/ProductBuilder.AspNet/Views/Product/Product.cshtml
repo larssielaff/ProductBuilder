@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "Product";
+}
+
+@section head{
+    <style>
+        .tab-content {
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <ul class="nav nav-pills nav-justified" role="tablist">
+            <li role="presentation" class="active"><a href="#overview" role="tab" data-toggle="tab">Übersicht</a></li>
+            <li role="presentation"><a href="#team" role="tab" data-toggle="tab">Team</a></li>
+            <li role="presentation"><a href="#backlog" role="tab" data-toggle="tab">Backlog</a></li>
+            <li role="presentation"><a href="#userroles" role="tab" data-toggle="tab">Benutzerrollen</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="overview" class="tab-pane active" role="tabpanel">
+                Übersicht
+            </div>
+            <div id="team" class="tab-pane" role="tabpanel">
+                @* table-TeamMembers *@
+                <table id="table-TeamMembers" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>E-Mail-Adresse</th>
+                            <th>Team</th>
+                            <th>Rolle</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>E-Mail-Adresse</th>
+                            <th>Team</th>
+                            <th>Rolle</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div id="backlog" class="tab-pane" role="tabpanel">
+                Backlog
+            </div>
+            <div id="userroles" class="tab-pane" role="tabpanel">
+                Benutzerrollen
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{ 
+    <script type="text/javascript">
+        $(function () {
+            var $tableTeamMembers = $('#table-TeamMembers'),
+                $body = $('body'),
+                dataTableTeamMembers = $tableTeamMembers.DataTable(),
+                dataTableTeamMembersUrl = '@Url.RouteUrl(nameof(ProductApiController.ProductTeamMembers))';
+
+            function initDataTableTeamMembers() {
+                dataTableTeamMembers.destroy();
+                dataTableTeamMembers = $tableTeamMembers.DataTable({ ajax: dataTableTeamMembersUrl });
+            }
+
+            $body.on('click', '.ajax-data-table-TeamMember', function () {
+                var $this = $(this), id = $this.attr('data-Id');
+            });
+
+            (function () { 
+                initDataTableTeamMembers();
+            })();
+        });
+    </script>
+}

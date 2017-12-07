@@ -8,5 +8,6 @@
     {
         AjaxDataTableViewModel GetDataTableViewModel();
         void CreateProduct(CreateProductApiViewModel model, string userProfileEmailAddress);
+        ProductTeamMembersApiViewModel GetProductTeamMembersApiViewModel(Guid productId);
     }
 }

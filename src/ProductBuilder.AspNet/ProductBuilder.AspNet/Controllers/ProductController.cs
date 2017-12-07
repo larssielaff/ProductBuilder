@@ -16,5 +16,11 @@
         {
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
+
+        [Route("products/{productid}", Name = nameof(Product))]
+        public IActionResult Product(Guid productId)
+        {
+            return View(nameof(Product));
+        }
     }
 }
