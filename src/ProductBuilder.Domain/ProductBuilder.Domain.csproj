@@ -56,6 +56,7 @@
     <Compile Include="CommandHandlers\TopicCommandHandler.cs" />
     <Compile Include="CommandHandlers\UserProfileCommandHandler.cs" />
     <Compile Include="CommandHandlers\UserRoleCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UserStoryCommandHandler.cs" />
     <Compile Include="Commands\Epic\Base\EpicCommand.cs" />
     <Compile Include="Commands\Epic\CreateEpicCommand.cs" />
     <Compile Include="Commands\Epic\DeleteEpicCommand.cs" />
@@ -76,6 +77,18 @@
     <Compile Include="Commands\UserRole\CreateUserRoleCommand.cs" />
     <Compile Include="Commands\UserRole\DeleteUserRoleCommand.cs" />
     <Compile Include="Commands\UserRole\UpdateUserRoleCommand.cs" />
+    <Compile Include="Commands\UserStory\AssignEpicCommand.cs" />
+    <Compile Include="Commands\UserStory\AssignTopicCommand.cs" />
+    <Compile Include="Commands\UserStory\AssignUserRoleCommand.cs" />
+    <Compile Include="Commands\UserStory\Base\UserStoryCommand.cs" />
+    <Compile Include="Commands\UserStory\CreateUserStoryCommand.cs" />
+    <Compile Include="Commands\UserStory\DeleteUserStoryCommand.cs" />
+    <Compile Include="Commands\UserStory\RemoveEpicCommand.cs" />
+    <Compile Include="Commands\UserStory\RemoveTopicCommand.cs" />
+    <Compile Include="Commands\UserStory\RemoveUserRoleCommand.cs" />
+    <Compile Include="Commands\UserStory\UpdateStoryPointsCommand.cs" />
+    <Compile Include="Commands\UserStory\UpdateUserStoryCommand.cs" />
+    <Compile Include="Commands\UserStory\UpdateValueCommand.cs" />
     <Compile Include="EventHandlers\EpicEventHandler.cs" />
     <Compile Include="EventHandlers\ProductEventHandler.cs" />
     <Compile Include="EventHandlers\TeamEventHandler.cs" />
@@ -83,6 +96,7 @@
     <Compile Include="EventHandlers\TopicEventHandler.cs" />
     <Compile Include="EventHandlers\UserProfileEventHandler.cs" />
     <Compile Include="EventHandlers\UserRoleEventHandler.cs" />
+    <Compile Include="EventHandlers\UserStoryEventHandler.cs" />
     <Compile Include="Events\Epic\EpicCreatedEvent.cs" />
     <Compile Include="Events\Epic\EpicDeletedEvent.cs" />
     <Compile Include="Events\Epic\EpicUpdatedEvent.cs" />
@@ -96,6 +110,17 @@
     <Compile Include="Events\UserRole\UserRoleCreatedEvent.cs" />
     <Compile Include="Events\UserRole\UserRoleDeletedEvent.cs" />
     <Compile Include="Events\UserRole\UserRoleUpdatedEvent.cs" />
+    <Compile Include="Events\UserStory\EpicAssignedEvent.cs" />
+    <Compile Include="Events\UserStory\EpicRemovedEvent.cs" />
+    <Compile Include="Events\UserStory\StoryPointsUpdatedEvent.cs" />
+    <Compile Include="Events\UserStory\TopicAssignedEvent.cs" />
+    <Compile Include="Events\UserStory\TopicRemovedEvent.cs" />
+    <Compile Include="Events\UserStory\UserRoleAssignedEvent.cs" />
+    <Compile Include="Events\UserStory\UserRoleRemovedEvent.cs" />
+    <Compile Include="Events\UserStory\UserStoryCreatedEvent.cs" />
+    <Compile Include="Events\UserStory\UserStoryDeletedEvent.cs" />
+    <Compile Include="Events\UserStory\UserStoryUpdatedEvent.cs" />
+    <Compile Include="Events\UserStory\ValueUpdatedEvent.cs" />
     <Compile Include="Interfaces\IEpicRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\ITeamMemberRepository.cs" />
@@ -103,6 +128,7 @@
     <Compile Include="Interfaces\ITopicRepository.cs" />
     <Compile Include="Interfaces\IUserProfileRepository.cs" />
     <Compile Include="Interfaces\IUserRoleRepository.cs" />
+    <Compile Include="Interfaces\IUserStoryRepository.cs" />
     <Compile Include="Models\Epic.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Team.cs" />
@@ -110,6 +136,7 @@
     <Compile Include="Models\Topic.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\UserRole.cs" />
+    <Compile Include="Models\UserStory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validations\Epic\EpicValidator.cs" />
     <Compile Include="Validations\Product\ProductValidator.cs" />
@@ -118,6 +145,7 @@
     <Compile Include="Validations\Topic\TopicValidator.cs" />
     <Compile Include="Validations\UserProfile\UserProfileValidator.cs" />
     <Compile Include="Validations\UserRole\UserRoleValidator.cs" />
+    <Compile Include="Validations\UserStory\UserStoryValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
