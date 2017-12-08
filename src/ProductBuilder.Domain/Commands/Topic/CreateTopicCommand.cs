@@ -6,9 +6,11 @@
 
     public class CreateTopicCommand : TopicCommand
     {
-        public CreateTopicCommand(Guid id, Guid aggregateId)
+        public CreateTopicCommand(Guid id, string title, string description, Guid aggregateId)
         {
             Id = id;
+            Title = title;
+            Description = description;
             AggregateId = aggregateId;
         }
 

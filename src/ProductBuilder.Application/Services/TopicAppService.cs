@@ -20,6 +20,13 @@
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
+        public ProductTopicsDataTableApiViewModel GetProductTopicsDataTableApiViewModel(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                throw new ArgumentNullException(nameof(productId));
+            return Mapper.Map<ProductTopicsDataTableApiViewModel>(_repository.Find(x => x.ProductId == productId));
+        }
+
         public AjaxDataTableViewModel GetDataTableViewModel()
         {
             return Mapper.Map<AjaxDataTableViewModel>(_repository.GetAll());
@@ -36,6 +43,7 @@
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
+            model.Id = Guid.NewGuid();
             Bus.SendCommand(Mapper.Map<CreateTopicCommand>(model));
         }
 

@@ -37,7 +37,6 @@
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
             _repository.Remove(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new TopicDeletedEvent(entity, message.AggregateId));
         }
@@ -51,9 +50,13 @@
                 NotifyValidationErrors(message);
                 return;
             }
-            var entity = new Topic(message.Id) { };
+            var entity = new Topic(message.Id)
+            {
+                Title = message.Title,
+                Description = message.Description,
+                ProductId = message.ProductId
+            };
             _repository.Add(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new TopicCreatedEvent(entity, message.AggregateId));
         }
@@ -70,8 +73,9 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.Title = message.Title;
+            entity.Description = message.Description;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new TopicUpdatedEvent(entity, message.AggregateId));
         }

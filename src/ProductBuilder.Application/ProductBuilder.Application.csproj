@@ -84,6 +84,7 @@
     <Compile Include="ViewModels\TeamMember\CreateTeamMemberApiViewModel.cs" />
     <Compile Include="ViewModels\TopicApi\CreateTopicApiViewModel.cs" />
     <Compile Include="ViewModels\TopicApi\DeleteTopicApiViewModel.cs" />
+    <Compile Include="ViewModels\TopicApi\ProductTopicsDataTableApiViewModel.cs" />
     <Compile Include="ViewModels\TopicApi\UpdateTopicApiViewModel.cs" />
     <Compile Include="ViewModels\UserProfileApi\CreateUserProfileApiViewModel.cs" />
     <Compile Include="ViewModels\UserRoleApi\CreateUserRoleApiViewModel.cs" />

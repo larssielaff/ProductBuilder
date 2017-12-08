@@ -13,5 +13,6 @@
         void CreateTopic(CreateTopicApiViewModel model);
 
         void UpdateTopic(UpdateTopicApiViewModel model);
+        ProductTopicsDataTableApiViewModel GetProductTopicsDataTableApiViewModel(Guid productId);
     }
 }

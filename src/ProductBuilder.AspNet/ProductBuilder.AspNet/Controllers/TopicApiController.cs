@@ -19,6 +19,14 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
+        [Route("api/{productid}/producttopicsdatatables", Name = nameof(ProductTopicsDataTable))]
+        public IActionResult ProductTopicsDataTable(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetProductTopicsDataTableApiViewModel(productId));
+        }
+
         [Route("TopicsDataTable", Name = nameof(TopicsDataTable))]
         public IActionResult TopicsDataTable()
         {
@@ -27,7 +35,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("DeleteTopic", Name = nameof(DeleteTopic))]
+        [Route("api/{productid}/deletetopic", Name = nameof(DeleteTopic))]
         public IActionResult DeleteTopic(DeleteTopicApiViewModel model)
         {
             if (model == null)
@@ -42,7 +50,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("CreateTopic", Name = nameof(CreateTopic))]
+        [Route("api/{productid}/createtopic", Name = nameof(CreateTopic))]
         public IActionResult CreateTopic(CreateTopicApiViewModel model)
         {
             if (model == null)
@@ -57,7 +65,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("UpdateTopic", Name = nameof(UpdateTopic))]
+        [Route("api/{productid}/updatetopic", Name = nameof(UpdateTopic))]
         public IActionResult UpdateTopic(UpdateTopicApiViewModel model)
         {
             if (model == null)

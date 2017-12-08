@@ -8,6 +8,7 @@
     using ProductBuilder.Application.ViewModels.ProductApi;
     using ProductBuilder.Application.ViewModels.UserRoleApi;
     using ProductBuilder.Application.ViewModels.EpicApi;
+    using ProductBuilder.Application.ViewModels.TopicApi;
 
     public class DomainToViewModelMappingProfile : Profile
     {
@@ -22,7 +23,18 @@
             CreateMapForEpic();
         }
 
-        private void CreateMapForTopic() { }
+        private void CreateMapForTopic()
+        {
+            CreateMap<IEnumerable<Topic>, ProductTopicsDataTableApiViewModel>()
+                .ConstructUsing(x => new ProductTopicsDataTableApiViewModel()
+                {
+                    Data = x.Select(y => new string[]
+                    {
+                        $"<div class=\"ajax-data-table-Topic\" data-Id=\"{y.Id}\" data-Title=\"{y.Title}\" data-Description=\"{y.Description}\">{y.Title}</div>",
+                        $"<div class=\"ajax-data-table-Topic\" data-Id=\"{y.Id}\" data-Title=\"{y.Title}\" data-Description=\"{y.Description}\">{y.Description}</div>"
+                    })
+                });
+        }
 
         private void CreateMapForUserProfile()
         {

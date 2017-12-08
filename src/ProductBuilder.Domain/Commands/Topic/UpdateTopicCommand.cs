@@ -6,9 +6,11 @@
 
     public class UpdateTopicCommand : TopicCommand
     {
-        public UpdateTopicCommand(Guid id, Guid aggregateId)
+        public UpdateTopicCommand(Guid id, string title, string description, Guid aggregateId)
         {
             Id = id;
+            Title = title;
+            Description = description;
             AggregateId = aggregateId;
         }
 

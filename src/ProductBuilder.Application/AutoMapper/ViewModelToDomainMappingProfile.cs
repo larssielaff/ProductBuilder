@@ -15,6 +15,8 @@
     using ProductBuilder.Domain.Commands.UserRole;
     using ProductBuilder.Application.ViewModels.EpicApi;
     using ProductBuilder.Domain.Commands.Epic;
+    using ProductBuilder.Application.ViewModels.TopicApi;
+    using ProductBuilder.Domain.Commands.Topic;
 
     public class ViewModelToDomainMappingProfile : Profile
     {
@@ -29,7 +31,17 @@
             CreateMapForEpic();
         }
 
-        private void CreateMapForTopic() { }
+        private void CreateMapForTopic()
+        {
+            CreateMap<CreateTopicApiViewModel, CreateTopicCommand>()
+                .ConstructUsing(x => new CreateTopicCommand(x.Id, x.Title, x.Description, x.ProductId));
+
+            CreateMap<DeleteTopicApiViewModel, DeleteTopicCommand>()
+                .ConstructUsing(x => new DeleteTopicCommand(x.Id, x.ProductId));
+
+            CreateMap<UpdateTopicApiViewModel, UpdateTopicCommand>()
+                .ConstructUsing(x => new UpdateTopicCommand(x.Id, x.Title, x.Description, x.ProductId));
+        }
 
         private void CreateMapForUserProfile() { }
 

@@ -1,5 +1,6 @@
 ﻿@using ProductBuilder.Application.ViewModels.UserRoleApi
 @using ProductBuilder.Application.ViewModels.EpicApi
+@using ProductBuilder.Application.ViewModels.TopicApi
 
 @{
     ViewData["Title"] = "Product";
@@ -167,6 +168,84 @@
             </div>
         </div>
     </div>
+    @* modal-create-Topic *@
+    <div id="modal-create-Topic" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-Topic-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-create-Topic-label" class="modal-title">Topic erstellen</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-CreateTopic *@
+                    <form id="form-CreateTopic" action="@Url.RouteUrl(nameof(TopicApiController.CreateTopic))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateTopic-Topic-Title">Titel</label>
+                            <input id="input-CreateTopic-Topic-Title" type="text" class="form-control" required="required" name="@nameof(CreateTopicApiViewModel.Title)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateTopic-Topic-Description">Beschreibung</label>
+                            <input id="input-CreateTopic-Topic-Description" type="text" class="form-control" required="required" name="@nameof(CreateTopicApiViewModel.Description)" />
+                        </div>
+                        <button id="button-CreateTopic" type="button" class="btn btn-success pull-right">Topic erstellen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* modal-detail-Topic *@
+    <div id="modal-detail-Topic" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-detail-Topic-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-detail-Topic-label" class="modal-title">Thema</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-DeleteTopic *@
+                    <form id="form-DeleteTopic" action="@Url.RouteUrl(nameof(TopicApiController.DeleteTopic))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-DeleteTopic-Topic-Id" required="required" hidden="hidden" name="@nameof(DeleteTopicApiViewModel.Id)" />
+                        </div>
+                        <button id="button-DeleteTopic" type="button" class="btn btn-danger pull-right">Thema löschen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    @* form-UpdateTopic *@
+                    <form id="form-UpdateTopic" action="@Url.RouteUrl(nameof(TopicApiController.UpdateTopic))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-UpdateTopic-Topic-Id" required="required" hidden="hidden" name="@nameof(UpdateTopicApiViewModel.Id)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-UpdateTopic-Topic-Title">Titel</label>
+                            <input id="input-UpdateTopic-Topic-Title" type="text" class="form-control" required="required" name="@nameof(UpdateTopicApiViewModel.Title)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-UpdateTopic-Topic-Description">Beschreibung</label>
+                            <input id="input-UpdateTopic-Topic-Description" type="text" class="form-control" required="required" name="@nameof(UpdateTopicApiViewModel.Description)" />
+                        </div>
+                        <button id="button-UpdateTopic" type="button" class="btn btn-success pull-right">Thema aktualisieren</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -177,6 +256,7 @@
             <li role="presentation"><a href="#backlog" role="tab" data-toggle="tab">Backlog</a></li>
             <li role="presentation"><a href="#userroles" role="tab" data-toggle="tab">Benutzerrollen</a></li>
             <li role="presentation"><a href="#epics" role="tab" data-toggle="tab">Epics</a></li>
+            <li role="presentation"><a href="#topics" role="tab" data-toggle="tab">Themen</a></li>
         </ul>
         <div class="tab-content">
             <div id="overview" class="tab-pane active" role="tabpanel">
@@ -239,6 +319,24 @@
                     </tfoot>
                 </table>
             </div>
+            <div id="topics" class="tab-pane" role="tabpanel">
+                <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-create-Topic" style="margin-bottom:16px;">Thema erstellen</button>
+                @* table-Topics *@
+                <table id="table-Topics" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Titel</th>
+                            <th>Beschreibung</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Titel</th>
+                            <th>Beschreibung</th>
+                        </tr>
+                    </tfoot>
+                </table> 
+            </div>
         </div>
     </div>
 </div>
@@ -252,10 +350,15 @@
                 $formCreateEpic = $('#form-CreateEpic'),
                 $formDeleteEpic = $('#form-DeleteEpic'),
                 $formUpdateEpic = $('#form-UpdateEpic'),
+                $formCreateTopic = $('#form-CreateTopic'),
+                $formDeleteTopic = $('#form-DeleteTopic'),
+                $formUpdateTopic = $('#form-UpdateTopic'),
                 $modalCreateUserRole = $('#modal-create-UserRole'),
                 $modalDetailUserRole = $('#modal-detail-UserRole'),
                 $modalCreateEpic = $('#modal-create-Epic'),
                 $modalDetailEpic = $('#modal-detail-Epic'),
+                $modalCreateTopic = $('#modal-create-Topic'),
+                $modalDetailTopic = $('#modal-detail-Topic'),
                 $inputDeleteUserRoleUserRoleId = $('#input-DeleteUserRole-UserRole-Id'),
                 $inputUpdateUserRoleUserRoleId = $('#input-UpdateUserRole-UserRole-Id'),
                 $inputUpdateUserRoleUserRoleRole = $('#input-UpdateUserRole-UserRole-Role'),
@@ -263,22 +366,32 @@
                 $inputUpdateEpicEpicId = $('#input-UpdateEpic-Epic-Id'),
                 $inputUpdateEpicEpicTitle = $('#input-UpdateEpic-Epic-Title'),
                 $inputUpdateEpicEpicDescription = $('#input-UpdateEpic-Epic-Description'),
+                $inputDeleteTopicTopicId = $('#input-DeleteTopic-Topic-Id'),
+                $inputUpdateTopicTopicId = $('#input-UpdateTopic-Topic-Id'),
+                $inputUpdateTopicTopicTitle = $('#input-UpdateTopic-Topic-Title'),
+                $inputUpdateTopicTopicDescription = $('#input-UpdateTopic-Topic-Description'),
                 $tableTeamMembers = $('#table-TeamMembers'),
                 $tableUserRoles = $('#table-UserRoles'),
                 $tableEpics = $('#table-Epics'),
+                $tableTopics = $('#table-Topics'),
                 $buttonCreateUserRole = $('#button-CreateUserRole'),
                 $buttonDeleteUserRole = $('#button-DeleteUserRole'),
                 $buttonUpdateUserRole = $('#button-UpdateUserRole'),
                 $buttonCreateEpic = $('#button-CreateEpic'),
                 $buttonDeleteEpic = $('#button-DeleteEpic'),
                 $buttonUpdateEpic = $('#button-UpdateEpic'),
+                $buttonCreateTopic = $('#button-CreateTopic'),
+                $buttonDeleteTopic = $('#button-DeleteTopic'),
+                $buttonUpdateTopic = $('#button-UpdateTopic'),
                 $body = $('body'),
                 dataTableTeamMembers = $tableTeamMembers.DataTable(),
                 dataTableUserRoles = $tableUserRoles.DataTable(),
                 dataTableEpics = $tableEpics.DataTable(),
+                dataTableTopics = $tableTopics.DataTable(),
                 dataTableTeamMembersUrl = '@Url.RouteUrl(nameof(ProductApiController.ProductTeamMembers))',
-                dataTableUserRolesUrl = '@Url.RouteUrl(nameof(UserRoleApiController.ProductUserRoles))'
-                dataTableEpicsUrl = '@Url.RouteUrl(nameof(EpicApiController.ProductEpicsDataTable))';
+                dataTableUserRolesUrl = '@Url.RouteUrl(nameof(UserRoleApiController.ProductUserRoles))',
+                dataTableEpicsUrl = '@Url.RouteUrl(nameof(EpicApiController.ProductEpicsDataTable))',
+                dataTableTopicsUrl = '@Url.RouteUrl(nameof(TopicApiController.ProductTopicsDataTable))';
 
             function initDataTableTeamMembers() {
                 dataTableTeamMembers.destroy();
@@ -294,6 +407,11 @@
             function initDataTableEpics() {
                 dataTableEpics.destroy();
                 dataTableEpics = $tableEpics.DataTable({ ajax: dataTableEpicsUrl });
+            }
+
+            function initDataTableTopics() {
+                dataTableTopics.destroy();
+                dataTableTopics = $tableTopics.DataTable({ ajax: dataTableTopicsUrl });
             }
 
             $buttonCreateUserRole.click(function () {
@@ -446,6 +564,81 @@
                 });
             });
 
+            $buttonCreateTopic.click(function () {
+                $formCreateTopic.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formCreateTopic[0].checkValidity()) {
+                    $formCreateTopic.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formCreateTopic.attr('action'),
+                    data: $formCreateTopic.serialize(),
+                    success: function () {
+                        $formCreateTopic[0].reset();
+                        initDataTableTopics();
+                        $modalCreateTopic.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonDeleteTopic.click(function () {
+                $formDeleteTopic.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formDeleteTopic[0].checkValidity()) {
+                    $formDeleteTopic.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formDeleteTopic.attr('action'),
+                    data: $formDeleteTopic.serialize(),
+                    success: function () {
+                        $formDeleteTopic[0].reset();
+                        initDataTableTopics();
+                        $modalDetailTopic.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonUpdateTopic.click(function () {
+                $formUpdateTopic.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formUpdateTopic[0].checkValidity()) {
+                    $formUpdateTopic.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formUpdateTopic.attr('action'),
+                    data: $formUpdateTopic.serialize(),
+                    success: function () {
+                        $formUpdateTopic[0].reset();
+                        initDataTableTopics();
+                        $modalDetailTopic.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
             $body.on('click', '.ajax-data-table-TeamMember', function () {
                 var $this = $(this), id = $this.attr('data-Id');
             });
@@ -476,11 +669,31 @@
                 $modalDetailEpic.modal();
             });
 
+            $body.on('click', '.ajax-data-table-Topic', function () {
+                var $this = $(this),
+                    id = $this.attr('data-Id'),
+                    title = $this.attr('data-Title'),
+                    description = $this.attr('data-Description');
+
+                $inputDeleteTopicTopicId.val(id);
+                $inputUpdateTopicTopicId.val(id);
+                $inputUpdateTopicTopicTitle.val(title);
+                $inputUpdateTopicTopicDescription.val(description);
+
+                $modalDetailTopic.modal();
+            });
+
             (function () {
                 initDataTableTeamMembers();
                 initDataTableUserRoles();
                 initDataTableEpics();
+                initDataTableTopics();
             })();
         });
+
+
+        
+
+
     </script>
 }
