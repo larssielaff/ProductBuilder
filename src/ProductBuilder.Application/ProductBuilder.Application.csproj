@@ -61,12 +61,14 @@
     <Compile Include="Interfaces\IEpicAppService.cs" />
     <Compile Include="Interfaces\ITeamAppService.cs" />
     <Compile Include="Interfaces\ITeamMemberAppService.cs" />
+    <Compile Include="Interfaces\ITopicAppService.cs" />
     <Compile Include="Interfaces\IUserProfileAppService.cs" />
     <Compile Include="Interfaces\IUserRoleAppService.cs" />
     <Compile Include="Services\EpicAppService.cs" />
     <Compile Include="Services\ProductAppService.cs" />
     <Compile Include="Services\TeamAppService.cs" />
     <Compile Include="Services\TeamMemberAppService.cs" />
+    <Compile Include="Services\TopicAppService.cs" />
     <Compile Include="Services\UserProfileAppService.cs" />
     <Compile Include="Services\UserRoleAppService.cs" />
     <Compile Include="ViewModels\AjaxDataTableViewModel.cs" />
@@ -80,6 +82,9 @@
     <Compile Include="ViewModels\ProductApi\ProductTeamMembersApiViewModel.cs" />
     <Compile Include="ViewModels\TeamApi\CreateTeamApiViewModel.cs" />
     <Compile Include="ViewModels\TeamMember\CreateTeamMemberApiViewModel.cs" />
+    <Compile Include="ViewModels\TopicApi\CreateTopicApiViewModel.cs" />
+    <Compile Include="ViewModels\TopicApi\DeleteTopicApiViewModel.cs" />
+    <Compile Include="ViewModels\TopicApi\UpdateTopicApiViewModel.cs" />
     <Compile Include="ViewModels\UserProfileApi\CreateUserProfileApiViewModel.cs" />
     <Compile Include="ViewModels\UserRoleApi\CreateUserRoleApiViewModel.cs" />
     <Compile Include="ViewModels\UserRoleApi\DeleteUserRoleApiViewModel.cs" />
