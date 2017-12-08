@@ -25,6 +25,13 @@
             return Mapper.Map<AjaxDataTableViewModel>(_repository.GetAll());
         }
 
+        public ProductEpicsDataTableApiViewModel GetProductEpicsDataTableApiViewModel(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                throw new ArgumentNullException(nameof(productId));
+            return Mapper.Map<ProductEpicsDataTableApiViewModel>(_repository.Find(x => x.ProductId == productId));
+        }
+
         public void DeleteEpic(DeleteEpicApiViewModel model)
         {
             if (model == null)
@@ -36,6 +43,7 @@
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
+            model.Id = Guid.NewGuid();
             Bus.SendCommand(Mapper.Map<CreateEpicCommand>(model));
         }
 

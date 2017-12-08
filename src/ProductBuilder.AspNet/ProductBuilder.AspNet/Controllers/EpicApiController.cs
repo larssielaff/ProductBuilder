@@ -18,6 +18,14 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
+        [Route("api/{productid}/productepicsdatatable", Name = nameof(ProductEpicsDataTable))]
+        public IActionResult ProductEpicsDataTable(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetProductEpicsDataTableApiViewModel(productId));
+        }
+
         [Route("api/EpicsDataTable", Name = nameof(EpicsDataTable))]
         public IActionResult EpicsDataTable()
         {
@@ -26,7 +34,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/DeleteEpic", Name = nameof(DeleteEpic))]
+        [Route("api/{productid}/DeleteEpic", Name = nameof(DeleteEpic))]
         public IActionResult DeleteEpic(DeleteEpicApiViewModel model)
         {
             if (model == null)
@@ -41,7 +49,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/CreateEpic", Name = nameof(CreateEpic))]
+        [Route("api/{productid}/createepic", Name = nameof(CreateEpic))]
         public IActionResult CreateEpic(CreateEpicApiViewModel model)
         {
             if (model == null)
@@ -56,7 +64,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/UpdateEpic", Name = nameof(UpdateEpic))]
+        [Route("api/{productid}/updateepic", Name = nameof(UpdateEpic))]
         public IActionResult UpdateEpic(UpdateEpicApiViewModel model)
         {
             if (model == null)

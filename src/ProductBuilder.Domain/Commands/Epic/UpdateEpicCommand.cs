@@ -6,9 +6,11 @@
 
     public class UpdateEpicCommand : EpicCommand
     {
-        public UpdateEpicCommand(Guid id, Guid aggregateId)
+        public UpdateEpicCommand(Guid id, string title, string description, Guid aggregateId)
         {
             Id = id;
+            Title = title;
+            Description = description;
             AggregateId = aggregateId;
         }
 

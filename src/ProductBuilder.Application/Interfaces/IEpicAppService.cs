@@ -13,5 +13,6 @@
         void CreateEpic(CreateEpicApiViewModel model);
 
         void UpdateEpic(UpdateEpicApiViewModel model);
+        ProductEpicsDataTableApiViewModel GetProductEpicsDataTableApiViewModel(Guid productId);
     }
 }

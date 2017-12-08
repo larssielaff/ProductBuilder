@@ -1,4 +1,5 @@
 ﻿@using ProductBuilder.Application.ViewModels.UserRoleApi
+@using ProductBuilder.Application.ViewModels.EpicApi
 
 @{
     ViewData["Title"] = "Product";
@@ -6,6 +7,10 @@
 
 @section head{
     <style>
+        table {
+            width:100% !important;
+        }
+
         .tab-content {
             padding-top: 16px;
             padding-bottom: 16px;
@@ -84,6 +89,84 @@
             </div>
         </div>
     </div>
+    @* modal-create-Epic *@
+    <div id="modal-create-Epic" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-Epic-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-create-Epic-label" class="modal-title">Epic erstellen</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-CreateEpic *@
+                    <form id="form-CreateEpic" action="@Url.RouteUrl(nameof(EpicApiController.CreateEpic))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateEpic-Epic-Title">Titel</label>
+                            <input id="input-CreateEpic-Epic-Title" type="text" class="form-control" required="required" name="@nameof(CreateEpicApiViewModel.Title)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateEpic-Epic-Description">Beschreibung</label>
+                            <input id="input-CreateEpic-Epic-Description" type="text" class="form-control" required="required" name="@nameof(CreateEpicApiViewModel.Description)" />
+                        </div>
+                        <button id="button-CreateEpic" type="button" class="btn btn-success pull-right">Epic erstellen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* modal-detail-Epic *@
+    <div id="modal-detail-Epic" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-detail-Epic-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-detail-Epic-label" class="modal-title">Epic</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-DeleteEpic *@
+                    <form id="form-DeleteEpic" action="@Url.RouteUrl(nameof(EpicApiController.DeleteEpic))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-DeleteEpic-Epic-Id" required="required" hidden="hidden" name="@nameof(DeleteEpicApiViewModel.Id)" />
+                        </div>
+                        <button id="button-DeleteEpic" type="button" class="btn btn-danger pull-right">Epic löschen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    @* form-UpdateEpic *@
+                    <form id="form-UpdateEpic" action="@Url.RouteUrl(nameof(EpicApiController.UpdateEpic))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-UpdateEpic-Epic-Id" required="required" hidden="hidden" name="@nameof(UpdateEpicApiViewModel.Id)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-UpdateEpic-Epic-Title">Titel</label>
+                            <input id="input-UpdateEpic-Epic-Title" type="text" class="form-control" required="required" name="@nameof(UpdateEpicApiViewModel.Title)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-UpdateEpic-Epic-Description">Beschreibung</label>
+                            <input id="input-UpdateEpic-Epic-Description" type="text" class="form-control" required="required" name="@nameof(UpdateEpicApiViewModel.Description)" />
+                        </div>
+                        <button id="button-UpdateEpic" type="button" class="btn btn-success pull-right">Epic aktualisieren</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -93,6 +176,7 @@
             <li role="presentation"><a href="#team" role="tab" data-toggle="tab">Team</a></li>
             <li role="presentation"><a href="#backlog" role="tab" data-toggle="tab">Backlog</a></li>
             <li role="presentation"><a href="#userroles" role="tab" data-toggle="tab">Benutzerrollen</a></li>
+            <li role="presentation"><a href="#epics" role="tab" data-toggle="tab">Epics</a></li>
         </ul>
         <div class="tab-content">
             <div id="overview" class="tab-pane active" role="tabpanel">
@@ -137,6 +221,24 @@
                     </tfoot>
                 </table>
             </div>
+            <div id="epics" class="tab-pane" role="tabpanel">
+                <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-create-Epic" style="margin-bottom:16px;">Epic erstellen</button>
+                @* table-Epics *@
+                <table id="table-Epics" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Titel</th>
+                            <th>Beschreibung</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Titel</th>
+                            <th>Beschreibung</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -147,21 +249,36 @@
             var $formCreateUserRole = $('#form-CreateUserRole'),
                 $formDeleteUserRole = $('#form-DeleteUserRole'),
                 $formUpdateUserRole = $('#form-UpdateUserRole'),
+                $formCreateEpic = $('#form-CreateEpic'),
+                $formDeleteEpic = $('#form-DeleteEpic'),
+                $formUpdateEpic = $('#form-UpdateEpic'),
                 $modalCreateUserRole = $('#modal-create-UserRole'),
                 $modalDetailUserRole = $('#modal-detail-UserRole'),
+                $modalCreateEpic = $('#modal-create-Epic'),
+                $modalDetailEpic = $('#modal-detail-Epic'),
                 $inputDeleteUserRoleUserRoleId = $('#input-DeleteUserRole-UserRole-Id'),
                 $inputUpdateUserRoleUserRoleId = $('#input-UpdateUserRole-UserRole-Id'),
                 $inputUpdateUserRoleUserRoleRole = $('#input-UpdateUserRole-UserRole-Role'),
+                $inputDeleteEpicEpicId = $('#input-DeleteEpic-Epic-Id'),
+                $inputUpdateEpicEpicId = $('#input-UpdateEpic-Epic-Id'),
+                $inputUpdateEpicEpicTitle = $('#input-UpdateEpic-Epic-Title'),
+                $inputUpdateEpicEpicDescription = $('#input-UpdateEpic-Epic-Description'),
                 $tableTeamMembers = $('#table-TeamMembers'),
                 $tableUserRoles = $('#table-UserRoles'),
+                $tableEpics = $('#table-Epics'),
                 $buttonCreateUserRole = $('#button-CreateUserRole'),
                 $buttonDeleteUserRole = $('#button-DeleteUserRole'),
                 $buttonUpdateUserRole = $('#button-UpdateUserRole'),
+                $buttonCreateEpic = $('#button-CreateEpic'),
+                $buttonDeleteEpic = $('#button-DeleteEpic'),
+                $buttonUpdateEpic = $('#button-UpdateEpic'),
                 $body = $('body'),
                 dataTableTeamMembers = $tableTeamMembers.DataTable(),
                 dataTableUserRoles = $tableUserRoles.DataTable(),
+                dataTableEpics = $tableEpics.DataTable(),
                 dataTableTeamMembersUrl = '@Url.RouteUrl(nameof(ProductApiController.ProductTeamMembers))',
-                dataTableUserRolesUrl = '@Url.RouteUrl(nameof(UserRoleApiController.ProductUserRoles))';
+                dataTableUserRolesUrl = '@Url.RouteUrl(nameof(UserRoleApiController.ProductUserRoles))'
+                dataTableEpicsUrl = '@Url.RouteUrl(nameof(EpicApiController.ProductEpicsDataTable))';
 
             function initDataTableTeamMembers() {
                 dataTableTeamMembers.destroy();
@@ -172,6 +289,11 @@
             {
                 dataTableUserRoles.destroy();
                 dataTableUserRoles = $tableUserRoles.DataTable({ ajax: dataTableUserRolesUrl });
+            }
+
+            function initDataTableEpics() {
+                dataTableEpics.destroy();
+                dataTableEpics = $tableEpics.DataTable({ ajax: dataTableEpicsUrl });
             }
 
             $buttonCreateUserRole.click(function () {
@@ -249,6 +371,81 @@
                 });
             });
 
+            $buttonCreateEpic.click(function () {
+                $formCreateEpic.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formCreateEpic[0].checkValidity()) {
+                    $formCreateEpic.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formCreateEpic.attr('action'),
+                    data: $formCreateEpic.serialize(),
+                    success: function () {
+                        $formCreateEpic[0].reset();
+                        initDataTableEpics();
+                        $modalCreateEpic.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonDeleteEpic.click(function () {
+                $formDeleteEpic.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formDeleteEpic[0].checkValidity()) {
+                    $formDeleteEpic.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formDeleteEpic.attr('action'),
+                    data: $formDeleteEpic.serialize(),
+                    success: function () {
+                        $formDeleteEpic[0].reset();
+                        initDataTableEpics();
+                        $modalDetailEpic.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonUpdateEpic.click(function () {
+                $formUpdateEpic.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formUpdateEpic[0].checkValidity()) {
+                    $formUpdateEpic.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formUpdateEpic.attr('action'),
+                    data: $formUpdateEpic.serialize(),
+                    success: function () {
+                        $formUpdateEpic[0].reset();
+                        initDataTableEpics();
+                        $modalDetailEpic.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
             $body.on('click', '.ajax-data-table-TeamMember', function () {
                 var $this = $(this), id = $this.attr('data-Id');
             });
@@ -265,11 +462,25 @@
                 $modalDetailUserRole.modal();
             });
 
+            $body.on('click', '.ajax-data-table-Epic', function () {
+                var $this = $(this),
+                    id = $this.attr('data-Id'),
+                    title = $this.attr('data-Title'),
+                    description = $this.attr('data-Description');
+
+                $inputDeleteEpicEpicId.val(id);
+                $inputUpdateEpicEpicId.val(id);
+                $inputUpdateEpicEpicTitle.val(title);
+                $inputUpdateEpicEpicDescription.val(description);
+
+                $modalDetailEpic.modal();
+            });
+
             (function () {
                 initDataTableTeamMembers();
                 initDataTableUserRoles();
+                initDataTableEpics();
             })();
         });
-        
     </script>
 }

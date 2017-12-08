@@ -36,7 +36,6 @@
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
             _repository.Remove(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new EpicDeletedEvent(entity, message.AggregateId));
         }
@@ -50,9 +49,13 @@
                 NotifyValidationErrors(message);
                 return;
             }
-            var entity = new Epic(message.Id) { };
+            var entity = new Epic(message.Id)
+            {
+                Title = message.Title,
+                Description = message.Description,
+                ProductId = message.ProductId
+            };
             _repository.Add(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new EpicCreatedEvent(entity, message.AggregateId));
         }
@@ -69,10 +72,11 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
-            _repository.Remove(entity);
-            throw new NotImplementedException();
+            entity.Title = message.Title;
+            entity.Description = message.Description;
+            _repository.Update(entity);
             if (Commit())
-                Bus.RaiseEvent(new EpicDeletedEvent(entity, message.AggregateId));
+                Bus.RaiseEvent(new EpicUpdatedEvent(entity, message.AggregateId));
         }
     }
 }

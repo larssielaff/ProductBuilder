@@ -6,9 +6,11 @@
 
     public class CreateEpicCommand : EpicCommand
     {
-        public CreateEpicCommand(Guid id, Guid aggregateId)
+        public CreateEpicCommand(Guid id, string title, string description, Guid productId, Guid aggregateId)
         {
             Id = id;
+            Title = title;
+            Description = description;
             AggregateId = aggregateId;
         }
 
