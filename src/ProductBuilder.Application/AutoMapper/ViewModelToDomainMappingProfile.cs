@@ -20,6 +20,7 @@
     {
         public ViewModelToDomainMappingProfile()
         {
+            CreateMapForTopic();
             CreateMapForUserProfile();
             CreateMapForProduct();
             CreateMapForTeam();
@@ -27,6 +28,8 @@
             CreateMapForUserRole();
             CreateMapForEpic();
         }
+
+        private void CreateMapForTopic() { }
 
         private void CreateMapForUserProfile() { }
 

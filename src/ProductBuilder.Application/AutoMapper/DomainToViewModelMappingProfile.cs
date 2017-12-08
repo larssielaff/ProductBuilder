@@ -13,6 +13,7 @@
     {
         public DomainToViewModelMappingProfile()
         {
+            CreateMapForTopic();
             CreateMapForUserProfile();
             CreateMapForProduct();
             CreateMapForTeam();
@@ -20,6 +21,8 @@
             CreateMapForUserRole();
             CreateMapForEpic();
         }
+
+        private void CreateMapForTopic() { }
 
         private void CreateMapForUserProfile()
         {

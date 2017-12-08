@@ -18,6 +18,8 @@
     using ProductBuilder.Domain.EventHandlers;
     using ProductBuilder.Application.AutoMapper;
     using ProductBuilder.Infra.Data.Context;
+    using ProductBuilder.Domain.Commands.Topic;
+    using ProductBuilder.Domain.Events.Topic;
     using ProductBuilder.Domain.Commands.UserProfile;
     using ProductBuilder.Domain.Events.UserProfile;
     using ProductBuilder.Domain.Commands.Product;
@@ -28,20 +30,21 @@
     using ProductBuilder.Domain.Events.TeamMember;
     using ProductBuilder.Domain.Commands.UserRole;
     using ProductBuilder.Domain.Events.UserRole;
-    using AutoMapper;
-    using Microsoft.Extensions.DependencyInjection;
     using ProductBuilder.Domain.Commands.Epic;
     using ProductBuilder.Domain.Events.Epic;
+    using AutoMapper;
+    using Microsoft.Extensions.DependencyInjection;
 
     public static class ProductBuilderInjectorBootStrapper
     {
         public static IServiceCollection AddProductBuilderDDD(this IServiceCollection services, string dataConnectionString, string eventStoreConnectionString) => services?
             .RegisterDDD(dataConnectionString, eventStoreConnectionString)?
+            .RegisterTopic()?
             .RegisterUserProfile()?
             .RegisterProduct()?
             .RegisterTeam()?
             .RegisterTeamMember()?
-            .RegisterUserRole()
+            .RegisterUserRole()?
             .RegisterEpic();
 
         private static IServiceCollection RegisterDDD(this IServiceCollection services, string dataConnectionString, string eventStoreConnectionString)
@@ -60,6 +63,19 @@
             services?.AddScoped(p => new ProductBuilderSqlContext(dataConnectionString) as AsdSqlContext);
             services?.AddScoped<IAsdUnitOfWork, AsdUnitOfWork>();
             services?.AddScoped<IAsdDomainNotificationHandler<AsdDomainNotification>, AsdDomainNotificationHandler>();
+            return services;
+        }
+
+        private static IServiceCollection RegisterTopic(this IServiceCollection services)
+        {
+            services?.AddScoped<ITopicAppService, TopicAppService>();
+            services?.AddScoped<ITopicRepository, TopicRepository>();
+            services?.AddScoped<IAsdHandler<DeleteTopicCommand>, TopicCommandHandler>();
+            services?.AddScoped<IAsdHandler<CreateTopicCommand>, TopicCommandHandler>();
+            services?.AddScoped<IAsdHandler<UpdateTopicCommand>, TopicCommandHandler>();
+            services?.AddScoped<IAsdHandler<TopicUpdatedEvent>, TopicEventHandler>();
+            services?.AddScoped<IAsdHandler<TopicCreatedEvent>, TopicEventHandler>();
+            services?.AddScoped<IAsdHandler<TopicDeletedEvent>, TopicEventHandler>();
             return services;
         }
 

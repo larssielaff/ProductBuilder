@@ -6,6 +6,8 @@
 
     public class ProductBuilderSqlContext : AsdSqlContext
     {
+        public virtual DbSet<Topic> Topics { get; set; }
+
         public virtual DbSet<UserProfile> UserProfiles { get; set; }
 
         public virtual DbSet<Product> Products { get; set; }
@@ -26,8 +28,13 @@
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProductBuilderSqlContext, ProductBuilderSqlMigrationsConfiguration>(true));
             modelBuilder.Entity<TeamMember>()
                 .HasOptional(x => x.UserProfile)
-                .WithMany(x => x.TeamMembers).
-                HasForeignKey(x => x.UserProfileId)
+                .WithMany(x => x.TeamMembers)
+                .HasForeignKey(x => x.UserProfileId)
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Topic>()
+                .HasOptional(x => x.Product)
+                .WithMany(x => x.Topics)
+                .HasForeignKey(x => x.ProductId)
                 .WillCascadeOnDelete(false);
             modelBuilder.Entity<UserRole>()
                 .HasOptional(x => x.Product)
