@@ -10,6 +10,8 @@
 
         public string ProductVision { get; set; }
 
+        public virtual ICollection<Topic> Topics { get; set; }
+
         public virtual ICollection<UserRole> UserRoles { get; set; }
 
         public virtual ICollection<Epic> Epics { get; set; }
@@ -26,6 +28,7 @@
 
         protected Product()
         {
+            Topics = new HashSet<Topic>();
             UserRoles = new HashSet<UserRole>();
             Epics = new HashSet<Epic>();
             Teams = new HashSet<Team>();
