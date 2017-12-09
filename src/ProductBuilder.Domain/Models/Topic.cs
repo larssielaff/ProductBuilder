@@ -3,6 +3,7 @@
     using Asd.Domain.Core.Models;
     using System;
     using System.Collections.Generic;
+
     public class Topic : AsdEntity
     {
         public Guid? ProductId { get; set; }
@@ -13,6 +14,8 @@
 
         public string Title { get; set; }
 
+        public virtual ICollection<UserStory> UserStories { get; set; }
+
         public Topic(Guid id) 
             : this()
         {
@@ -21,6 +24,9 @@
             Id = id;
         }
 
-        protected Topic() { }
+        protected Topic()
+        {
+            UserStories = new HashSet<UserStory>();
+        }
     }
 }

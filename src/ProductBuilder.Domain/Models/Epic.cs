@@ -14,6 +14,8 @@
 
         public string Description { get; set; }
 
+        public virtual ICollection<UserStory> UserStories { get; set; }
+
         public Epic(Guid id) 
             : this()
         {
@@ -22,6 +24,9 @@
             Id = id;
         }
 
-        protected Epic() { }
+        protected Epic()
+        {
+            UserStories = new HashSet<UserStory>();
+        }
     }
 }

@@ -12,6 +12,8 @@
 
         public virtual Product Product { get; set; }
 
+        public virtual ICollection<UserStory> UserStories { get; set; }
+
         public UserRole(Guid id) 
             : this()
         {
@@ -20,6 +22,9 @@
             Id = id;
         }
 
-        protected UserRole() { }
+        protected UserRole()
+        {
+            UserStories = new HashSet<UserStory>();
+        }
     }
 }
