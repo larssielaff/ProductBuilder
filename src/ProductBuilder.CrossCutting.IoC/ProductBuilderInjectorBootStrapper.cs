@@ -18,6 +18,8 @@
     using ProductBuilder.Domain.EventHandlers;
     using ProductBuilder.Application.AutoMapper;
     using ProductBuilder.Infra.Data.Context;
+    using ProductBuilder.Domain.Commands.UserStory;
+    using ProductBuilder.Domain.Events.UserStory;
     using ProductBuilder.Domain.Commands.Topic;
     using ProductBuilder.Domain.Events.Topic;
     using ProductBuilder.Domain.Commands.UserProfile;
@@ -39,6 +41,7 @@
     {
         public static IServiceCollection AddProductBuilderDDD(this IServiceCollection services, string dataConnectionString, string eventStoreConnectionString) => services?
             .RegisterDDD(dataConnectionString, eventStoreConnectionString)?
+            .RegisterUserStory()?
             .RegisterTopic()?
             .RegisterUserProfile()?
             .RegisterProduct()?
@@ -63,6 +66,35 @@
             services?.AddScoped(p => new ProductBuilderSqlContext(dataConnectionString) as AsdSqlContext);
             services?.AddScoped<IAsdUnitOfWork, AsdUnitOfWork>();
             services?.AddScoped<IAsdDomainNotificationHandler<AsdDomainNotification>, AsdDomainNotificationHandler>();
+            return services;
+        }
+
+        private static IServiceCollection RegisterUserStory(this IServiceCollection services)
+        {
+            services?.AddScoped<IUserStoryAppService, UserStoryAppService>();
+            services?.AddScoped<IUserStoryRepository, UserStoryRepository>();
+            services?.AddScoped<IAsdHandler<AssignTopicCommand>, UserStoryCommandHandler>();
+            services?.AddScoped<IAsdHandler<DeleteUserStoryCommand>, UserStoryCommandHandler>();
+            services?.AddScoped<IAsdHandler<CreateUserStoryCommand>, UserStoryCommandHandler>();
+            services?.AddScoped<IAsdHandler<RemoveTopicCommand>, UserStoryCommandHandler>();
+            services?.AddScoped<IAsdHandler<AssignUserRoleCommand>, UserStoryCommandHandler>();
+            services?.AddScoped<IAsdHandler<UpdateStoryPointsCommand>, UserStoryCommandHandler>();
+            services?.AddScoped<IAsdHandler<UpdateUserStoryCommand>, UserStoryCommandHandler>();
+            services?.AddScoped<IAsdHandler<AssignEpicCommand>, UserStoryCommandHandler>();
+            services?.AddScoped<IAsdHandler<UpdateValueCommand>, UserStoryCommandHandler>();
+            services?.AddScoped<IAsdHandler<RemoveUserRoleCommand>, UserStoryCommandHandler>();
+            services?.AddScoped<IAsdHandler<RemoveEpicCommand>, UserStoryCommandHandler>();
+            services?.AddScoped<IAsdHandler<StoryPointsUpdatedEvent>, UserStoryEventHandler>();
+            services?.AddScoped<IAsdHandler<UserStoryCreatedEvent>, UserStoryEventHandler>();
+            services?.AddScoped<IAsdHandler<UserRoleRemovedEvent>, UserStoryEventHandler>();
+            services?.AddScoped<IAsdHandler<ValueUpdatedEvent>, UserStoryEventHandler>();
+            services?.AddScoped<IAsdHandler<UserStoryUpdatedEvent>, UserStoryEventHandler>();
+            services?.AddScoped<IAsdHandler<EpicRemovedEvent>, UserStoryEventHandler>();
+            services?.AddScoped<IAsdHandler<UserStoryDeletedEvent>, UserStoryEventHandler>();
+            services?.AddScoped<IAsdHandler<TopicAssignedEvent>, UserStoryEventHandler>();
+            services?.AddScoped<IAsdHandler<UserRoleAssignedEvent>, UserStoryEventHandler>();
+            services?.AddScoped<IAsdHandler<EpicAssignedEvent>, UserStoryEventHandler>();
+            services?.AddScoped<IAsdHandler<TopicRemovedEvent>, UserStoryEventHandler>();
             return services;
         }
 
