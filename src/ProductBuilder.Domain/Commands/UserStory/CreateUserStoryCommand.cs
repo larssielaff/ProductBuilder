@@ -6,9 +6,12 @@
 
     public class CreateUserStoryCommand : UserStoryCommand
     {
-        public CreateUserStoryCommand(Guid id, Guid aggregateId)
+        public CreateUserStoryCommand(Guid id, string title, string story, Guid productId, Guid aggregateId)
         {
             Id = id;
+            Title = title;
+            Story = story;
+            ProductId = productId;
             AggregateId = aggregateId;
         }
 

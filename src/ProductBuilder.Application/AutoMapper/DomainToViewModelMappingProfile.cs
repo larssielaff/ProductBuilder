@@ -9,6 +9,7 @@
     using ProductBuilder.Application.ViewModels.UserRoleApi;
     using ProductBuilder.Application.ViewModels.EpicApi;
     using ProductBuilder.Application.ViewModels.TopicApi;
+    using ProductBuilder.Application.ViewModels.UserStoryApi;
 
     public class DomainToViewModelMappingProfile : Profile
     {
@@ -24,7 +25,20 @@
             CreateMapForEpic();
         }
 
-        private void CreateMapForUserStory() { }
+        private void CreateMapForUserStory()
+        {
+            CreateMap<IEnumerable<UserStory>, ProductUserStoriesDataTableApiViewModel>()
+                .ConstructUsing(x => new ProductUserStoriesDataTableApiViewModel()
+                {
+                    Data = x.Select(y => new string[]
+                    {
+                        $"<div class=\"ajax-data-table-UserStory\" data-Id=\"{y.Id}\" data-Story=\"{y.Story}\" data-StoryPoints=\"{y.StoryPoints}\" data-Value=\"{y.Value}\" data-Title=\"{y.Title}\" data-UserRoleId=\"{y.UserRoleId}\" data-EpicId=\"{y.EpicId}\" data-TopicId=\"{y.TopicId}\">{y.Title}</div>",
+                        $"<div class=\"ajax-data-table-UserStory\" data-Id=\"{y.Id}\" data-Story=\"{y.Story}\" data-StoryPoints=\"{y.StoryPoints}\" data-Value=\"{y.Value}\" data-Title=\"{y.Title}\" data-UserRoleId=\"{y.UserRoleId}\" data-EpicId=\"{y.EpicId}\" data-TopicId=\"{y.TopicId}\">{y.Story}</div>",
+                        $"<div class=\"ajax-data-table-UserStory\" data-Id=\"{y.Id}\" data-Story=\"{y.Story}\" data-StoryPoints=\"{y.StoryPoints}\" data-Value=\"{y.Value}\" data-Title=\"{y.Title}\" data-UserRoleId=\"{y.UserRoleId}\" data-EpicId=\"{y.EpicId}\" data-TopicId=\"{y.TopicId}\">{y.StoryPoints}</div>",
+                        $"<div class=\"ajax-data-table-UserStory\" data-Id=\"{y.Id}\" data-Story=\"{y.Story}\" data-StoryPoints=\"{y.StoryPoints}\" data-Value=\"{y.Value}\" data-Title=\"{y.Title}\" data-UserRoleId=\"{y.UserRoleId}\" data-EpicId=\"{y.EpicId}\" data-TopicId=\"{y.TopicId}\">{y.Value}</div>"
+                    })
+                });
+        }
 
         private void CreateMapForTopic()
         {

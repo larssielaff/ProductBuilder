@@ -98,6 +98,7 @@
     <Compile Include="ViewModels\UserStoryApi\AssignUserRoleApiViewModel.cs" />
     <Compile Include="ViewModels\UserStoryApi\CreateUserStoryApiViewModel.cs" />
     <Compile Include="ViewModels\UserStoryApi\DeleteUserStoryApiViewModel.cs" />
+    <Compile Include="ViewModels\UserStoryApi\ProductUserStoriesDataTableApiViewModel.cs" />
     <Compile Include="ViewModels\UserStoryApi\RemoveEpicApiViewModel.cs" />
     <Compile Include="ViewModels\UserStoryApi\RemoveTopicApiViewModel.cs" />
     <Compile Include="ViewModels\UserStoryApi\RemoveUserRoleApiViewModel.cs" />

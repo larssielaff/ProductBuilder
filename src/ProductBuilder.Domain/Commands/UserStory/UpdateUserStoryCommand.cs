@@ -6,9 +6,11 @@
 
     public class UpdateUserStoryCommand : UserStoryCommand
     {
-        public UpdateUserStoryCommand(Guid id, Guid aggregateId)
+        public UpdateUserStoryCommand(Guid id, string title, string story, Guid aggregateId)
         {
             Id = id;
+            Title = title;
+            Story = story;
             AggregateId = aggregateId;
         }
 

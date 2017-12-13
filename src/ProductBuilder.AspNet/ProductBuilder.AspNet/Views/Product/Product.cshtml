@@ -1,6 +1,7 @@
 ﻿@using ProductBuilder.Application.ViewModels.UserRoleApi
 @using ProductBuilder.Application.ViewModels.EpicApi
 @using ProductBuilder.Application.ViewModels.TopicApi
+@using ProductBuilder.Application.ViewModels.UserStoryApi
 
 @{
     ViewData["Title"] = "Product";
@@ -246,6 +247,181 @@
             </div>
         </div>
     </div>
+    @* modal-create-UserStory *@
+    <div id="modal-create-UserStory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-UserStory-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-create-UserStory-label" class="modal-title">User Story erstellen</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-CreateUserStory *@
+                    <form id="form-CreateUserStory" action="@Url.RouteUrl(nameof(UserStoryApiController.CreateUserStory))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateUserStory-UserStory-Title">Title</label>
+                            <input id="input-CreateUserStory-UserStory-Title" type="text" class="form-control" required="required" name="@nameof(CreateUserStoryApiViewModel.Title)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateUserStory-UserStory-Story">User Story</label>
+                            <input id="input-CreateUserStory-UserStory-Story" type="text" class="form-control" required="required" name="@nameof(CreateUserStoryApiViewModel.Story)" />
+                        </div>
+                        <button id="button-CreateUserStory" type="button" class="btn btn-success pull-right">User Story erstellen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* modal-detail-UserStory *@
+    <div id="modal-detail-UserStory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-detail-UserStory-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-detail-UserStory-label" class="modal-title">User Story</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-DeleteUserStory *@
+                    <form id="form-DeleteUserStory" action="@Url.RouteUrl(nameof(UserStoryApiController.DeleteUserStory))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-DeleteUserStory-UserStory-Id" required="required" hidden="hidden" name="@nameof(DeleteUserStoryApiViewModel.Id)" />
+                        </div>
+                        <button id="button-DeleteUserStory" type="button" class="btn btn-danger pull-right">User Story löschen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    @* form-UpdateUserStory *@
+                    <form id="form-UpdateUserStory" action="@Url.RouteUrl(nameof(UserStoryApiController.UpdateUserStory))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-UpdateUserStory-UserStory-Id" required="required" hidden="hidden" name="@nameof(UpdateUserStoryApiViewModel.Id)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-UpdateUserStory-UserStory-Title">Title</label>
+                            <input id="input-UpdateUserStory-UserStory-Title" type="text" class="form-control" required="required" name="@nameof(UpdateUserStoryApiViewModel.Title)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-UpdateUserStory-UserStory-Story">User Story</label>
+                            <input id="input-UpdateUserStory-UserStory-Story" type="text" class="form-control" required="required" name="@nameof(UpdateUserStoryApiViewModel.Story)" />
+                        </div>
+                        <button id="button-UpdateUserStory" type="button" class="btn btn-success pull-right">User Story aktualisieren</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    <hr />
+                    @* form-RemoveUserRole *@
+                    <form id="form-RemoveUserRole" action="@Url.RouteUrl(nameof(UserStoryApiController.RemoveUserRole))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-RemoveUserRole-UserStory-Id" required="required" hidden="hidden" name="@nameof(RemoveUserRoleApiViewModel.Id)" />
+                        </div>
+                        <button id="button-RemoveUserRole" type="button" class="btn btn-danger pull-right">Benutzerrolle entfernen</button>
+                    <div class="clearfix"></div>
+                    </form>
+                    @* form-AssignUserRole *@
+                    <form id="form-AssignUserRole" action="@Url.RouteUrl(nameof(UserStoryApiController.AssignUserRole))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-AssignUserRole-UserStory-Id" required="required" hidden="hidden" name="@nameof(AssignUserRoleApiViewModel.Id)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="select-AssignUserRole-UserStory-UserRoleId">Benutzerrolle</label>
+                            <select id="select-AssignUserRole-UserStory-UserRoleId" type="text" class="form-control" required="required" name="@nameof(AssignUserRoleApiViewModel.UserRoleId)"></select>
+                        </div>
+                        <button id="button-AssignUserRole" type="button" class="btn btn-success pull-right">Benutzerrolle zuweisen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    <hr />
+                    @* form-RemoveEpic *@
+                    <form id="form-RemoveEpic" action="@Url.RouteUrl(nameof(UserStoryApiController.RemoveEpic))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-RemoveEpic-UserStory-Id" required="required" hidden="hidden" name="@nameof(RemoveEpicApiViewModel.Id)" />
+                        </div>
+                        <button id="button-RemoveEpic" type="button" class="btn btn-danger pull-right">Epic entfernen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    @* form-AssignEpic *@
+                    <form id="form-AssignEpic" action="@Url.RouteUrl(nameof(UserStoryApiController.AssignEpic))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-AssignEpic-UserStory-Id" required="required" hidden="hidden" name="@nameof(AssignEpicApiViewModel.Id)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="select-AssignEpic-UserStory-EpicId">Epic</label>
+                            <select id="select-AssignEpic-UserStory-EpicId" class="form-control" required="required" name="@nameof(AssignEpicApiViewModel.EpicId)" ></select>
+                        </div>
+                        <button id="button-AssignEpic" type="button" class="btn btn-success pull-right">Epic zuweisen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    <hr />
+                    @* form-RemoveTopic *@
+                    <form id="form-RemoveTopic" action="@Url.RouteUrl(nameof(UserStoryApiController.RemoveTopic))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-RemoveTopic-UserStory-Id" required="required" hidden="hidden" name="@nameof(RemoveTopicApiViewModel.Id)" />
+                        </div>
+                        <button id="button-RemoveTopic" type="button" class="btn btn-danger pull-right">Thema entfernen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    @* form-AssignTopic *@
+                    <form id="form-AssignTopic" action="@Url.RouteUrl(nameof(UserStoryApiController.AssignTopic))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-AssignTopic-UserStory-Id" required="required" hidden="hidden" name="@nameof(AssignTopicApiViewModel.Id)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="select-AssignTopic-UserStory-TopicId">Thema</label>
+                            <select id="select-AssignTopic-UserStory-TopicId" class="form-control" required="required" name="@nameof(AssignTopicApiViewModel.TopicId)"></select>
+                        </div>
+                        <button id="button-AssignTopic" type="button" class="btn btn-success pull-right">Thema zuweisen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    <hr />
+                    @* form-UpdateStoryPoints *@
+                    <form id="form-UpdateStoryPoints" action="@Url.RouteUrl(nameof(UserStoryApiController.UpdateStoryPoints))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-UpdateStoryPoints-UserStory-Id" required="required" hidden="hidden" name="@nameof(UpdateStoryPointsApiViewModel.Id)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-UpdateStoryPoints-UserStory-StoryPoints">Story Points</label>
+                            <input id="input-UpdateStoryPoints-UserStory-StoryPoints" type="text" class="form-control" required="required" name="@nameof(UpdateStoryPointsApiViewModel.StoryPoints)" />
+                        </div>
+                        <button id="button-UpdateStoryPoints" type="button" class="btn btn-success pull-right">Story Points aktualisieren</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    <hr />
+                    @* form-UpdateValue *@
+                    <form id="form-UpdateValue" action="@Url.RouteUrl(nameof(UserStoryApiController.UpdateValue))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-UpdateValue-UserStory-Id" required="required" hidden="hidden" name="@nameof(UpdateValueApiViewModel.Id)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-UpdateValue-UserStory-Value">Geschäftswert</label>
+                            <input id="input-UpdateValue-UserStory-Value" type="text" class="form-control" required="required" name="@nameof(UpdateValueApiViewModel.Value)" />
+                        </div>
+                        <button id="button-UpdateValue" type="button" class="btn btn-success pull-right">Geschäftswert aktualisieren</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -282,7 +458,26 @@
                 </table>
             </div>
             <div id="backlog" class="tab-pane" role="tabpanel">
-                Backlog
+                <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-create-UserStory" style="margin-bottom:16px;">User Story erstellen</button>
+                @* table-UserStories *@
+                <table id="table-UserStories" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Titel</th>
+                            <th>User Story</th>
+                            <th>Story Points</th>
+                            <th>Geschäftswert</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Titel</th>
+                            <th>User Story</th>
+                            <th>Story Points</th>
+                            <th>Geschäftswert</th>
+                        </tr>
+                    </tfoot>
+                </table> 
             </div>
             <div id="userroles" class="tab-pane" role="tabpanel">
                 <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-create-UserRole" style="margin-bottom:16px;">Benutzerrolle erstellen</button>
@@ -353,12 +548,25 @@
                 $formCreateTopic = $('#form-CreateTopic'),
                 $formDeleteTopic = $('#form-DeleteTopic'),
                 $formUpdateTopic = $('#form-UpdateTopic'),
+                $formCreateUserStory = $('#form-CreateUserStory'),
+                $formDeleteUserStory = $('#form-DeleteUserStory'),
+                $formUpdateUserStory = $('#form-UpdateUserStory'),
+                $formAssignUserRole = $('#form-AssignUserRole'),
+                $formAssignEpic = $('#form-AssignEpic'),
+                $formAssignTopic = $('#form-AssignTopic'),
+                $formUpdateStoryPoints = $('#form-UpdateStoryPoints'),
+                $formUpdateValue = $('#form-UpdateValue'),
+                $formRemoveUserRole = $('#form-RemoveUserRole'),
+                $formRemoveEpic = $('#form-RemoveEpic'),
+                $formRemoveTopic = $('#form-RemoveTopic'),
                 $modalCreateUserRole = $('#modal-create-UserRole'),
                 $modalDetailUserRole = $('#modal-detail-UserRole'),
                 $modalCreateEpic = $('#modal-create-Epic'),
                 $modalDetailEpic = $('#modal-detail-Epic'),
                 $modalCreateTopic = $('#modal-create-Topic'),
                 $modalDetailTopic = $('#modal-detail-Topic'),
+                $modalCreateUserStory = $('#modal-create-UserStory'),
+                $modalDetailUserStory = $('#modal-detail-UserStory'),
                 $inputDeleteUserRoleUserRoleId = $('#input-DeleteUserRole-UserRole-Id'),
                 $inputUpdateUserRoleUserRoleId = $('#input-UpdateUserRole-UserRole-Id'),
                 $inputUpdateUserRoleUserRoleRole = $('#input-UpdateUserRole-UserRole-Role'),
@@ -370,10 +578,28 @@
                 $inputUpdateTopicTopicId = $('#input-UpdateTopic-Topic-Id'),
                 $inputUpdateTopicTopicTitle = $('#input-UpdateTopic-Topic-Title'),
                 $inputUpdateTopicTopicDescription = $('#input-UpdateTopic-Topic-Description'),
+                $inputDeleteUserStoryUserStoryId = $('#input-DeleteUserStory-UserStory-Id'),
+                $inputUpdateUserStoryUserStoryId = $('#input-UpdateUserStory-UserStory-Id'),
+                $inputUpdateUserStoryUserStoryTitle = $('#input-UpdateUserStory-UserStory-Title'),
+                $inputUpdateUserStoryUserStoryStory = $('#input-UpdateUserStory-UserStory-Story'),
+                $inputAssignUserRoleUserStoryId = $('#input-AssignUserRole-UserStory-Id'),
+                $inputAssignEpicUserStoryId = $('#input-AssignEpic-UserStory-Id'),
+                $inputAssignTopicUserStoryId = $('#input-AssignTopic-UserStory-Id'),
+                $inputUpdateStoryPointsUserStoryId = $('#input-UpdateStoryPoints-UserStory-Id'),
+                $inputUpdateStoryPointsUserStoryStoryPoints = $('#input-UpdateStoryPoints-UserStory-StoryPoints'),
+                $inputUpdateValueUserStoryId = $('#input-UpdateValue-UserStory-Id'),
+                $inputUpdateValueUserStoryValue = $('#input-UpdateValue-UserStory-Value'),
+                $inputRemoveUserRoleUserStoryId = $('#input-RemoveUserRole-UserStory-Id'),
+                $inputRemoveEpicUserStoryId = $('#input-RemoveEpic-UserStory-Id'),
+                $inputRemoveTopicUserStoryId = $('#input-RemoveTopic-UserStory-Id'),
+                $selectAssignUserRoleUserStoryUserRoleId = $('#select-AssignUserRole-UserStory-UserRoleId'),
+                $selectAssignEpicUserStoryEpicId = $('#select-AssignEpic-UserStory-EpicId'),
+                $selectAssignTopicUserStoryTopicId = $('#select-AssignTopic-UserStory-TopicId'),
                 $tableTeamMembers = $('#table-TeamMembers'),
                 $tableUserRoles = $('#table-UserRoles'),
                 $tableEpics = $('#table-Epics'),
                 $tableTopics = $('#table-Topics'),
+                $tableUserStories = $('#table-UserStories'),
                 $buttonCreateUserRole = $('#button-CreateUserRole'),
                 $buttonDeleteUserRole = $('#button-DeleteUserRole'),
                 $buttonUpdateUserRole = $('#button-UpdateUserRole'),
@@ -383,16 +609,29 @@
                 $buttonCreateTopic = $('#button-CreateTopic'),
                 $buttonDeleteTopic = $('#button-DeleteTopic'),
                 $buttonUpdateTopic = $('#button-UpdateTopic'),
+                $buttonCreateUserStory = $('#button-CreateUserStory'),
+                $buttonDeleteUserStory = $('#button-DeleteUserStory'),
+                $buttonUpdateUserStory = $('#button-UpdateUserStory'),
+                $buttonAssignUserRole = $('#button-AssignUserRole'),
+                $buttonAssignEpic = $('#button-AssignEpic'),
+                $buttonAssignTopic = $('#button-AssignTopic'),
+                $buttonUpdateStoryPoints = $('#button-UpdateStoryPoints'),
+                $buttonUpdateValue = $('#button-UpdateValue'),
+                $buttonRemoveUserRole = $('#button-RemoveUserRole'),
+                $buttonRemoveEpic = $('#button-RemoveEpic'),
+                $buttonRemoveTopic = $('#button-RemoveTopic'),
                 $body = $('body'),
                 dataTableTeamMembers = $tableTeamMembers.DataTable(),
                 dataTableUserRoles = $tableUserRoles.DataTable(),
                 dataTableEpics = $tableEpics.DataTable(),
                 dataTableTopics = $tableTopics.DataTable(),
+                dataTableUserStories = $tableUserStories.DataTable(),
                 dataTableTeamMembersUrl = '@Url.RouteUrl(nameof(ProductApiController.ProductTeamMembers))',
                 dataTableUserRolesUrl = '@Url.RouteUrl(nameof(UserRoleApiController.ProductUserRoles))',
                 dataTableEpicsUrl = '@Url.RouteUrl(nameof(EpicApiController.ProductEpicsDataTable))',
-                dataTableTopicsUrl = '@Url.RouteUrl(nameof(TopicApiController.ProductTopicsDataTable))';
-
+                dataTableTopicsUrl = '@Url.RouteUrl(nameof(TopicApiController.ProductTopicsDataTable))',
+                dataTableUserStoriesUrl = '@Url.RouteUrl(nameof(UserStoryApiController.ProductUserStoriesDataTable))';
+            
             function initDataTableTeamMembers() {
                 dataTableTeamMembers.destroy();
                 dataTableTeamMembers = $tableTeamMembers.DataTable({ ajax: dataTableTeamMembersUrl });
@@ -401,17 +640,69 @@
             function initDataTableUserRoles()
             {
                 dataTableUserRoles.destroy();
-                dataTableUserRoles = $tableUserRoles.DataTable({ ajax: dataTableUserRolesUrl });
+                dataTableUserRoles = $tableUserRoles.DataTable({
+                    ajax: {
+                        url: dataTableUserRolesUrl,
+                        complete: function (data) {
+                            $selectAssignUserRoleUserStoryUserRoleId.find('option')
+                                .remove()
+                                .end();
+                            $selectAssignUserRoleUserStoryUserRoleId.append('<option value="">Keine Benutzerrolle</option>');
+                            data.responseJSON.data.forEach(function (item) {
+                                var $item = $(item[0]),
+                                    id = $item.attr('data-Id'),
+                                    role = $item.attr('data-Role');
+                                $selectAssignUserRoleUserStoryUserRoleId.append('<option value="' + id + '">' + role + '</option>');
+                             });
+                        }
+                    }
+                });
             }
 
             function initDataTableEpics() {
                 dataTableEpics.destroy();
-                dataTableEpics = $tableEpics.DataTable({ ajax: dataTableEpicsUrl });
+                dataTableEpics = $tableEpics.DataTable({
+                    ajax: {
+                        url: dataTableEpicsUrl,
+                        complete: function (data) {
+                            $selectAssignEpicUserStoryEpicId.find('option')
+                                .remove()
+                                .end();
+                            $selectAssignEpicUserStoryEpicId.append('<option value="">Kein Epic</option>');
+                            data.responseJSON.data.forEach(function (item) { 
+                                var $item = $(item[0]),
+                                    id = $item.attr('data-Id'),
+                                    title = $item.attr('data-Title');
+                                $selectAssignEpicUserStoryEpicId.append('<option value="' + id + '">' + title + '</option>');
+                            });
+                        }
+                    }
+                });
             }
 
             function initDataTableTopics() {
                 dataTableTopics.destroy();
-                dataTableTopics = $tableTopics.DataTable({ ajax: dataTableTopicsUrl });
+                dataTableTopics = $tableTopics.DataTable({
+                    ajax: {
+                        url: dataTableTopicsUrl,
+                        complete: function (data) {
+                            $selectAssignTopicUserStoryTopicId.find('option')
+                                .remove().end();
+                            $selectAssignTopicUserStoryTopicId.append('<option value="">Kein Thema</option>');
+                            data.responseJSON.data.forEach(function (item) {
+                                var $item = $(item[0]),
+                                    id = $item.attr('data-Id'),
+                                    title = $item.attr('data-Title');
+                                $selectAssignTopicUserStoryTopicId.append('<option value="' + id + '">' + title + '</option>');
+                             });
+                        }
+                    }
+                });
+            }
+
+            function initDataTableUserStories() {
+                dataTableUserStories.destroy();
+                dataTableUserStories = $tableUserStories.DataTable({ ajax: dataTableUserStoriesUrl });
             }
 
             $buttonCreateUserRole.click(function () {
@@ -639,6 +930,281 @@
                 });
             });
 
+            $buttonCreateUserStory.click(function () {
+                $formCreateUserStory.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formCreateUserStory[0].checkValidity()) {
+                    $formCreateUserStory.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formCreateUserStory.attr('action'),
+                    data: $formCreateUserStory.serialize(),
+                    success: function () {
+                        $formCreateUserStory[0].reset();
+                        initDataTableUserStories();
+                        $modalCreateUserStory.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonDeleteUserStory.click(function () {
+                $formDeleteUserStory.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formDeleteUserStory[0].checkValidity()) {
+                    $formDeleteUserStory.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formDeleteUserStory.attr('action'),
+                    data: $formDeleteUserStory.serialize(),
+                    success: function () {
+                        $formDeleteUserStory[0].reset();
+                        initDataTableUserStories();
+                        $modalDetailUserStory.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonUpdateUserStory.click(function () {
+                $formUpdateUserStory.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formUpdateUserStory[0].checkValidity()) {
+                    $formUpdateUserStory.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formUpdateUserStory.attr('action'),
+                    data: $formUpdateUserStory.serialize(),
+                    success: function () {
+                        $formUpdateUserStory[0].reset();
+                        initDataTableUserStories();
+                        $modalDetailUserStory.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonAssignUserRole.click(function () {
+                $formAssignUserRole.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formAssignUserRole[0].checkValidity()) {
+                    $formAssignUserRole.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formAssignUserRole.attr('action'),
+                    data: $formAssignUserRole.serialize(),
+                    success: function () {
+                        $formAssignUserRole[0].reset();
+                        initDataTableUserStories();
+                        $modalDetailUserStory.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonAssignEpic.click(function () {
+                $formAssignEpic.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formAssignEpic[0].checkValidity()) {
+                    $formAssignEpic.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formAssignEpic.attr('action'),
+                    data: $formAssignEpic.serialize(),
+                    success: function () {
+                        $formAssignEpic[0].reset();
+                        initDataTableUserStories();
+                        $modalDetailUserStory.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonAssignTopic.click(function () {
+                $formAssignTopic.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formAssignTopic[0].checkValidity()) {
+                    $formAssignTopic.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formAssignTopic.attr('action'),
+                    data: $formAssignTopic.serialize(),
+                    success: function () {
+                        $formAssignTopic[0].reset();
+                        initDataTableUserStories();
+                        $modalDetailUserStory.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonUpdateStoryPoints.click(function () {
+                $formUpdateStoryPoints.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formUpdateStoryPoints[0].checkValidity()) {
+                    $formUpdateStoryPoints.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formUpdateStoryPoints.attr('action'),
+                    data: $formUpdateStoryPoints.serialize(),
+                    success: function () {
+                        $formUpdateStoryPoints[0].reset();
+                        initDataTableUserStories();
+                        $modalDetailUserStory.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonUpdateValue.click(function () {
+                $formUpdateValue.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formUpdateValue[0].checkValidity()) {
+                    $formUpdateValue.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formUpdateValue.attr('action'),
+                    data: $formUpdateValue.serialize(),
+                    success: function () {
+                        $formUpdateValue[0].reset();
+                        initDataTableUserStories();
+                        $modalDetailUserStory.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonRemoveUserRole.click(function () {
+                $formRemoveUserRole.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formRemoveUserRole[0].checkValidity()) {
+                    $formRemoveUserRole.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formRemoveUserRole.attr('action'),
+                    data: $formRemoveUserRole.serialize(),
+                    success: function () {
+                        $formRemoveUserRole[0].reset();
+                        initDataTableUserStories();
+                        $modalDetailUserStory.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonRemoveEpic.click(function () {
+                $formRemoveEpic.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formRemoveEpic[0].checkValidity()) {
+                    $formRemoveEpic.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formRemoveEpic.attr('action'),
+                    data: $formRemoveEpic.serialize(),
+                    success: function () {
+                        $formRemoveEpic[0].reset();
+                        initDataTableUserStories();
+                        $modalDetailUserStory.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonRemoveTopic.click(function () {
+                $formRemoveTopic.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formRemoveTopic[0].checkValidity()) {
+                    $formRemoveTopic.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formRemoveTopic.attr('action'),
+                    data: $formRemoveTopic.serialize(),
+                    success: function () {
+                        $formRemoveTopic[0].reset();
+                        initDataTableUserStories();
+                        $modalDetailUserStory.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+            
             $body.on('click', '.ajax-data-table-TeamMember', function () {
                 var $this = $(this), id = $this.attr('data-Id');
             });
@@ -683,17 +1249,48 @@
                 $modalDetailTopic.modal();
             });
 
+            $body.on('click', '.ajax-data-table-UserStory', function () {
+                var $this = $(this),
+                    id = $this.attr('data-Id'),
+                    title = $this.attr('data-Title'),
+                    story = $this.attr('data-Story'),
+                    userRoleId = $this.attr('data-UserRoleId'),
+                    epicId = $this.attr('data-EpicId'),
+                    topicId = $this.attr('data-TopicId'),
+                    storyPoints = $this.attr('data-StoryPoints'),
+                    value = $this.attr('data-Value');
+
+                $inputDeleteUserStoryUserStoryId.val(id);
+                $inputUpdateUserStoryUserStoryId.val(id);
+                $inputUpdateUserStoryUserStoryTitle.val(title);
+                $inputUpdateUserStoryUserStoryStory.val(story);
+                $inputAssignUserRoleUserStoryId.val(id);
+                $selectAssignUserRoleUserStoryUserRoleId.find('> option[value="' + userRoleId + '"]')
+                    .attr('selected', 'selected');
+                $inputAssignEpicUserStoryId.val(id);
+                $selectAssignEpicUserStoryEpicId.find('> option[value="' + epicId + '"]')
+                    .attr('selected', 'selected');
+                $inputAssignTopicUserStoryId.val(id);
+                $selectAssignTopicUserStoryTopicId.find('> option[value="' + topicId + '"]')
+                    .attr('selected', 'selected');
+                $inputUpdateStoryPointsUserStoryId.val(id);
+                $inputUpdateStoryPointsUserStoryStoryPoints.val(storyPoints);
+                $inputUpdateValueUserStoryId.val(id);
+                $inputUpdateValueUserStoryValue.val(value);
+                $inputRemoveUserRoleUserStoryId.val(id);
+                $inputRemoveEpicUserStoryId.val(id);
+                $inputRemoveTopicUserStoryId.val(id);
+
+                $modalDetailUserStory.modal();
+            });
+
             (function () {
                 initDataTableTeamMembers();
                 initDataTableUserRoles();
                 initDataTableEpics();
                 initDataTableTopics();
+                initDataTableUserStories();
             })();
         });
-
-
-        
-
-
     </script>
 }

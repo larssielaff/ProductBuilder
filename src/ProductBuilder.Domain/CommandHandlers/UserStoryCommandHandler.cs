@@ -43,7 +43,7 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity)); _repository.Update(entity);
-            throw new NotImplementedException();
+            entity.TopicId = message.TopicId;
             if (Commit())
                 Bus.RaiseEvent(new TopicAssignedEvent(entity, message.AggregateId));
         }
@@ -61,7 +61,6 @@
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
             _repository.Remove(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new UserStoryDeletedEvent(entity, message.AggregateId));
         }
@@ -75,9 +74,14 @@
                 NotifyValidationErrors(message);
                 return;
             }
-            var entity = new UserStory(message.Id) { };
+            var entity = new UserStory(message.Id)
+            {
+                Title = message.Title,
+                Story = message.Story,
+                StoryPoints = 21,
+                ProductId = message.ProductId
+            };
             _repository.Add(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new UserStoryCreatedEvent(entity, message.AggregateId));
         }
@@ -94,8 +98,8 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.TopicId = null;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new TopicRemovedEvent(entity, message.AggregateId));
         }
@@ -112,8 +116,8 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.UserRoleId = message.UserRoleId;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new UserRoleAssignedEvent(entity, message.AggregateId));
         }
@@ -130,8 +134,8 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.StoryPoints = message.StoryPoints;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new StoryPointsUpdatedEvent(entity, message.AggregateId));
         }
@@ -148,8 +152,9 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.Title = message.Title;
+            entity.Story = message.Story;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new UserStoryUpdatedEvent(entity, message.AggregateId));
         }
@@ -166,8 +171,8 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.EpicId = message.EpicId;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new EpicAssignedEvent(entity, message.AggregateId));
         }
@@ -184,8 +189,8 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.Value = message.Value;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new ValueUpdatedEvent(entity, message.AggregateId));
         }
@@ -202,8 +207,8 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.UserRoleId = null;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new UserRoleRemovedEvent(entity, message.AggregateId));
         }
@@ -220,9 +225,10 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.EpicId = null;
             _repository.Update(entity);
-            throw new NotImplementedException();
-            if (Commit()) Bus.RaiseEvent(new EpicRemovedEvent(entity, message.AggregateId));
+            if (Commit())
+                Bus.RaiseEvent(new EpicRemovedEvent(entity, message.AggregateId));
         }
     }
 }

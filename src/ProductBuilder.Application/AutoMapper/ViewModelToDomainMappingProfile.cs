@@ -17,6 +17,8 @@
     using ProductBuilder.Domain.Commands.Epic;
     using ProductBuilder.Application.ViewModels.TopicApi;
     using ProductBuilder.Domain.Commands.Topic;
+    using ProductBuilder.Application.ViewModels.UserStoryApi;
+    using ProductBuilder.Domain.Commands.UserStory;
 
     public class ViewModelToDomainMappingProfile : Profile
     {
@@ -32,7 +34,41 @@
             CreateMapForEpic();
         }
 
-        private void CreateMapForUserStory() { }
+        private void CreateMapForUserStory()
+        {
+            CreateMap<CreateUserStoryApiViewModel, CreateUserStoryCommand>()
+                .ConstructUsing(x => new CreateUserStoryCommand(x.Id, x.Title, x.Story, x.ProductId, x.ProductId));
+
+            CreateMap<DeleteUserStoryApiViewModel, DeleteUserStoryCommand>()
+                .ConstructUsing(x => new DeleteUserStoryCommand(x.Id, x.ProductId));
+
+            CreateMap<UpdateUserStoryApiViewModel, UpdateUserStoryCommand>()
+                .ConstructUsing(x => new UpdateUserStoryCommand(x.Id, x.Title, x.Story, x.ProductId));
+
+            CreateMap<AssignUserRoleApiViewModel, AssignUserRoleCommand>()
+                .ConstructUsing(x => new AssignUserRoleCommand(x.Id, x.UserRoleId, x.ProductId));
+
+            CreateMap<AssignEpicApiViewModel, AssignEpicCommand>()
+                .ConstructUsing(x => new AssignEpicCommand(x.Id, x.EpicId, x.ProductId));
+
+            CreateMap<AssignTopicApiViewModel, AssignTopicCommand>()
+                .ConstructUsing(x => new AssignTopicCommand(x.Id, x.TopicId, x.ProductId));
+
+            CreateMap<UpdateStoryPointsApiViewModel, UpdateStoryPointsCommand>()
+                .ConstructUsing(x => new UpdateStoryPointsCommand(x.Id, x.StoryPoints, x.ProductId));
+
+            CreateMap<UpdateValueApiViewModel, UpdateValueCommand>()
+                .ConstructUsing(x => new UpdateValueCommand(x.Id, x.Value, x.ProductId));
+
+            CreateMap<RemoveUserRoleApiViewModel, RemoveUserRoleCommand>()
+                .ConstructUsing(x => new RemoveUserRoleCommand(x.Id, x.ProductId));
+
+            CreateMap<RemoveEpicApiViewModel, RemoveEpicCommand>()
+                .ConstructUsing(x => new RemoveEpicCommand(x.Id, x.ProductId));
+
+            CreateMap<RemoveTopicApiViewModel, RemoveTopicCommand>()
+                .ConstructUsing(x => new RemoveTopicCommand(x.Id, x.ProductId));
+        }
 
         private void CreateMapForTopic()
         {

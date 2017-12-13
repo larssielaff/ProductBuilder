@@ -6,9 +6,10 @@
 
     public class AssignUserRoleCommand : UserStoryCommand
     {
-        public AssignUserRoleCommand(Guid id, Guid aggregateId)
+        public AssignUserRoleCommand(Guid id, Guid userRoleId, Guid aggregateId)
         {
             Id = id;
+            UserRoleId = userRoleId;
             AggregateId = aggregateId;
         }
 

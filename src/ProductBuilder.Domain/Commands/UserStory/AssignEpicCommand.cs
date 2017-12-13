@@ -6,9 +6,10 @@
 
     public class AssignEpicCommand : UserStoryCommand
     {
-        public AssignEpicCommand(Guid id, Guid aggregateId)
+        public AssignEpicCommand(Guid id, Guid epicId, Guid aggregateId)
         {
             Id = id;
+            EpicId = epicId;
             AggregateId = aggregateId;
         }
 

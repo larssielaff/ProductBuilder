@@ -6,7 +6,7 @@
 
     public interface IUserStoryAppService : IDisposable
     {
-        AjaxDataTableViewModel GetDataTableViewModel();
+        ProductUserStoriesDataTableApiViewModel GetProductUserStoriesDataTableApiViewModel(Guid productId);
 
         void AssignTopic(AssignTopicApiViewModel model);
 

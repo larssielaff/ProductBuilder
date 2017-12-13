@@ -19,15 +19,17 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
-        [Route("UserStoriesDataTable", Name = nameof(UserStoriesDataTable))]
-        public IActionResult UserStoriesDataTable()
+        [Route("api/{productid}/productuserstoriesdatatable", Name = nameof(ProductUserStoriesDataTable))]
+        public IActionResult ProductUserStoriesDataTable(Guid productId)
         {
-            return Json(_appService.GetDataTableViewModel());
+            if (productId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetProductUserStoriesDataTableApiViewModel(productId));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("AssignTopic", Name = nameof(AssignTopic))]
+        [Route("api/{productid}/assigntopic", Name = nameof(AssignTopic))]
         public IActionResult AssignTopic(AssignTopicApiViewModel model)
         {
             if (model == null)
@@ -42,7 +44,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("DeleteUserStory", Name = nameof(DeleteUserStory))]
+        [Route("api/{productid}/deleteuserstory", Name = nameof(DeleteUserStory))]
         public IActionResult DeleteUserStory(DeleteUserStoryApiViewModel model)
         {
             if (model == null)
@@ -57,7 +59,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("CreateUserStory", Name = nameof(CreateUserStory))]
+        [Route("api/{productid}/createuserstory", Name = nameof(CreateUserStory))]
         public IActionResult CreateUserStory(CreateUserStoryApiViewModel model)
         {
             if (model == null)
@@ -72,7 +74,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("RemoveTopic", Name = nameof(RemoveTopic))]
+        [Route("api/{productid}/removetopic", Name = nameof(RemoveTopic))]
         public IActionResult RemoveTopic(RemoveTopicApiViewModel model)
         {
             if (model == null)
@@ -87,7 +89,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("AssignUserRole", Name = nameof(AssignUserRole))]
+        [Route("api/{productid}/assignuserrole", Name = nameof(AssignUserRole))]
         public IActionResult AssignUserRole(AssignUserRoleApiViewModel model)
         {
             if (model == null)
@@ -102,7 +104,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("UpdateStoryPoints", Name = nameof(UpdateStoryPoints))]
+        [Route("api/{productid}/updatestorypoints", Name = nameof(UpdateStoryPoints))]
         public IActionResult UpdateStoryPoints(UpdateStoryPointsApiViewModel model)
         {
             if (model == null)
@@ -117,7 +119,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("UpdateUserStory", Name = nameof(UpdateUserStory))]
+        [Route("api/{productid}/updateuserstory", Name = nameof(UpdateUserStory))]
         public IActionResult UpdateUserStory(UpdateUserStoryApiViewModel model)
         {
             if (model == null)
@@ -132,7 +134,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("AssignEpic", Name = nameof(AssignEpic))]
+        [Route("api/{productid}/assignepic", Name = nameof(AssignEpic))]
         public IActionResult AssignEpic(AssignEpicApiViewModel model)
         {
             if (model == null)
@@ -147,7 +149,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("UpdateValue", Name = nameof(UpdateValue))]
+        [Route("api/{productid}/updatevalue", Name = nameof(UpdateValue))]
         public IActionResult UpdateValue(UpdateValueApiViewModel model)
         {
             if (model == null)
@@ -162,7 +164,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("RemoveUserRole", Name = nameof(RemoveUserRole))]
+        [Route("api/{productId}/removeuserrole", Name = nameof(RemoveUserRole))]
         public IActionResult RemoveUserRole(RemoveUserRoleApiViewModel model)
         {
             if (model == null)
@@ -177,7 +179,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("RemoveEpic", Name = nameof(RemoveEpic))]
+        [Route("api/{productid}/removeepic", Name = nameof(RemoveEpic))]
         public IActionResult RemoveEpic(RemoveEpicApiViewModel model)
         {
             if (model == null)

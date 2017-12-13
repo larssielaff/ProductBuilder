@@ -6,9 +6,10 @@
 
     public class AssignTopicCommand : UserStoryCommand
     {
-        public AssignTopicCommand(Guid id, Guid aggregateId)
+        public AssignTopicCommand(Guid id, Guid topicId, Guid aggregateId)
         {
             Id = id;
+            TopicId = topicId;
             AggregateId = aggregateId;
         }
 

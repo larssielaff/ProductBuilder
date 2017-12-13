@@ -6,9 +6,10 @@
 
     public class UpdateValueCommand : UserStoryCommand
     {
-        public UpdateValueCommand(Guid id, Guid aggregateId)
+        public UpdateValueCommand(Guid id, int value, Guid aggregateId)
         {
             Id = id;
+            Value = value;
             AggregateId = aggregateId;
         }
 

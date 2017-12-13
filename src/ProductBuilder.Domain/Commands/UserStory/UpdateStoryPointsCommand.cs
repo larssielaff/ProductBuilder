@@ -6,9 +6,10 @@
 
     public class UpdateStoryPointsCommand : UserStoryCommand
     {
-        public UpdateStoryPointsCommand(Guid id, Guid aggregateId)
+        public UpdateStoryPointsCommand(Guid id, int storyPoints, Guid aggregateId)
         {
             Id = id;
+            StoryPoints = storyPoints;
             AggregateId = aggregateId;
         }
 
