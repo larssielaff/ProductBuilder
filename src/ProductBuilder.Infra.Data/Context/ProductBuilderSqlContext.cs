@@ -22,12 +22,20 @@
 
         public virtual DbSet<Epic> Epics { get; set; }
 
+        public virtual DbSet<AcceptanceCriteria> AcceptanceCriterias { get; set; }
+
         public ProductBuilderSqlContext(string connectionString) 
             : base(connectionString) { }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProductBuilderSqlContext, ProductBuilderSqlMigrationsConfiguration>(true));
+
+            modelBuilder.Entity<AcceptanceCriteria>()
+                .HasOptional(x => x.UserStory)
+                .WithMany(x => x.AcceptanceCriterias)
+                .HasForeignKey(x => x.UserStoryId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<UserStory>()
                 .HasOptional(x => x.Topic)
@@ -88,6 +96,7 @@
                 .WithMany(x => x.UserStories)
                 .HasForeignKey(x => x.EpicId)
                 .WillCascadeOnDelete(false);
+
             base.OnModelCreating(modelBuilder);
         }
     }

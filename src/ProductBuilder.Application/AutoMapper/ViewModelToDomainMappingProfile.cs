@@ -32,6 +32,7 @@
             CreateMapForTeamMember();
             CreateMapForUserRole();
             CreateMapForEpic();
+            CreateMapForAcceptanceCriteria();
         }
 
         private void CreateMapForUserStory()
@@ -125,5 +126,7 @@
             CreateMap<UpdateEpicApiViewModel, UpdateEpicCommand>()
                 .ConstructUsing(x => new UpdateEpicCommand(x.Id, x.Title, x.Description, x.ProductId));
         }
+
+        private void CreateMapForAcceptanceCriteria() { }
     }
 }

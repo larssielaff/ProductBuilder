@@ -34,6 +34,8 @@
     using ProductBuilder.Domain.Events.UserRole;
     using ProductBuilder.Domain.Commands.Epic;
     using ProductBuilder.Domain.Events.Epic;
+    using ProductBuilder.Domain.Commands.AcceptanceCriteria;
+    using ProductBuilder.Domain.Events.AcceptanceCriteria;
     using AutoMapper;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -48,7 +50,8 @@
             .RegisterTeam()?
             .RegisterTeamMember()?
             .RegisterUserRole()?
-            .RegisterEpic();
+            .RegisterEpic()?
+            .RegisterAcceptanceCriteria();
 
         private static IServiceCollection RegisterDDD(this IServiceCollection services, string dataConnectionString, string eventStoreConnectionString)
         {
@@ -170,6 +173,19 @@
             services?.AddScoped<IAsdHandler<EpicCreatedEvent>, EpicEventHandler>();
             services?.AddScoped<IAsdHandler<EpicDeletedEvent>, EpicEventHandler>();
             services?.AddScoped<IAsdHandler<EpicUpdatedEvent>, EpicEventHandler>();
+            return services;
+        }
+
+        private static IServiceCollection RegisterAcceptanceCriteria(this IServiceCollection services)
+        {
+            services?.AddScoped<IAcceptanceCriteriaAppService, AcceptanceCriteriaAppService>();
+            services?.AddScoped<IAcceptanceCriteriaRepository, AcceptanceCriteriaRepository>();
+            services?.AddScoped<IAsdHandler<CreateAcceptanceCriteriaCommand>, AcceptanceCriteriaCommandHandler>();
+            services?.AddScoped<IAsdHandler<UpdateAcceptanceCriteriaCommand>, AcceptanceCriteriaCommandHandler>();
+            services?.AddScoped<IAsdHandler<DeleteAcceptanceCriteriaCommand>, AcceptanceCriteriaCommandHandler>();
+            services?.AddScoped<IAsdHandler<AcceptanceCriteriaUpdatedEvent>, AcceptanceCriteriaEventHandler>();
+            services?.AddScoped<IAsdHandler<AcceptanceCriteriaCreatedEvent>, AcceptanceCriteriaEventHandler>();
+            services?.AddScoped<IAsdHandler<AcceptanceCriteriaDeletedEvent>, AcceptanceCriteriaEventHandler>();
             return services;
         }
     }

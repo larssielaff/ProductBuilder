@@ -23,6 +23,7 @@
             CreateMapForTeamMember();
             CreateMapForUserRole();
             CreateMapForEpic();
+            CreateMapForAcceptanceCriteria();
         }
 
         private void CreateMapForUserStory()
@@ -124,5 +125,7 @@
                     })
                 });
         }
+
+        private void CreateMapForAcceptanceCriteria() { }
     }
 }
