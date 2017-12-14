@@ -30,12 +30,18 @@
 
         public string Title { get; set; }
 
-        public UserStory(Guid id) 
-            : this()
+        public virtual ICollection<AcceptanceCriteria> AcceptanceCriterias { get; set; }
+
+        public UserStory(Guid id) : this()
         {
             if (id == Guid.Empty)
                 throw new ArgumentNullException(nameof(id));
             Id = id;
         }
 
-        protected UserStory() { } } }
+        protected UserStory()
+        {
+            AcceptanceCriterias = new HashSet<AcceptanceCriteria>();
+        }
+    }
+}
