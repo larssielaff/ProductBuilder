@@ -10,6 +10,7 @@
     using global::AutoMapper;
     using System;
     using System.Linq;
+    using ProductBuilder.Application.ViewModels.UserStory;
 
     public class UserStoryAppService : AsdAppService, IUserStoryAppService
     {
@@ -26,6 +27,15 @@
             if (productId == Guid.Empty)
                 throw new ArgumentNullException(nameof(productId));
             return Mapper.Map<ProductUserStoriesDataTableApiViewModel>(_repository.Find(x => x.ProductId == productId).ToList());
+        }
+
+        public ProductUserStoryViewModel GetProductUserStoryViewModel(Guid productId, Guid userStoryId)
+        {
+            if (productId == Guid.Empty)
+                throw new ArgumentNullException(nameof(productId));
+            if (userStoryId == Guid.Empty)
+                throw new ArgumentNullException(nameof(userStoryId));
+            return Mapper.Map<ProductUserStoryViewModel>(_repository.Find(x => x.ProductId == productId && x.Id == userStoryId).FirstOrDefault());
         }
 
         public void AssignTopic(AssignTopicApiViewModel model)

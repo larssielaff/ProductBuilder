@@ -19,6 +19,14 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
+        [Route("api/{productid}/product-topics-json-array", Name = nameof(ProductTopicsJsonArray))]
+        public IActionResult ProductTopicsJsonArray(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetProductTopicsJsonArray(productId));
+        }
+
         [Route("api/{productid}/producttopicsdatatables", Name = nameof(ProductTopicsDataTable))]
         public IActionResult ProductTopicsDataTable(Guid productId)
         {

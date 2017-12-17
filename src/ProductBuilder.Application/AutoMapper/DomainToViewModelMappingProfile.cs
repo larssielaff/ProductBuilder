@@ -10,6 +10,7 @@
     using ProductBuilder.Application.ViewModels.EpicApi;
     using ProductBuilder.Application.ViewModels.TopicApi;
     using ProductBuilder.Application.ViewModels.UserStoryApi;
+    using ProductBuilder.Application.ViewModels.UserStory;
 
     public class DomainToViewModelMappingProfile : Profile
     {
@@ -39,6 +40,19 @@
                         $"<div class=\"ajax-data-table-UserStory\" data-Id=\"{y.Id}\" data-Story=\"{y.Story}\" data-StoryPoints=\"{y.StoryPoints}\" data-Value=\"{y.Value}\" data-Title=\"{y.Title}\" data-UserRoleId=\"{y.UserRoleId}\" data-EpicId=\"{y.EpicId}\" data-TopicId=\"{y.TopicId}\">{y.Value}</div>"
                     })
                 });
+
+            CreateMap<UserStory, ProductUserStoryViewModel>()
+                .ConstructUsing(x => new ProductUserStoryViewModel()
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Story = x.Story,
+                    UserRoleId = x.UserRoleId,
+                    EpicId = x.EpicId,
+                    TopicId = x.TopicId,
+                    StoryPoints = x.StoryPoints,
+                    Value = x.Value
+                });
         }
 
         private void CreateMapForTopic()
@@ -52,6 +66,13 @@
                         $"<div class=\"ajax-data-table-Topic\" data-Id=\"{y.Id}\" data-Title=\"{y.Title}\" data-Description=\"{y.Description}\">{y.Description}</div>"
                     })
                 });
+
+            CreateMap<IEnumerable<Topic>, IEnumerable<TopicQueryResult>>()
+                .ConstructUsing(x => x.Select(y => new TopicQueryResult()
+                {
+                    Id = y.Id,
+                    Title = y.Title
+                }));
         }
 
         private void CreateMapForUserProfile()
@@ -111,6 +132,13 @@
                         $"<div class=\"ajax-data-table-UserRole\" data-Id=\"{y.Id}\" data-Role=\"{y.Role}\">{y.Role}</div>"
                     })
                 });
+
+            CreateMap<IEnumerable<UserRole>, IEnumerable<UserRoleQueryResult>>()
+                .ConstructUsing(x => x.Select(y => new UserRoleQueryResult()
+                {
+                    Id = y.Id,
+                    Role = y.Role
+                }));
         }
 
         private void CreateMapForEpic()
@@ -124,8 +152,25 @@
                         $"<div class=\"ajax-data-table-Epic\" data-Id=\"{y.Id}\" data-Title=\"{y.Title}\" data-Description=\"{y.Description}\">{y.Description}</div>"
                     })
                 });
+
+            CreateMap<IEnumerable<Epic>, IEnumerable<EpicQueryResult>>()
+                .ConstructUsing(x => x.Select(y => new EpicQueryResult()
+                {
+                    Id = y.Id,
+                    Title = y.Title
+                }));
         }
 
-        private void CreateMapForAcceptanceCriteria() { }
+        private void CreateMapForAcceptanceCriteria()
+        {
+            CreateMap<IEnumerable<AcceptanceCriteria>, AjaxDataTableViewModel>()
+                .ConstructUsing(x => new AjaxDataTableViewModel()
+                {
+                    Data = x.Select(y => new string[] 
+                    {
+                        $"<div class=\"ajax-data-table-AcceptanceCriteria\" data-Id=\"{y.Id}\" data-Title=\"{y.Title}\">{y.Title}</div>"
+                    })
+                });
+        }
     }
 }

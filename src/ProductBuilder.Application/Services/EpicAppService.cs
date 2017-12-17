@@ -9,6 +9,8 @@
     using ProductBuilder.Application.ViewModels.EpicApi;
     using global::AutoMapper;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class EpicAppService : AsdAppService, IEpicAppService
     {
@@ -30,6 +32,13 @@
             if (productId == Guid.Empty)
                 throw new ArgumentNullException(nameof(productId));
             return Mapper.Map<ProductEpicsDataTableApiViewModel>(_repository.Find(x => x.ProductId == productId));
+        }
+
+        public IEnumerable<EpicQueryResult> GetProductEpicsJsonArray(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                throw new ArgumentNullException(nameof(productId));
+            return Mapper.Map<IEnumerable<EpicQueryResult>>(_repository.Find(x => x.ProductId == productId).ToList());
         }
 
         public void DeleteEpic(DeleteEpicApiViewModel model)

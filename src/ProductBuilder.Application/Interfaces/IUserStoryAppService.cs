@@ -3,10 +3,13 @@
     using System;
     using ProductBuilder.Application.ViewModels;
     using ProductBuilder.Application.ViewModels.UserStoryApi;
+    using ProductBuilder.Application.ViewModels.UserStory;
 
     public interface IUserStoryAppService : IDisposable
     {
         ProductUserStoriesDataTableApiViewModel GetProductUserStoriesDataTableApiViewModel(Guid productId);
+
+        ProductUserStoryViewModel GetProductUserStoryViewModel(Guid productId, Guid userStoryId);
 
         void AssignTopic(AssignTopicApiViewModel model);
 

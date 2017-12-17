@@ -6,7 +6,7 @@
 
     public interface IAcceptanceCriteriaAppService : IDisposable
     {
-        AjaxDataTableViewModel GetDataTableViewModel();
+        AjaxDataTableViewModel GetUserStoryAcceptanceCriteriasDataTable(Guid userStoryId);
 
         void CreateAcceptanceCriteria(CreateAcceptanceCriteriaApiViewModel model);
 

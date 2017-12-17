@@ -10,6 +10,7 @@
     using global::AutoMapper;
     using System;
     using System.Linq;
+    using System.Collections.Generic;
 
     public class UserRoleAppService : AsdAppService, IUserRoleAppService
     {
@@ -31,6 +32,13 @@
             if (productId == Guid.Empty)
                 throw new ArgumentNullException(nameof(productId));
             return Mapper.Map<ProductUserRolesApiViewModel>(_repository.Find(x => x.ProductId == productId)?.ToList());
+        }
+
+        public IEnumerable<UserRoleQueryResult> GetProductUserRolesJsonArray(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                throw new ArgumentNullException(nameof(productId));
+            return Mapper.Map<IEnumerable<UserRoleQueryResult>>(_repository.Find(x => x.ProductId == productId).ToList());
         }
 
         public void CreateUserRole(CreateUserRoleApiViewModel model)

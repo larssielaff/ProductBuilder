@@ -9,6 +9,7 @@
     using ProductBuilder.Application.ViewModels.AcceptanceCriteriaApi;
     using global::AutoMapper;
     using System;
+    using System.Linq;
 
     public class AcceptanceCriteriaAppService : AsdAppService, IAcceptanceCriteriaAppService
     {
@@ -20,15 +21,18 @@
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public AjaxDataTableViewModel GetDataTableViewModel()
+        public AjaxDataTableViewModel GetUserStoryAcceptanceCriteriasDataTable(Guid userStoryId)
         {
-            return Mapper.Map<AjaxDataTableViewModel>(_repository.GetAll());
+            if (userStoryId == Guid.Empty)
+                throw new ArgumentNullException(nameof(userStoryId));
+            return Mapper.Map<AjaxDataTableViewModel>(_repository.Find(x => x.UserStoryId == userStoryId).ToList());
         }
 
         public void CreateAcceptanceCriteria(CreateAcceptanceCriteriaApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
+            model.Id = Guid.NewGuid();
             Bus.SendCommand(Mapper.Map<CreateAcceptanceCriteriaCommand>(model));
         }
 

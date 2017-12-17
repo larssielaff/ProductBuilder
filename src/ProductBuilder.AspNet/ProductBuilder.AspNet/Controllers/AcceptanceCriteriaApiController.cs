@@ -19,15 +19,17 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
-        [Route("api/AcceptanceCriteriasDataTable", Name = nameof(AcceptanceCriteriasDataTable))]
-        public IActionResult AcceptanceCriteriasDataTable()
+        [Route("api/{userstoryid}/user-story-acceptance-criterias-dataTable", Name = nameof(UserStoryAcceptanceCriteriasDataTable))]
+        public IActionResult UserStoryAcceptanceCriteriasDataTable(Guid userStoryId)
         {
-            return Json(_appService.GetDataTableViewModel());
+            if (userStoryId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetUserStoryAcceptanceCriteriasDataTable(userStoryId));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/CreateAcceptanceCriteria", Name = nameof(CreateAcceptanceCriteria))]
+        [Route("api/{userstoryid}/createacceptancecriteria", Name = nameof(CreateAcceptanceCriteria))]
         public IActionResult CreateAcceptanceCriteria(CreateAcceptanceCriteriaApiViewModel model)
         {
             if (model == null)
@@ -42,7 +44,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/UpdateAcceptanceCriteria", Name = nameof(UpdateAcceptanceCriteria))]
+        [Route("api/{userstoryid}/update-acceptance-criteria", Name = nameof(UpdateAcceptanceCriteria))]
         public IActionResult UpdateAcceptanceCriteria(UpdateAcceptanceCriteriaApiViewModel model)
         {
             if (model == null)
@@ -57,7 +59,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/DeleteAcceptanceCriteria", Name = nameof(DeleteAcceptanceCriteria))]
+        [Route("api/{userstoryid}/deleteacceptancecriteria", Name = nameof(DeleteAcceptanceCriteria))]
         public IActionResult DeleteAcceptanceCriteria(DeleteAcceptanceCriteriaApiViewModel model)
         {
             if (model == null)

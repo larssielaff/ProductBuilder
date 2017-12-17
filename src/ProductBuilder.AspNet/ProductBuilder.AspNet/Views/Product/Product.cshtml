@@ -417,6 +417,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
+                    <a id="a-UserStory-Detail-View" class="btn btn-default">Details</a>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
                 </div>
             </div>
@@ -621,16 +622,18 @@
                 $buttonRemoveEpic = $('#button-RemoveEpic'),
                 $buttonRemoveTopic = $('#button-RemoveTopic'),
                 $body = $('body'),
+                $aUserStoryDetailView = $('#a-UserStory-Detail-View'),
                 dataTableTeamMembers = $tableTeamMembers.DataTable(),
                 dataTableUserRoles = $tableUserRoles.DataTable(),
                 dataTableEpics = $tableEpics.DataTable(),
                 dataTableTopics = $tableTopics.DataTable(),
                 dataTableUserStories = $tableUserStories.DataTable(),
                 dataTableTeamMembersUrl = '@Url.RouteUrl(nameof(ProductApiController.ProductTeamMembers))',
-                dataTableUserRolesUrl = '@Url.RouteUrl(nameof(UserRoleApiController.ProductUserRoles))',
+                dataTableUserRolesUrl = '@Url.RouteUrl(nameof(UserRoleApiController.ProductUserRolesDataTable))',
                 dataTableEpicsUrl = '@Url.RouteUrl(nameof(EpicApiController.ProductEpicsDataTable))',
                 dataTableTopicsUrl = '@Url.RouteUrl(nameof(TopicApiController.ProductTopicsDataTable))',
-                dataTableUserStoriesUrl = '@Url.RouteUrl(nameof(UserStoryApiController.ProductUserStoriesDataTable))';
+                dataTableUserStoriesUrl = '@Url.RouteUrl(nameof(UserStoryApiController.ProductUserStoriesDataTable))',
+                userStoryDetailViewUrl = '@Url.RouteUrl(nameof(UserStoryController.ProductUserStory), new { userStoryId = "userStoryId" })';
             
             function initDataTableTeamMembers() {
                 dataTableTeamMembers.destroy();
@@ -1280,6 +1283,8 @@
                 $inputRemoveUserRoleUserStoryId.val(id);
                 $inputRemoveEpicUserStoryId.val(id);
                 $inputRemoveTopicUserStoryId.val(id);
+
+                $aUserStoryDetailView.attr('href', userStoryDetailViewUrl.replace('userStoryId', id));
 
                 $modalDetailUserStory.modal();
             });

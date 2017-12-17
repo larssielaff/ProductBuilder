@@ -19,6 +19,8 @@
     using ProductBuilder.Domain.Commands.Topic;
     using ProductBuilder.Application.ViewModels.UserStoryApi;
     using ProductBuilder.Domain.Commands.UserStory;
+    using ProductBuilder.Application.ViewModels.AcceptanceCriteriaApi;
+    using ProductBuilder.Domain.Commands.AcceptanceCriteria;
 
     public class ViewModelToDomainMappingProfile : Profile
     {
@@ -127,6 +129,16 @@
                 .ConstructUsing(x => new UpdateEpicCommand(x.Id, x.Title, x.Description, x.ProductId));
         }
 
-        private void CreateMapForAcceptanceCriteria() { }
+        private void CreateMapForAcceptanceCriteria()
+        {
+            CreateMap<CreateAcceptanceCriteriaApiViewModel, CreateAcceptanceCriteriaCommand>()
+                .ConstructUsing(x => new CreateAcceptanceCriteriaCommand(x.Id, x.Title, x.UserStoryId, x.UserStoryId));
+
+            CreateMap<DeleteAcceptanceCriteriaApiViewModel, DeleteAcceptanceCriteriaCommand>()
+                .ConstructUsing(x => new DeleteAcceptanceCriteriaCommand(x.Id, x.UserStoryId));
+
+            CreateMap<UpdateAcceptanceCriteriaApiViewModel, UpdateAcceptanceCriteriaCommand>()
+                .ConstructUsing(x => new UpdateAcceptanceCriteriaCommand(x.Id, x.Title, x.UserStoryId));
+        }
     }
 }

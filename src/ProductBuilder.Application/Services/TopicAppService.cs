@@ -9,6 +9,8 @@
     using ProductBuilder.Application.ViewModels.TopicApi;
     using global::AutoMapper;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class TopicAppService : AsdAppService, ITopicAppService
     {
@@ -30,6 +32,13 @@
         public AjaxDataTableViewModel GetDataTableViewModel()
         {
             return Mapper.Map<AjaxDataTableViewModel>(_repository.GetAll());
+        }
+
+        public IEnumerable<TopicQueryResult> GetProductTopicsJsonArray(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                throw new ArgumentNullException(nameof(productId));
+            return Mapper.Map<IEnumerable<TopicQueryResult>>(_repository.Find(x => x.ProductId == productId).ToList());
         }
 
         public void DeleteTopic(DeleteTopicApiViewModel model)

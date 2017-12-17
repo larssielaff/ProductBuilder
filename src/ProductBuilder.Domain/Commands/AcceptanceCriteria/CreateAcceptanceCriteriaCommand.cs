@@ -6,9 +6,11 @@
 
     public class CreateAcceptanceCriteriaCommand : AcceptanceCriteriaCommand
     {
-        public CreateAcceptanceCriteriaCommand(Guid id, Guid aggregateId)
+        public CreateAcceptanceCriteriaCommand(Guid id, string title, Guid userStoryId, Guid aggregateId)
         {
             Id = id;
+            Title = title;
+            UserStoryId = userStoryId;
             AggregateId = aggregateId;
         }
 

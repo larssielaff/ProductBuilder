@@ -24,12 +24,20 @@
             return Json(_appService.GetDataTableViewModel());
         }
 
-        [Route("api/{productid}/productuserroles", Name = nameof(ProductUserRoles))]
-        public IActionResult ProductUserRoles(Guid productId)
+        [Route("api/{productid}/product-user-roles-datatable", Name = nameof(ProductUserRolesDataTable))]
+        public IActionResult ProductUserRolesDataTable(Guid productId)
         {
             if (productId == Guid.Empty)
                 return NotFound();
             return Json(_appService.GetProductUserRolesApiViewModel(productId));
+        }
+
+        [Route("api/{productid}/product-user-roles", Name = nameof(ProductUserRolesJsonArray))]
+        public IActionResult ProductUserRolesJsonArray(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                throw new ArgumentNullException(nameof(productId));
+            return Json(_appService.GetProductUserRolesJsonArray(productId));
         }
 
         [HttpPost]

@@ -6,9 +6,10 @@
 
     public class UpdateAcceptanceCriteriaCommand : AcceptanceCriteriaCommand
     {
-        public UpdateAcceptanceCriteriaCommand(Guid id, Guid aggregateId)
+        public UpdateAcceptanceCriteriaCommand(Guid id, string title, Guid aggregateId)
         {
             Id = id;
+            Title = title;
             AggregateId = aggregateId;
         }
 

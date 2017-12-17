@@ -83,6 +83,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\EpicApi\CreateEpicApiViewModel.cs" />
     <Compile Include="ViewModels\EpicApi\DeleteEpicApiViewModel.cs" />
+    <Compile Include="ViewModels\EpicApi\EpicQueryResult.cs" />
     <Compile Include="ViewModels\EpicApi\ProductEpicsDataTableApiViewModel.cs" />
     <Compile Include="ViewModels\EpicApi\UpdateEpicApiViewModel.cs" />
     <Compile Include="ViewModels\ProductApi\CreateProductApiViewModel.cs" />
@@ -92,12 +93,14 @@
     <Compile Include="ViewModels\TopicApi\CreateTopicApiViewModel.cs" />
     <Compile Include="ViewModels\TopicApi\DeleteTopicApiViewModel.cs" />
     <Compile Include="ViewModels\TopicApi\ProductTopicsDataTableApiViewModel.cs" />
+    <Compile Include="ViewModels\TopicApi\TopicQueryResult.cs" />
     <Compile Include="ViewModels\TopicApi\UpdateTopicApiViewModel.cs" />
     <Compile Include="ViewModels\UserProfileApi\CreateUserProfileApiViewModel.cs" />
     <Compile Include="ViewModels\UserRoleApi\CreateUserRoleApiViewModel.cs" />
     <Compile Include="ViewModels\UserRoleApi\DeleteUserRoleApiViewModel.cs" />
     <Compile Include="ViewModels\UserRoleApi\ProductUserRolesApiViewModel.cs" />
     <Compile Include="ViewModels\UserRoleApi\UpdateUserRoleApiViewModel.cs" />
+    <Compile Include="ViewModels\UserRoleApi\UserRoleQueryResult.cs" />
     <Compile Include="ViewModels\UserStoryApi\AssignEpicApiViewModel.cs" />
     <Compile Include="ViewModels\UserStoryApi\AssignTopicApiViewModel.cs" />
     <Compile Include="ViewModels\UserStoryApi\AssignUserRoleApiViewModel.cs" />
@@ -110,6 +113,7 @@
     <Compile Include="ViewModels\UserStoryApi\UpdateStoryPointsApiViewModel.cs" />
     <Compile Include="ViewModels\UserStoryApi\UpdateUserStoryApiViewModel.cs" />
     <Compile Include="ViewModels\UserStoryApi\UpdateValueApiViewModel.cs" />
+    <Compile Include="ViewModels\UserStory\ProductUserStoryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProductBuilder.Domain\ProductBuilder.Domain.csproj">

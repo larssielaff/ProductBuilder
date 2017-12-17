@@ -26,6 +26,14 @@
             return Json(_appService.GetProductEpicsDataTableApiViewModel(productId));
         }
 
+        [Route("api/{productid}/product-epics-json-array", Name = nameof(ProductEpicsJsonArray))]
+        public IActionResult ProductEpicsJsonArray(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetProductEpicsJsonArray(productId));
+        }
+
         [Route("api/EpicsDataTable", Name = nameof(EpicsDataTable))]
         public IActionResult EpicsDataTable()
         {

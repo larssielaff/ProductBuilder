@@ -33,9 +33,12 @@
                 NotifyValidationErrors(message);
                 return;
             }
-            var entity = new AcceptanceCriteria(message.Id) { };
+            var entity = new AcceptanceCriteria(message.Id)
+            {
+                Title = message.Title,
+                UserStoryId = message.UserStoryId
+            };
             _repository.Add(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new AcceptanceCriteriaCreatedEvent(entity, message.AggregateId));
         }
@@ -52,8 +55,8 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.Title = message.Title;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new AcceptanceCriteriaUpdatedEvent(entity, message.AggregateId));
         }
@@ -71,7 +74,6 @@
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
             _repository.Remove(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new AcceptanceCriteriaDeletedEvent(entity, message.AggregateId));
         }
