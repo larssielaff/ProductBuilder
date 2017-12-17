@@ -18,6 +18,8 @@
 
         public virtual ICollection<Epic> Epics { get; set; }
 
+        public virtual ICollection<Aggregate> Aggregates { get; set; }
+
         public virtual ICollection<Team> Teams { get; set; }
 
         public Product(Guid id) 
@@ -34,6 +36,7 @@
             UserRoles = new HashSet<UserRole>();
             UserStories = new HashSet<UserStory>();
             Epics = new HashSet<Epic>();
+            Aggregates = new HashSet<Aggregate>();
             Teams = new HashSet<Team>();
         }
     }
