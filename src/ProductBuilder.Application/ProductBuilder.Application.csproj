@@ -59,6 +59,7 @@
     <Compile Include="AutoMapper\DomainToViewModelMappingProfile.cs" />
     <Compile Include="AutoMapper\ViewModelToDomainMappingProfile.cs" />
     <Compile Include="Interfaces\IAcceptanceCriteriaAppService.cs" />
+    <Compile Include="Interfaces\IAggregateAppService.cs" />
     <Compile Include="Interfaces\IEpicAppService.cs" />
     <Compile Include="Interfaces\ITeamAppService.cs" />
     <Compile Include="Interfaces\ITeamMemberAppService.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Interfaces\IUserRoleAppService.cs" />
     <Compile Include="Interfaces\IUserStoryAppService.cs" />
     <Compile Include="Services\AcceptanceCriteriaAppService.cs" />
+    <Compile Include="Services\AggregateAppService.cs" />
     <Compile Include="Services\EpicAppService.cs" />
     <Compile Include="Services\ProductAppService.cs" />
     <Compile Include="Services\TeamAppService.cs" />
@@ -78,6 +80,9 @@
     <Compile Include="ViewModels\AcceptanceCriteriaApi\CreateAcceptanceCriteriaApiViewModel.cs" />
     <Compile Include="ViewModels\AcceptanceCriteriaApi\DeleteAcceptanceCriteriaApiViewModel.cs" />
     <Compile Include="ViewModels\AcceptanceCriteriaApi\UpdateAcceptanceCriteriaApiViewModel.cs" />
+    <Compile Include="ViewModels\AggregateApi\CreateAggregateApiViewModel.cs" />
+    <Compile Include="ViewModels\AggregateApi\DeleteAggregateApiViewModel.cs" />
+    <Compile Include="ViewModels\AggregateApi\UpdateAggregateApiViewModel.cs" />
     <Compile Include="ViewModels\AjaxDataTableViewModel.cs" />
     <Compile Include="Interfaces\IProductAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
