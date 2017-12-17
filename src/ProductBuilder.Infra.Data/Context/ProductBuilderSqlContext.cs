@@ -22,6 +22,8 @@
 
         public virtual DbSet<Epic> Epics { get; set; }
 
+        public virtual DbSet<Aggregate> Aggregates { get; set; }
+
         public virtual DbSet<AcceptanceCriteria> AcceptanceCriterias { get; set; }
 
         public ProductBuilderSqlContext(string connectionString) 
@@ -70,6 +72,12 @@
             modelBuilder.Entity<Epic>()
                 .HasOptional(x => x.Product)
                 .WithMany(x => x.Epics)
+                .HasForeignKey(x => x.ProductId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Aggregate>()
+                .HasOptional(x => x.Product)
+                .WithMany(x => x.Aggregates)
                 .HasForeignKey(x => x.ProductId)
                 .WillCascadeOnDelete(false);
 

@@ -24,6 +24,7 @@
             CreateMapForTeamMember();
             CreateMapForUserRole();
             CreateMapForEpic();
+            CreateMapForAggregate();
             CreateMapForAcceptanceCriteria();
         }
 
@@ -160,6 +161,8 @@
                     Title = y.Title
                 }));
         }
+
+        private void CreateMapForAggregate() { }
 
         private void CreateMapForAcceptanceCriteria()
         {
