@@ -65,9 +65,9 @@
     <Compile Include="Commands\AcceptanceCriteria\DeleteAcceptanceCriteriaCommand.cs" />
     <Compile Include="Commands\AcceptanceCriteria\UpdateAcceptanceCriteriaCommand.cs" />
     <Compile Include="Commands\AggregateProperty\Base\AggregatePropertyCommand.cs" />
-    <Compile Include="Commands\AggregateProperty\CreateAggregateCommand.cs" />
-    <Compile Include="Commands\AggregateProperty\DeleteAggregateCommand.cs" />
-    <Compile Include="Commands\AggregateProperty\UpdateAggregateCommand.cs" />
+    <Compile Include="Commands\AggregateProperty\CreateAggregatePropertyCommand.cs" />
+    <Compile Include="Commands\AggregateProperty\DeleteAggregatePropertyCommand.cs" />
+    <Compile Include="Commands\AggregateProperty\UpdateAggregatePropertyCommand.cs" />
     <Compile Include="Commands\Aggregate\Base\AggregateCommand.cs" />
     <Compile Include="Commands\Aggregate\CreateAggregateCommand.cs" />
     <Compile Include="Commands\Aggregate\UpdateAggregateCommand.cs" />
@@ -117,9 +117,9 @@
     <Compile Include="Events\AcceptanceCriteria\AcceptanceCriteriaCreatedEvent.cs" />
     <Compile Include="Events\AcceptanceCriteria\AcceptanceCriteriaDeletedEvent.cs" />
     <Compile Include="Events\AcceptanceCriteria\AcceptanceCriteriaUpdatedEvent.cs" />
-    <Compile Include="Events\AggregateProperty\AggregateCreatedEvent.cs" />
-    <Compile Include="Events\AggregateProperty\AggregateDeletedEvent.cs" />
-    <Compile Include="Events\AggregateProperty\AggregateUpdatedEvent.cs" />
+    <Compile Include="Events\AggregateProperty\AggregatePropertyCreatedEvent.cs" />
+    <Compile Include="Events\AggregateProperty\AggregatePropertyDeletedEvent.cs" />
+    <Compile Include="Events\AggregateProperty\AggregatePropertyUpdatedEvent.cs" />
     <Compile Include="Events\Aggregate\AggregateCreatedEvent.cs" />
     <Compile Include="Events\Aggregate\AggregateDeletedEvent.cs" />
     <Compile Include="Events\Aggregate\AggregateUpdatedEvent.cs" />

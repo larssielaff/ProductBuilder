@@ -4,9 +4,9 @@
     using ProductBuilder.Domain.Validations.AggregateProperty;
     using System;
 
-    public class UpdateAggregateCommand : AggregatePropertyCommand
+    public class CreateAggregatePropertyCommand : AggregatePropertyCommand
     {
-        public UpdateAggregateCommand(Guid id, Guid aggregateId)
+        public CreateAggregatePropertyCommand(Guid id, Guid aggregateId)
         {
             Id = id;
             AggregateId = aggregateId;

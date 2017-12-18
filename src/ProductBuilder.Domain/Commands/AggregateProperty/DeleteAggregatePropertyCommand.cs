@@ -4,9 +4,9 @@
     using ProductBuilder.Domain.Validations.AggregateProperty;
     using System;
 
-    public class DeleteAggregateCommand : AggregatePropertyCommand
+    public class DeleteAggregatePropertyCommand : AggregatePropertyCommand
     {
-        public DeleteAggregateCommand(Guid id, Guid aggregateId)
+        public DeleteAggregatePropertyCommand(Guid id, Guid aggregateId)
         {
             Id = id;
             AggregateId = aggregateId;

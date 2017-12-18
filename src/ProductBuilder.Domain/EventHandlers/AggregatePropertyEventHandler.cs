@@ -3,14 +3,14 @@
     using Asd.Domain.Core.Events;
     using ProductBuilder.Domain.Events.AggregateProperty;
 
-    public class AggregatePropertyEventHandler : IAsdHandler<AggregateUpdatedEvent>, 
-        IAsdHandler<AggregateDeletedEvent>, 
-        IAsdHandler<AggregateCreatedEvent>
+    public class AggregatePropertyEventHandler : IAsdHandler<AggregatePropertyUpdatedEvent>, 
+        IAsdHandler<AggregatePropertyDeletedEvent>, 
+        IAsdHandler<AggregatePropertyCreatedEvent>
     {
-        public void Handle(AggregateUpdatedEvent message) { }
+        public void Handle(AggregatePropertyUpdatedEvent message) { }
 
-        public void Handle(AggregateDeletedEvent message) { }
+        public void Handle(AggregatePropertyDeletedEvent message) { }
 
-        public void Handle(AggregateCreatedEvent message) { }
+        public void Handle(AggregatePropertyCreatedEvent message) { }
     }
 }

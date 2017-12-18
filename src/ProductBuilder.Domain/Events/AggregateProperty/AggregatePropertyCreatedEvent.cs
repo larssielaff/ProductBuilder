@@ -4,9 +4,9 @@
     using ProductBuilder.Domain.Models;
     using System;
 
-    public class AggregateUpdatedEvent : AsdEvent
+    public class AggregatePropertyCreatedEvent : AsdEvent
     {
-        public AggregateUpdatedEvent(AggregateProperty entity, Guid aggregateId) 
+        public AggregatePropertyCreatedEvent(AggregateProperty entity, Guid aggregateId) 
             : base(entity, aggregateId) { }
     }
 }

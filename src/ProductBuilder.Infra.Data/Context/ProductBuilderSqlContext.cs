@@ -8,6 +8,8 @@
     {
         public virtual DbSet<UserStory> UserStories { get; set; }
 
+        public virtual DbSet<AggregateProperty> AggregateProperties { get; set; }
+
         public virtual DbSet<Topic> Topics { get; set; }
 
         public virtual DbSet<UserProfile> UserProfiles { get; set; }
@@ -103,6 +105,18 @@
                 .HasOptional(x => x.Epic)
                 .WithMany(x => x.UserStories)
                 .HasForeignKey(x => x.EpicId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AggregateProperty>()
+                .HasOptional(x => x.Aggregate)
+                .WithMany(x => x.AggregateProperties)
+                .HasForeignKey(x => x.AsdAggregateId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AggregateProperty>()
+                .HasOptional(x => x.LinkedAggregate)
+                .WithMany(x => x.AggregateProperties)
+                .HasForeignKey(x => x.LinkedAggregateId)
                 .WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);

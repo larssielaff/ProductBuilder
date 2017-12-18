@@ -29,21 +29,21 @@
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
-            Bus.SendCommand(Mapper.Map<UpdateAggregateCommand>(model));
+            Bus.SendCommand(Mapper.Map<UpdateAggregatePropertyCommand>(model));
         }
 
         public void DeleteAggregate(DeleteAggregateApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
-            Bus.SendCommand(Mapper.Map<DeleteAggregateCommand>(model));
+            Bus.SendCommand(Mapper.Map<DeleteAggregatePropertyCommand>(model));
         }
 
         public void CreateAggregate(CreateAggregateApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
-            Bus.SendCommand(Mapper.Map<CreateAggregateCommand>(model));
+            Bus.SendCommand(Mapper.Map<CreateAggregatePropertyCommand>(model));
         }
 
         public void Dispose()

@@ -18,6 +18,7 @@
         public DomainToViewModelMappingProfile()
         {
             CreateMapForUserStory();
+            CreateMapForAggregateProperty();
             CreateMapForTopic();
             CreateMapForUserProfile();
             CreateMapForProduct();
@@ -56,6 +57,8 @@
                     Value = x.Value
                 });
         }
+
+        private void CreateMapForAggregateProperty() { }
 
         private void CreateMapForTopic()
         {

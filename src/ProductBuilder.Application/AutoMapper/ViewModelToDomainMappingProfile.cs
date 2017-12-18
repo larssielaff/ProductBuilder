@@ -29,6 +29,7 @@
         public ViewModelToDomainMappingProfile()
         {
             CreateMapForUserStory();
+            CreateMapForAggregateProperty();
             CreateMapForTopic();
             CreateMapForUserProfile();
             CreateMapForProduct();
@@ -75,6 +76,8 @@
             CreateMap<RemoveTopicApiViewModel, RemoveTopicCommand>()
                 .ConstructUsing(x => new RemoveTopicCommand(x.Id, x.ProductId));
         }
+
+        private void CreateMapForAggregateProperty() { }
 
         private void CreateMapForTopic()
         {

@@ -20,6 +20,8 @@
     using ProductBuilder.Infra.Data.Context;
     using ProductBuilder.Domain.Commands.UserStory;
     using ProductBuilder.Domain.Events.UserStory;
+    using ProductBuilder.Domain.Commands.AggregateProperty;
+    using ProductBuilder.Domain.Events.AggregateProperty;
     using ProductBuilder.Domain.Commands.Topic;
     using ProductBuilder.Domain.Events.Topic;
     using ProductBuilder.Domain.Commands.UserProfile;
@@ -46,6 +48,7 @@
         public static IServiceCollection AddProductBuilderDDD(this IServiceCollection services, string dataConnectionString, string eventStoreConnectionString) => services?
             .RegisterDDD(dataConnectionString, eventStoreConnectionString)?
             .RegisterUserStory()?
+            .RegisterAggregateProperty()?
             .RegisterTopic()?
             .RegisterUserProfile()?
             .RegisterProduct()?
@@ -101,6 +104,19 @@
             services?.AddScoped<IAsdHandler<UserRoleAssignedEvent>, UserStoryEventHandler>();
             services?.AddScoped<IAsdHandler<EpicAssignedEvent>, UserStoryEventHandler>();
             services?.AddScoped<IAsdHandler<TopicRemovedEvent>, UserStoryEventHandler>();
+            return services;
+        }
+
+        private static IServiceCollection RegisterAggregateProperty(this IServiceCollection services)
+        {
+            services?.AddScoped<IAggregatePropertyAppService, AggregatePropertyAppService>();
+            services?.AddScoped<IAggregatePropertyRepository, AggregatePropertyRepository>();
+            services?.AddScoped<IAsdHandler<CreateAggregatePropertyCommand>, AggregatePropertyCommandHandler>();
+            services?.AddScoped<IAsdHandler<DeleteAggregatePropertyCommand>, AggregatePropertyCommandHandler>();
+            services?.AddScoped<IAsdHandler<UpdateAggregatePropertyCommand>, AggregatePropertyCommandHandler>();
+            services?.AddScoped<IAsdHandler<AggregatePropertyCreatedEvent>, AggregatePropertyEventHandler>();
+            services?.AddScoped<IAsdHandler<AggregatePropertyUpdatedEvent>, AggregatePropertyEventHandler>();
+            services?.AddScoped<IAsdHandler<AggregatePropertyDeletedEvent>, AggregatePropertyEventHandler>();
             return services;
         }
 

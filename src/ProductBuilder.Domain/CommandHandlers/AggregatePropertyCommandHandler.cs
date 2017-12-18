@@ -12,9 +12,9 @@
     using System;
 
     public class AggregatePropertyCommandHandler : AsdCommandHandler, 
-        IAsdHandler<UpdateAggregateCommand>, 
-        IAsdHandler<DeleteAggregateCommand>, 
-        IAsdHandler<CreateAggregateCommand>
+        IAsdHandler<UpdateAggregatePropertyCommand>, 
+        IAsdHandler<DeleteAggregatePropertyCommand>, 
+        IAsdHandler<CreateAggregatePropertyCommand>
     {
         private readonly IAggregatePropertyRepository _repository;
 
@@ -24,7 +24,7 @@
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public void Handle(UpdateAggregateCommand message)
+        public void Handle(UpdateAggregatePropertyCommand message)
         {
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
@@ -39,10 +39,10 @@
             _repository.Update(entity);
             throw new NotImplementedException();
             if (Commit())
-                Bus.RaiseEvent(new AggregateUpdatedEvent(entity, message.AggregateId));
+                Bus.RaiseEvent(new AggregatePropertyUpdatedEvent(entity, message.AggregateId));
         }
 
-        public void Handle(DeleteAggregateCommand message)
+        public void Handle(DeleteAggregatePropertyCommand message)
         {
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
@@ -57,10 +57,10 @@
             _repository.Remove(entity);
             throw new NotImplementedException();
             if (Commit())
-                Bus.RaiseEvent(new AggregateDeletedEvent(entity, message.AggregateId));
+                Bus.RaiseEvent(new AggregatePropertyDeletedEvent(entity, message.AggregateId));
         }
 
-        public void Handle(CreateAggregateCommand message)
+        public void Handle(CreateAggregatePropertyCommand message)
         {
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
@@ -73,7 +73,7 @@
             _repository.Add(entity);
             throw new NotImplementedException();
             if (Commit())
-                Bus.RaiseEvent(new AggregateCreatedEvent(entity, message.AggregateId));
+                Bus.RaiseEvent(new AggregatePropertyCreatedEvent(entity, message.AggregateId));
         }
     }
 }
