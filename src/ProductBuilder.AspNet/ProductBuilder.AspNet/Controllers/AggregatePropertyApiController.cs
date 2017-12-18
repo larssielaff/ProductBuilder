@@ -26,8 +26,8 @@
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken] [Route("api/UpdateAggregate", Name = nameof(UpdateAggregate))]
-        public IActionResult UpdateAggregate(UpdateAggregateApiViewModel model)
+        [ValidateAntiForgeryToken] [Route("api/UpdateAggregateProperty", Name = nameof(UpdateAggregateProperty))]
+        public IActionResult UpdateAggregateProperty(UpdateAggregateApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
@@ -41,8 +41,8 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/DeleteAggregate", Name = nameof(DeleteAggregate))]
-        public IActionResult DeleteAggregate(DeleteAggregateApiViewModel model)
+        [Route("api/DeleteAggregateProperty", Name = nameof(DeleteAggregateProperty))]
+        public IActionResult DeleteAggregateProperty(DeleteAggregateApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
@@ -56,8 +56,8 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/CreateAggregate", Name = nameof(CreateAggregate))]
-        public IActionResult CreateAggregate(CreateAggregateApiViewModel model)
+        [Route("api/CreateAggregateProperty", Name = nameof(CreateAggregateProperty))]
+        public IActionResult CreateAggregateProperty(CreateAggregateApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
