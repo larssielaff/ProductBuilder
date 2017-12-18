@@ -21,6 +21,8 @@
     using ProductBuilder.Domain.Commands.UserStory;
     using ProductBuilder.Application.ViewModels.AcceptanceCriteriaApi;
     using ProductBuilder.Domain.Commands.AcceptanceCriteria;
+    using ProductBuilder.Application.ViewModels.AggregateApi;
+    using ProductBuilder.Domain.Commands.Aggregate;
 
     public class ViewModelToDomainMappingProfile : Profile
     {
@@ -130,7 +132,17 @@
                 .ConstructUsing(x => new UpdateEpicCommand(x.Id, x.Title, x.Description, x.ProductId));
         }
 
-        private void CreateMapForAggregate() { }
+        private void CreateMapForAggregate()
+        {
+            CreateMap<CreateAggregateApiViewModel, CreateAggregateCommand>()
+                .ConstructUsing(x => new CreateAggregateCommand(x.Id, x.Name, x.NamePluralized, x.ProductId, x.ProductId));
+
+            CreateMap<DeleteAggregateApiViewModel, DeleteAggregateCommand>()
+                .ConstructUsing(x => new DeleteAggregateCommand(x.Id, x.ProductId));
+
+            CreateMap<UpdateAggregateApiViewModel, UpdateAggregateCommand>()
+                .ConstructUsing(x => new UpdateAggregateCommand(x.Id, x.Name, x.NamePluralized, x.ProductId));
+        }
 
         private void CreateMapForAcceptanceCriteria()
         {

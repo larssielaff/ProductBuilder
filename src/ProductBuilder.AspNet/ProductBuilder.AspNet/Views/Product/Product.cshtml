@@ -2,6 +2,7 @@
 @using ProductBuilder.Application.ViewModels.EpicApi
 @using ProductBuilder.Application.ViewModels.TopicApi
 @using ProductBuilder.Application.ViewModels.UserStoryApi
+@using ProductBuilder.Application.ViewModels.AggregateApi
 
 @{
     ViewData["Title"] = "Product";
@@ -16,6 +17,10 @@
         .tab-content {
             padding-top: 16px;
             padding-bottom: 16px;
+        }
+
+        .ajax-data-table-Aggregate{
+            cursor: pointer;
         }
     </style>
 }
@@ -423,6 +428,40 @@
             </div>
         </div>
     </div>
+    @* modal-create-Aggregate *@
+    <div id="modal-create-Aggregate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-Aggregate-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-create-Aggregate-label" class="modal-title">Aggregate erstellen</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-CreateAggregate *@
+                    <form id="form-CreateAggregate" action="@Url.RouteUrl(nameof(AggregateApiController.CreateAggregate))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateAggregate-Aggregate-Name">Name</label>
+                            <input id="input-CreateAggregate-Aggregate-Name" type="text" class="form-control" required="required" name="@nameof(CreateAggregateApiViewModel.Name)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateAggregate-Aggregate-NamePluralized">Plural</label>
+                            <input id="input-CreateAggregate-Aggregate-NamePluralized" type="text" class="form-control" required="required" name="@nameof(CreateAggregateApiViewModel.NamePluralized)" />
+                        </div>
+                        <button id="button-CreateAggregate" type="button" class="btn btn-success pull-right">Aggregate erstellen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -434,6 +473,7 @@
             <li role="presentation"><a href="#userroles" role="tab" data-toggle="tab">Benutzerrollen</a></li>
             <li role="presentation"><a href="#epics" role="tab" data-toggle="tab">Epics</a></li>
             <li role="presentation"><a href="#topics" role="tab" data-toggle="tab">Themen</a></li>
+            <li role="presentation"><a href="#aggregates" role="tab" data-toggle="tab">Aggregate</a></li>
         </ul>
         <div class="tab-content">
             <div id="overview" class="tab-pane active" role="tabpanel">
@@ -533,6 +573,24 @@
                     </tfoot>
                 </table> 
             </div>
+            <div id="aggregates" class="tab-pane" role="tabpanel">
+                <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-create-Aggregate" style="margin-bottom:16px;">Aggregate erstellen</button>
+                @* table-Aggregates *@
+                <table id="table-Aggregates" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Plural</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Plural</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -560,6 +618,7 @@
                 $formRemoveUserRole = $('#form-RemoveUserRole'),
                 $formRemoveEpic = $('#form-RemoveEpic'),
                 $formRemoveTopic = $('#form-RemoveTopic'),
+                $formCreateAggregate = $('#form-CreateAggregate'),
                 $modalCreateUserRole = $('#modal-create-UserRole'),
                 $modalDetailUserRole = $('#modal-detail-UserRole'),
                 $modalCreateEpic = $('#modal-create-Epic'),
@@ -568,6 +627,7 @@
                 $modalDetailTopic = $('#modal-detail-Topic'),
                 $modalCreateUserStory = $('#modal-create-UserStory'),
                 $modalDetailUserStory = $('#modal-detail-UserStory'),
+                $modalCreateAggregate = $('#modal-create-Aggregate'),
                 $inputDeleteUserRoleUserRoleId = $('#input-DeleteUserRole-UserRole-Id'),
                 $inputUpdateUserRoleUserRoleId = $('#input-UpdateUserRole-UserRole-Id'),
                 $inputUpdateUserRoleUserRoleRole = $('#input-UpdateUserRole-UserRole-Role'),
@@ -601,6 +661,7 @@
                 $tableEpics = $('#table-Epics'),
                 $tableTopics = $('#table-Topics'),
                 $tableUserStories = $('#table-UserStories'),
+                $tableAggregates = $('#table-Aggregates'),
                 $buttonCreateUserRole = $('#button-CreateUserRole'),
                 $buttonDeleteUserRole = $('#button-DeleteUserRole'),
                 $buttonUpdateUserRole = $('#button-UpdateUserRole'),
@@ -621,6 +682,7 @@
                 $buttonRemoveUserRole = $('#button-RemoveUserRole'),
                 $buttonRemoveEpic = $('#button-RemoveEpic'),
                 $buttonRemoveTopic = $('#button-RemoveTopic'),
+                $buttonCreateAggregate = $('#button-CreateAggregate'),
                 $body = $('body'),
                 $aUserStoryDetailView = $('#a-UserStory-Detail-View'),
                 dataTableTeamMembers = $tableTeamMembers.DataTable(),
@@ -628,13 +690,16 @@
                 dataTableEpics = $tableEpics.DataTable(),
                 dataTableTopics = $tableTopics.DataTable(),
                 dataTableUserStories = $tableUserStories.DataTable(),
+                dataTableAggregates = $tableAggregates.DataTable(),
                 dataTableTeamMembersUrl = '@Url.RouteUrl(nameof(ProductApiController.ProductTeamMembers))',
                 dataTableUserRolesUrl = '@Url.RouteUrl(nameof(UserRoleApiController.ProductUserRolesDataTable))',
                 dataTableEpicsUrl = '@Url.RouteUrl(nameof(EpicApiController.ProductEpicsDataTable))',
                 dataTableTopicsUrl = '@Url.RouteUrl(nameof(TopicApiController.ProductTopicsDataTable))',
                 dataTableUserStoriesUrl = '@Url.RouteUrl(nameof(UserStoryApiController.ProductUserStoriesDataTable))',
-                userStoryDetailViewUrl = '@Url.RouteUrl(nameof(UserStoryController.ProductUserStory), new { userStoryId = "userStoryId" })';
-            
+                dataTableAggregatesUrl = '@Url.RouteUrl(nameof(AggregateApiController.AggregatesDataTable))',
+                userStoryDetailViewUrl = '@Url.RouteUrl(nameof(UserStoryController.ProductUserStory), new { userStoryId = "userStoryId" })',
+                aggregateViewUrl = '@Url.RouteUrl(nameof(AggregateController.Aggregate), new { aggregateId = "aggregateId" })';
+
             function initDataTableTeamMembers() {
                 dataTableTeamMembers.destroy();
                 dataTableTeamMembers = $tableTeamMembers.DataTable({ ajax: dataTableTeamMembersUrl });
@@ -672,7 +737,7 @@
                                 .remove()
                                 .end();
                             $selectAssignEpicUserStoryEpicId.append('<option value="">Kein Epic</option>');
-                            data.responseJSON.data.forEach(function (item) { 
+                            data.responseJSON.data.forEach(function (item) {
                                 var $item = $(item[0]),
                                     id = $item.attr('data-Id'),
                                     title = $item.attr('data-Title');
@@ -706,6 +771,11 @@
             function initDataTableUserStories() {
                 dataTableUserStories.destroy();
                 dataTableUserStories = $tableUserStories.DataTable({ ajax: dataTableUserStoriesUrl });
+            }
+
+            function initDataTableAggregates() {
+                dataTableAggregates.destroy();
+                dataTableAggregates = $tableAggregates.DataTable({ ajax: dataTableAggregatesUrl });
             }
 
             $buttonCreateUserRole.click(function () {
@@ -1207,7 +1277,30 @@
                     }
                 });
             });
-            
+
+            $buttonCreateAggregate.click(function () {
+                $formCreateAggregate.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formCreateAggregate[0].checkValidity()) {
+                    $formCreateAggregate.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formCreateAggregate.attr('action'),
+                    data: $formCreateAggregate.serialize(),
+                    success: function (response) {
+                        location.href = response.redirectUrl;
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
             $body.on('click', '.ajax-data-table-TeamMember', function () {
                 var $this = $(this), id = $this.attr('data-Id');
             });
@@ -1289,12 +1382,19 @@
                 $modalDetailUserStory.modal();
             });
 
+            $body.on('click', '.ajax-data-table-Aggregate', function () {
+                var $this = $(this),
+                    id = $this.attr('data-Id');
+                location.href = aggregateViewUrl.replace('aggregateId', id);
+            });
+
             (function () {
                 initDataTableTeamMembers();
                 initDataTableUserRoles();
                 initDataTableEpics();
                 initDataTableTopics();
                 initDataTableUserStories();
+                initDataTableAggregates();
             })();
         });
     </script>

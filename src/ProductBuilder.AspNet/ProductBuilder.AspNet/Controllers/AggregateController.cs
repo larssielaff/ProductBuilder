@@ -17,5 +17,11 @@
         {
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
+
+        [Route("products/{productid}/aggregates/{aggregateid}", Name = nameof(Aggregate))]
+        public IActionResult Aggregate(Guid productId, Guid aggregateId)
+        {
+            return View(nameof(Aggregate), _appService.GetAggregateViewModel(aggregateId));
+        }
     }
 }

@@ -83,6 +83,7 @@
     <Compile Include="ViewModels\AggregateApi\CreateAggregateApiViewModel.cs" />
     <Compile Include="ViewModels\AggregateApi\DeleteAggregateApiViewModel.cs" />
     <Compile Include="ViewModels\AggregateApi\UpdateAggregateApiViewModel.cs" />
+    <Compile Include="ViewModels\Aggregate\AggregateViewModel.cs" />
     <Compile Include="ViewModels\AjaxDataTableViewModel.cs" />
     <Compile Include="Interfaces\IProductAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="ViewModels\EpicApi\EpicQueryResult.cs" />
     <Compile Include="ViewModels\EpicApi\ProductEpicsDataTableApiViewModel.cs" />
     <Compile Include="ViewModels\EpicApi\UpdateEpicApiViewModel.cs" />
+    <Compile Include="ViewModels\OkApiViewModel.cs" />
     <Compile Include="ViewModels\ProductApi\CreateProductApiViewModel.cs" />
     <Compile Include="ViewModels\ProductApi\ProductTeamMembersApiViewModel.cs" />
     <Compile Include="ViewModels\TeamApi\CreateTeamApiViewModel.cs" />

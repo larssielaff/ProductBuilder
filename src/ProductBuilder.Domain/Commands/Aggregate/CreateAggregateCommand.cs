@@ -6,9 +6,12 @@
 
     public class CreateAggregateCommand : AggregateCommand
     {
-        public CreateAggregateCommand(Guid id, Guid aggregateId)
+        public CreateAggregateCommand(Guid id, string name, string namePluralized, Guid productId, Guid aggregateId)
         {
             Id = id;
+            Name = name;
+            NamePluralized = namePluralized;
+            ProductId = productId;
             AggregateId = aggregateId;
         }
 

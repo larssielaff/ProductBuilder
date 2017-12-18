@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System;
     using Microsoft.AspNetCore.Authorization;
+    using ProductBuilder.Application.ViewModels;
 
     [Authorize]
     public class AggregateApiController : AsdController
@@ -19,15 +20,17 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
-        [Route("api/AggregatesDataTable", Name = nameof(AggregatesDataTable))]
-        public IActionResult AggregatesDataTable()
+        [Route("api/{productid}/aggregatesdatatable", Name = nameof(AggregatesDataTable))]
+        public IActionResult AggregatesDataTable(Guid productId)
         {
-            return Json(_appService.GetDataTableViewModel());
+            if (productId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetDataTableViewModel(productId));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/DeleteAggregate", Name = nameof(DeleteAggregate))]
+        [Route("api/{productid}/delete-aggregate", Name = nameof(DeleteAggregate))]
         public IActionResult DeleteAggregate(DeleteAggregateApiViewModel model)
         {
             if (model == null)
@@ -36,28 +39,42 @@
                 return BadRequest();
             _appService.DeleteAggregate(model);
             if (IsValidOperation)
-                return Ok();
+                return Ok(new OkApiViewModel()
+                {
+                    RedirectUrl = Url.RouteUrl(nameof(ProductController.Product), new
+                    {
+                        productId = model.ProductId
+                    })
+                });
             return BadRequest();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/CreateAggregate", Name = nameof(CreateAggregate))]
+        [Route("api/{productid}/create-aggregate", Name = nameof(CreateAggregate))]
         public IActionResult CreateAggregate(CreateAggregateApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
             if (!ModelState.IsValid)
                 return BadRequest();
+            model.Id = Guid.NewGuid();
             _appService.CreateAggregate(model);
             if (IsValidOperation)
-                return Ok();
+                return Ok(new OkApiViewModel()
+                {
+                   RedirectUrl = Url.RouteUrl(nameof(AggregateController.Aggregate), new
+                   {
+                       productId = model.ProductId,
+                       aggregateId = model.Id
+                   })
+                });
             return BadRequest();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/UpdateAggregate", Name = nameof(UpdateAggregate))]
+        [Route("api/{productid}/update-aggregate", Name = nameof(UpdateAggregate))]
         public IActionResult UpdateAggregate(UpdateAggregateApiViewModel model)
         {
             if (model == null)

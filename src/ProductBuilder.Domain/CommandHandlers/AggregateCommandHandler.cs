@@ -37,7 +37,6 @@
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
             _repository.Remove(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new AggregateDeletedEvent(entity, message.AggregateId));
         }
@@ -51,9 +50,13 @@
                 NotifyValidationErrors(message);
                 return;
             }
-            var entity = new Aggregate(message.Id) { };
+            var entity = new Aggregate(message.Id)
+            {
+                Name = message.Name,
+                NamePluralized = message.NamePluralized,
+                ProductId = message.ProductId
+            };
             _repository.Add(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new AggregateCreatedEvent(entity, message.AggregateId));
         }
@@ -70,8 +73,9 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.Name = message.Name;
+            entity.NamePluralized = message.NamePluralized;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new AggregateUpdatedEvent(entity, message.AggregateId));
         }

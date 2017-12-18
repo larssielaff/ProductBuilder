@@ -9,6 +9,8 @@
     using ProductBuilder.Application.ViewModels.AggregateApi;
     using global::AutoMapper;
     using System;
+    using System.Linq;
+    using ProductBuilder.Application.ViewModels.Aggregate;
 
     public class AggregateAppService : AsdAppService, IAggregateAppService
     {
@@ -20,9 +22,18 @@
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public AjaxDataTableViewModel GetDataTableViewModel()
+        public AjaxDataTableViewModel GetDataTableViewModel(Guid productId)
         {
-            return Mapper.Map<AjaxDataTableViewModel>(_repository.GetAll());
+            if (productId == Guid.Empty)
+                throw new ArgumentNullException(nameof(productId));
+            return Mapper.Map<AjaxDataTableViewModel>(_repository.Find(x => x.ProductId == productId).ToList());
+        }
+
+        public AggregateViewModel GetAggregateViewModel(Guid aggregateId)
+        {
+            if (aggregateId == Guid.Empty)
+                throw new ArgumentNullException(nameof(aggregateId));
+            return Mapper.Map<AggregateViewModel>(_repository.GetById(aggregateId));
         }
 
         public void DeleteAggregate(DeleteAggregateApiViewModel model)
@@ -36,6 +47,8 @@
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
+            if (model.Id == Guid.Empty)
+                model.Id = Guid.NewGuid();
             Bus.SendCommand(Mapper.Map<CreateAggregateCommand>(model));
         }
 

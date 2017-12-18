@@ -6,9 +6,11 @@
 
     public class UpdateAggregateCommand : AggregateCommand
     {
-        public UpdateAggregateCommand(Guid id, Guid aggregateId)
+        public UpdateAggregateCommand(Guid id, string name, string namePluralized, Guid aggregateId)
         {
             Id = id;
+            Name = name;
+            NamePluralized = namePluralized;
             AggregateId = aggregateId;
         }
 

@@ -1,0 +1,107 @@
+﻿@model ProductBuilder.Application.ViewModels.Aggregate.AggregateViewModel
+@using ProductBuilder.Application.ViewModels.AggregateApi
+
+@{
+    ViewData["Title"] = "Aggregate";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Title</h3>
+            </div>
+            <div class="panel-body">
+                <h3>Stammdaten</h3>
+                <hr />
+                @* form-DeleteAggregate *@
+                <form id="form-DeleteAggregate" action="@Url.RouteUrl(nameof(AggregateApiController.DeleteAggregate))">
+                    <div>
+                        @Html.AntiForgeryToken()
+                        <input id="input-DeleteAggregate-Aggregate-Id" required="required" hidden="hidden" name="@nameof(DeleteAggregateApiViewModel.Id)" value="@Model.Id" />
+                    </div>
+                    <button id="button-DeleteAggregate" type="button" class="btn btn-danger pull-right">Aggregate löschen</button>
+                    <div class="clearfix"></div>
+                </form>
+                @* form-UpdateAggregate *@
+                <form id="form-UpdateAggregate" action="@Url.RouteUrl(nameof(AggregateApiController.UpdateAggregate))">
+                    <div>
+                        @Html.AntiForgeryToken()
+                        <input id="input-UpdateAggregate-Aggregate-Id" required="required" hidden="hidden" name="@nameof(UpdateAggregateApiViewModel.Id)" value="@Model.Id" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="input-UpdateAggregate-Aggregate-Name">Name</label>
+                        <input id="input-UpdateAggregate-Aggregate-Name" type="text" class="form-control" required="required" name="@nameof(UpdateAggregateApiViewModel.Name)" value="@Model.Name" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="input-UpdateAggregate-Aggregate-NamePluralized">Plural</label>
+                        <input id="input-UpdateAggregate-Aggregate-NamePluralized" type="text" class="form-control" required="required" name="@nameof(UpdateAggregateApiViewModel.NamePluralized)" value="@Model.NamePluralized" />
+                    </div>
+                    <button id="button-UpdateAggregate" type="button" class="btn btn-success pull-right">Aggregate aktualisieren</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+            <div class="panel-footer">
+                footer
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{ 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js"></script>
+    <script type="text/javascript">
+        $(function () { 
+            var $formDeleteAggregate = $('#form-DeleteAggregate'),
+                $formUpdateAggregate = $('#form-UpdateAggregate'),
+                $buttonDeleteAggregate = $('#button-DeleteAggregate'),
+                $buttonUpdateAggregate = $('#button-UpdateAggregate');
+
+            $buttonDeleteAggregate.click(function () {
+                $formDeleteAggregate.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formDeleteAggregate[0].checkValidity()) {
+                    $formDeleteAggregate.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formDeleteAggregate.attr('action'),
+                    data: $formDeleteAggregate.serialize(),
+                    success: function (response) {
+                        location.href = response.redirectUrl
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonUpdateAggregate.click(function () {
+                $formUpdateAggregate.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formUpdateAggregate[0].checkValidity()) {
+                    $formUpdateAggregate.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formUpdateAggregate.attr('action'),
+                    data: $formUpdateAggregate.serialize(),
+                    success: function () {
+                        $.notify({ message: 'Aggregate aktualisiert!' }, { type: 'success' });
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+        });
+    </script>
+}

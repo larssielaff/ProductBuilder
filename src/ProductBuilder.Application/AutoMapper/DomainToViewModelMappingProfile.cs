@@ -11,6 +11,7 @@
     using ProductBuilder.Application.ViewModels.TopicApi;
     using ProductBuilder.Application.ViewModels.UserStoryApi;
     using ProductBuilder.Application.ViewModels.UserStory;
+    using ProductBuilder.Application.ViewModels.Aggregate;
 
     public class DomainToViewModelMappingProfile : Profile
     {
@@ -162,7 +163,26 @@
                 }));
         }
 
-        private void CreateMapForAggregate() { }
+        private void CreateMapForAggregate()
+        {
+            CreateMap<IEnumerable<Aggregate>, AjaxDataTableViewModel>()
+                .ConstructUsing(x => new AjaxDataTableViewModel()
+                {
+                    Data = x.Select(y => new string[] 
+                    {
+                        $"<div class=\"ajax-data-table-Aggregate\" data-Id=\"{y.Id}\" data-Name=\"{y.Name}\" data-NamePluralized=\"{y.NamePluralized}\">{y.Name}</div>",
+                        $"<div class=\"ajax-data-table-Aggregate\" data-Id=\"{y.Id}\" data-Name=\"{y.Name}\" data-NamePluralized=\"{y.NamePluralized}\">{y.NamePluralized}</div>"
+                    })
+                });
+
+            CreateMap<Aggregate, AggregateViewModel>()
+                .ConstructUsing(x => new AggregateViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    NamePluralized = x.NamePluralized
+                });
+        }
 
         private void CreateMapForAcceptanceCriteria()
         {
