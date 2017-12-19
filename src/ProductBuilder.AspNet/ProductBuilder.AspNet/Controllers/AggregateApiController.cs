@@ -28,6 +28,14 @@
             return Json(_appService.GetDataTableViewModel(productId));
         }
 
+        [Route("api/{productid}/aggregates-json-array", Name = nameof(ProductAggregatesJsonArray))]
+        public IActionResult ProductAggregatesJsonArray(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetProductAggregatesJsonArray(productId));
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("api/{productid}/delete-aggregate", Name = nameof(DeleteAggregate))]

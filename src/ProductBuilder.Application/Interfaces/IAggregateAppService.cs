@@ -4,12 +4,15 @@
     using ProductBuilder.Application.ViewModels;
     using ProductBuilder.Application.ViewModels.AggregateApi;
     using ProductBuilder.Application.ViewModels.Aggregate;
+    using System.Collections.Generic;
 
     public interface IAggregateAppService : IDisposable
     {
         AjaxDataTableViewModel GetDataTableViewModel(Guid productId);
 
         AggregateViewModel GetAggregateViewModel(Guid aggregateId);
+
+        IEnumerable<AggregateQueryResult> GetProductAggregatesJsonArray(Guid productId);
 
         void DeleteAggregate(DeleteAggregateApiViewModel model);
 

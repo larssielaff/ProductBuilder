@@ -11,6 +11,7 @@
     using System;
     using System.Linq;
     using ProductBuilder.Application.ViewModels.Aggregate;
+    using System.Collections.Generic;
 
     public class AggregateAppService : AsdAppService, IAggregateAppService
     {
@@ -34,6 +35,13 @@
             if (aggregateId == Guid.Empty)
                 throw new ArgumentNullException(nameof(aggregateId));
             return Mapper.Map<AggregateViewModel>(_repository.GetById(aggregateId));
+        }
+
+        public IEnumerable<AggregateQueryResult> GetProductAggregatesJsonArray(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                throw new ArgumentNullException(nameof(productId));
+            return Mapper.Map<IEnumerable<AggregateQueryResult>>(_repository.Find(x => x.ProductId == productId).ToList());
         }
 
         public void DeleteAggregate(DeleteAggregateApiViewModel model)

@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class DeleteAggregateApiViewModel
+    public class DeleteAggregatePropertyApiViewModel
     {
         public Guid Id { get; set; }
 

@@ -12,6 +12,7 @@
     using ProductBuilder.Application.ViewModels.UserStoryApi;
     using ProductBuilder.Application.ViewModels.UserStory;
     using ProductBuilder.Application.ViewModels.Aggregate;
+    using ProductBuilder.Application.ViewModels.AggregateApi;
 
     public class DomainToViewModelMappingProfile : Profile
     {
@@ -58,7 +59,19 @@
                 });
         }
 
-        private void CreateMapForAggregateProperty() { }
+        private void CreateMapForAggregateProperty()
+        {
+            CreateMap<IEnumerable<AggregateProperty>, AjaxDataTableViewModel>()
+                .ConstructUsing(x => new AjaxDataTableViewModel()
+                {
+                    Data = x.Select(y => new string[]
+                    {
+                        $"<div class=\"ajax-data-table-AggregateProperty\" data-Name=\"{y.Name}\" data-Type=\"{y.Type}\" data-LinkedAggregateId=\"{y.LinkedAggregateId}\">{y.Name}</div>",
+                        $"<div class=\"ajax-data-table-AggregateProperty\" data-Name=\"{y.Name}\" data-Type=\"{y.Type}\" data-LinkedAggregateId=\"{y.LinkedAggregateId}\">{y.Type}</div>",
+                        $"<div class=\"ajax-data-table-AggregateProperty\" data-Name=\"{y.Name}\" data-Type=\"{y.Type}\" data-LinkedAggregateId=\"{y.LinkedAggregateId}\">{y.LinkedAggregateId}</div>"
+                    })
+                });
+        }
 
         private void CreateMapForTopic()
         {
@@ -185,6 +198,13 @@
                     Name = x.Name,
                     NamePluralized = x.NamePluralized
                 });
+
+            CreateMap<IEnumerable<Aggregate>, IEnumerable<AggregateQueryResult>>()
+                .ConstructUsing(x => x.Select(y => new AggregateQueryResult()
+                {
+                    Id = y.Id,
+                    Name = y.Name
+                }));
         }
 
         private void CreateMapForAcceptanceCriteria()

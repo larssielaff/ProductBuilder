@@ -1,9 +1,66 @@
 ﻿@model ProductBuilder.Application.ViewModels.Aggregate.AggregateViewModel
 @using ProductBuilder.Application.ViewModels.AggregateApi
+@using ProductBuilder.Application.ViewModels.AggregatePropertyApi
 
 @{
     ViewData["Title"] = "Aggregate";
 }
+
+<div>
+    @* modal-create-AggregateProperty *@
+    <div id="modal-create-AggregateProperty" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-AggregateProperty-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-create-AggregateProperty-label" class="modal-title">Property erstellen</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-CreateAggregateProperty *@
+                    <form id="form-CreateAggregateProperty" action="@Url.RouteUrl(nameof(AggregatePropertyApiController.CreateAggregateProperty))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateAggregateProperty-AggregateProperty-Name">Name</label>
+                            <input id="input-CreateAggregateProperty-AggregateProperty-Name" type="text" class="form-control" required="required" name="@nameof(CreateAggregatePropertyApiViewModel.Name)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="select-CreateAggregateProperty-AggregateProperty-Type">Typ</label>
+                            <select id="select-CreateAggregateProperty-AggregateProperty-Type" class="form-control" required="required" name="@nameof(CreateAggregatePropertyApiViewModel.Type)" >
+                                <option value="bool">bool</option>
+                                <option value="int">int</option>
+                                <option value="string">string</option>
+                                <option value="Guid">Guid</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="select-CreateAggregateProperty-AggregateProperty-LinkedAggregateId">Aggregate</label>
+                            <select id="select-CreateAggregateProperty-AggregateProperty-LinkedAggregateId" class="form-control" required="required" disabled="disabled" name="@nameof(CreateAggregatePropertyApiViewModel.LinkedAggregateId)" ></select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label class="control-label" for="input-CreateAggregateProperty-AggregateProperty-IsAggregateRoot">
+                                    <input id="input-CreateAggregateProperty-AggregateProperty-IsAggregateRoot" type="checkbox" required="required" disabled="disabled" name="@nameof(CreateAggregatePropertyApiViewModel.IsAggregateRoot)" />
+                                    Aggregate Root
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button id="button-CreateAggregateProperty" type="button" class="btn btn-success pull-right">CreateAggregateProperty</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-xs-12">
@@ -40,6 +97,26 @@
                     <button id="button-UpdateAggregate" type="button" class="btn btn-success pull-right">Aggregate aktualisieren</button>
                     <div class="clearfix"></div>
                 </form>
+                <h3>Properties</h3>
+                <hr />
+                @* table-AggregateProperties *@
+                <table id="table-AggregateProperties" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>LinkedAggregateId</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>LinkedAggregateId</th>
+                        </tr>
+                    </tfoot>
+                </table>
+                @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create-AggregateProperty">AggregateProperty erstellen</button>*@
             </div>
             <div class="panel-footer">
                 footer
@@ -51,11 +128,81 @@
 @section scripts{ 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js"></script>
     <script type="text/javascript">
-        $(function () { 
+        $(function () {
             var $formDeleteAggregate = $('#form-DeleteAggregate'),
                 $formUpdateAggregate = $('#form-UpdateAggregate'),
+                $selectCreateAggregatePropertyAggregatePropertyType = $('#select-CreateAggregateProperty-AggregateProperty-Type'),
+                $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId = $('#select-CreateAggregateProperty-AggregateProperty-LinkedAggregateId'),
+                $inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot = $('#input-CreateAggregateProperty-AggregateProperty-IsAggregateRoot'),
                 $buttonDeleteAggregate = $('#button-DeleteAggregate'),
-                $buttonUpdateAggregate = $('#button-UpdateAggregate');
+                $buttonUpdateAggregate = $('#button-UpdateAggregate'),
+                $tableAggregateProperties = $('#table-AggregateProperties'),
+                $modalCreateAggregateProperty = $('#modal-create-AggregateProperty'),
+                $body = $('body'),
+                dataTableAggregateProperties = $tableAggregateProperties.DataTable(),
+                dataTableAggregatePropertiesUrl = '@Url.RouteUrl(nameof(AggregatePropertyApiController.AggregatePropertiesDataTable))',
+                productAggregatesJsonArrayUrl = '@Url.RouteUrl(nameof(AggregateApiController.ProductAggregatesJsonArray))';
+
+            function initDataTableAggregateProperties() {
+                dataTableAggregateProperties.destroy();
+                dataTableAggregateProperties = $tableAggregateProperties.DataTable({
+                    dom: 'Bfrtip',
+                    ajax: dataTableAggregatePropertiesUrl,
+                    buttons: [
+                        {
+                            text: 'Property erstellen',
+                            action: function () {
+                                $modalCreateAggregateProperty.modal();
+                            }
+                        }
+                    ]
+                });
+            }
+
+            function initSelectCreateAggregatePropertyAggregatePropertyLinkedAggregateId() {
+                $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId.find('option')
+                    .remove().end();
+                $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId
+                    .append('<option value="">Kein Aggregate</option>');
+                $.ajax({
+                    type: 'GET',
+                    url: productAggregatesJsonArrayUrl,
+                    success: function (response) {
+                        response.forEach(function (item) {
+                            var $option = $('<option></option>');
+                            $option.text(item.name);
+                            $option.val(item.id);
+                            $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId
+                                .append($option);
+                        });
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+             }
+
+            $selectCreateAggregatePropertyAggregatePropertyType.change(function () {
+                var $this = $(this),
+                    value = $this.val();
+                if (value === 'Guid') {
+                    if ($selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId.attr('disabled')) {
+                        $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId.removeAttr('disabled');
+                    }
+                    if ($inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('disabled')) {
+                        $inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot.removeAttr('disabled');
+                    }
+                } else {
+                    if (!$selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId.attr('disabled')) {
+                        $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId.attr('disabled', 'disabled');
+                        $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId.val('');
+                    }
+                    if (!$inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('disabled')) {
+                        $inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('disabled', 'disabled');
+                        $inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('checked', false);
+                    }
+                }
+            });
 
             $buttonDeleteAggregate.click(function () {
                 $formDeleteAggregate.find('.has-error').each(function () {
@@ -102,6 +249,16 @@
                     }
                 });
             });
+
+            $body.on('click', '.ajax-data-table-AggregateProperty', function () {
+                var $this = $(this),
+                    id = $this.attr('data-Id');
+            });
+
+            (function () { 
+                initDataTableAggregateProperties();
+                initSelectCreateAggregatePropertyAggregatePropertyLinkedAggregateId();
+            })();
         });
     </script>
 }

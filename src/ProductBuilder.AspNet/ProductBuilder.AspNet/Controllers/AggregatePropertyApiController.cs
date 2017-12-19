@@ -19,15 +19,17 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
-        [Route("api/AggregatePropertiesDataTable", Name = nameof(AggregatePropertiesDataTable))]
-        public IActionResult AggregatePropertiesDataTable()
+        [Route("api/{productid}/{userstoryid}/{aggregateid}/aggregate-properties-data-table", Name = nameof(AggregatePropertiesDataTable))]
+        public IActionResult AggregatePropertiesDataTable(Guid aggregateId)
         {
-            return Json(_appService.GetDataTableViewModel());
+            if (aggregateId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetDataTableViewModel(aggregateId));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken] [Route("api/UpdateAggregateProperty", Name = nameof(UpdateAggregateProperty))]
-        public IActionResult UpdateAggregateProperty(UpdateAggregateApiViewModel model)
+        public IActionResult UpdateAggregateProperty(UpdateAggregatePropertyApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
@@ -42,7 +44,7 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("api/DeleteAggregateProperty", Name = nameof(DeleteAggregateProperty))]
-        public IActionResult DeleteAggregateProperty(DeleteAggregateApiViewModel model)
+        public IActionResult DeleteAggregateProperty(DeleteAggregatePropertyApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
@@ -57,7 +59,7 @@
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("api/CreateAggregateProperty", Name = nameof(CreateAggregateProperty))]
-        public IActionResult CreateAggregateProperty(CreateAggregateApiViewModel model)
+        public IActionResult CreateAggregateProperty(CreateAggregatePropertyApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));

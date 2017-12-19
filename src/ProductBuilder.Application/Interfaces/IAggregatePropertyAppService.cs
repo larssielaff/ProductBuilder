@@ -6,12 +6,12 @@
 
     public interface IAggregatePropertyAppService : IDisposable
     {
-        AjaxDataTableViewModel GetDataTableViewModel();
+        AjaxDataTableViewModel GetDataTableViewModel(Guid asdAggregateId);
 
-        void UpdateAggregate(UpdateAggregateApiViewModel model);
+        void UpdateAggregate(UpdateAggregatePropertyApiViewModel model);
 
-        void DeleteAggregate(DeleteAggregateApiViewModel model);
+        void DeleteAggregate(DeleteAggregatePropertyApiViewModel model);
 
-        void CreateAggregate(CreateAggregateApiViewModel model);
+        void CreateAggregate(CreateAggregatePropertyApiViewModel model);
     }
 }
