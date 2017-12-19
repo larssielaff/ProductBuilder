@@ -115,7 +115,7 @@
 
             modelBuilder.Entity<AggregateProperty>()
                 .HasOptional(x => x.LinkedAggregate)
-                .WithMany(x => x.AggregateProperties)
+                .WithMany(x => x.LinkedAggregateProperties)
                 .HasForeignKey(x => x.LinkedAggregateId)
                 .WillCascadeOnDelete(false);
 
