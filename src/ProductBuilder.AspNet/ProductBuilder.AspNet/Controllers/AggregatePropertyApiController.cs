@@ -19,7 +19,7 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
-        [Route("api/{productid}/{userstoryid}/{aggregateid}/aggregate-properties-data-table", Name = nameof(AggregatePropertiesDataTable))]
+        [Route("api/{productid}/{aggregateid}/aggregate-properties-data-table", Name = nameof(AggregatePropertiesDataTable))]
         public IActionResult AggregatePropertiesDataTable(Guid aggregateId)
         {
             if (aggregateId == Guid.Empty)
@@ -28,7 +28,7 @@
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken] [Route("api/UpdateAggregateProperty", Name = nameof(UpdateAggregateProperty))]
+        [ValidateAntiForgeryToken] [Route("api/{productid}/{aggregateid}/update-aggregate-property", Name = nameof(UpdateAggregateProperty))]
         public IActionResult UpdateAggregateProperty(UpdateAggregatePropertyApiViewModel model)
         {
             if (model == null)
@@ -43,7 +43,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/DeleteAggregateProperty", Name = nameof(DeleteAggregateProperty))]
+        [Route("api/{aggregateid}/delete-aggregate-property", Name = nameof(DeleteAggregateProperty))]
         public IActionResult DeleteAggregateProperty(DeleteAggregatePropertyApiViewModel model)
         {
             if (model == null)
@@ -58,7 +58,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/CreateAggregateProperty", Name = nameof(CreateAggregateProperty))]
+        [Route("api/{aggregateid}/CreateAggregateProperty", Name = nameof(CreateAggregateProperty))]
         public IActionResult CreateAggregateProperty(CreateAggregatePropertyApiViewModel model)
         {
             if (model == null)

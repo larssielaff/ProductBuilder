@@ -6,9 +6,14 @@
 
     public class UpdateAggregatePropertyCommand : AggregatePropertyCommand
     {
-        public UpdateAggregatePropertyCommand(Guid id, Guid aggregateId)
+        public UpdateAggregatePropertyCommand(Guid id, string name, string type, Guid linkedAggregateId, string linkedAggregateName, bool isAggregateRoot, Guid aggregateId)
         {
             Id = id;
+            Name = name;
+            Type = type;
+            LinkedAggregateId = linkedAggregateId;
+            LinkedAggregateName = linkedAggregateName;
+            IsAggregateRoot = isAggregateRoot;
             AggregateId = aggregateId;
         }
 

@@ -23,6 +23,8 @@
     using ProductBuilder.Domain.Commands.AcceptanceCriteria;
     using ProductBuilder.Application.ViewModels.AggregateApi;
     using ProductBuilder.Domain.Commands.Aggregate;
+    using ProductBuilder.Application.ViewModels.AggregatePropertyApi;
+    using ProductBuilder.Domain.Commands.AggregateProperty;
 
     public class ViewModelToDomainMappingProfile : Profile
     {
@@ -77,7 +79,17 @@
                 .ConstructUsing(x => new RemoveTopicCommand(x.Id, x.ProductId));
         }
 
-        private void CreateMapForAggregateProperty() { }
+        private void CreateMapForAggregateProperty()
+        {
+            CreateMap<CreateAggregatePropertyApiViewModel, CreateAggregatePropertyCommand>()
+                .ConstructUsing(x => new CreateAggregatePropertyCommand(x.Id, x.Name, x.Type, x.AsdAggregateId, x.LinkedAggregateId, x.LinkedAggregateName, x.IsAggregateRoot, x.AsdAggregateId));
+
+            CreateMap<DeleteAggregatePropertyApiViewModel, DeleteAggregatePropertyCommand>()
+                .ConstructUsing(x => new DeleteAggregatePropertyCommand(x.Id, x.AsdAggregateId));
+
+            CreateMap<UpdateAggregatePropertyApiViewModel, UpdateAggregatePropertyCommand>()
+                .ConstructUsing(x => new UpdateAggregatePropertyCommand(x.Id, x.Name, x.Type, x.LinkedAggregateId, x.LinkedAggregateName, x.IsAggregateRoot, x.AsdAggregateId));
+        }
 
         private void CreateMapForTopic()
         {

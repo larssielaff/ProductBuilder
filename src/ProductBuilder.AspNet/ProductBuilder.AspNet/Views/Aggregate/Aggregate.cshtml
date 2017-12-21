@@ -6,6 +6,14 @@
     ViewData["Title"] = "Aggregate";
 }
 
+@section head{ 
+    <style>
+        .ajax-data-table-AggregateProperty{
+            cursor:pointer;
+        }
+    </style>
+}
+
 <div>
     @* modal-create-AggregateProperty *@
     <div id="modal-create-AggregateProperty" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-AggregateProperty-label">
@@ -22,6 +30,7 @@
                     <form id="form-CreateAggregateProperty" action="@Url.RouteUrl(nameof(AggregatePropertyApiController.CreateAggregateProperty))">
                         <div>
                             @Html.AntiForgeryToken()
+                            <input id="input-CreateAggregateProperty-AggregateProperty-AsdAggregateId" type="text" hidden="hidden" required="required" name="@nameof(CreateAggregatePropertyApiViewModel.AsdAggregateId)" value="@Model.Id" />
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="input-CreateAggregateProperty-AggregateProperty-Name">Name</label>
@@ -29,7 +38,7 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="select-CreateAggregateProperty-AggregateProperty-Type">Typ</label>
-                            <select id="select-CreateAggregateProperty-AggregateProperty-Type" class="form-control" required="required" name="@nameof(CreateAggregatePropertyApiViewModel.Type)" >
+                            <select id="select-CreateAggregateProperty-AggregateProperty-Type" class="form-control" required="required" name="@nameof(CreateAggregatePropertyApiViewModel.Type)">
                                 <option value="bool">bool</option>
                                 <option value="int">int</option>
                                 <option value="string">string</option>
@@ -38,9 +47,12 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="select-CreateAggregateProperty-AggregateProperty-LinkedAggregateId">Aggregate</label>
-                            <select id="select-CreateAggregateProperty-AggregateProperty-LinkedAggregateId" class="form-control" required="required" disabled="disabled" name="@nameof(CreateAggregatePropertyApiViewModel.LinkedAggregateId)" ></select>
+                            <select id="select-CreateAggregateProperty-AggregateProperty-LinkedAggregateId" class="form-control" required="required" disabled="disabled" name="@nameof(CreateAggregatePropertyApiViewModel.LinkedAggregateId)"></select>
                         </div>
-
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateAggregateProperty-AggregateProperty-LinkedAggregateName">Aggregate Name</label>
+                            <input id="input-CreateAggregateProperty-AggregateProperty-LinkedAggregateName" type="text" class="form-control" required="required" disabled="disabled" name="@nameof(CreateAggregatePropertyApiViewModel.LinkedAggregateName)" />
+                        </div>
                         <div class="form-group">
                             <div class="checkbox">
                                 <label class="control-label" for="input-CreateAggregateProperty-AggregateProperty-IsAggregateRoot">
@@ -49,8 +61,76 @@
                                 </label>
                             </div>
                         </div>
-                        
-                        <button id="button-CreateAggregateProperty" type="button" class="btn btn-success pull-right">CreateAggregateProperty</button>
+                        <button id="button-CreateAggregateProperty" type="button" class="btn btn-success pull-right">Property erstellen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* modal-detail-AggregateProperty *@
+    <div id="modal-detail-AggregateProperty" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-detail-AggregateProperty-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-detail-AggregateProperty-label" class="modal-title">Property</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-DeleteAggregateProperty *@
+                    <form id="form-DeleteAggregateProperty" action="@Url.RouteUrl(nameof(AggregatePropertyApiController.DeleteAggregateProperty))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-DeleteAggregateProperty-AggregateProperty-Id" required="required" hidden="hidden" name="@nameof(DeleteAggregatePropertyApiViewModel.Id)" />
+                            <input id="input-DeleteAggregateProperty-AggregateProperty-AsdAggregateId" type="text" hidden="hidden" required="required" name="@nameof(DeleteAggregatePropertyApiViewModel.AsdAggregateId)" value="@Model.Id" />
+                        </div>
+                        <button id="button-DeleteAggregateProperty" type="button" class="btn btn-danger pull-right">Property löschen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    @* form-UpdateAggregateProperty *@
+                    <form id="form-UpdateAggregateProperty" action="@Url.RouteUrl(nameof(AggregatePropertyApiController.UpdateAggregateProperty))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-UpdateAggregateProperty-AggregateProperty-Id" required="required" hidden="hidden" name="@nameof(UpdateAggregatePropertyApiViewModel.Id)" />
+                            <input id="input-UpdateAggregateProperty-AggregateProperty-AsdAggregateId" required="required" hidden="hidden" name="@nameof(UpdateAggregatePropertyApiViewModel.AsdAggregateId)" value="@Model.Id" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-UpdateAggregateProperty-AggregateProperty-Name">Name</label>
+                            <input id="input-UpdateAggregateProperty-AggregateProperty-Name" type="text" class="form-control" required="required" name="@nameof(UpdateAggregatePropertyApiViewModel.Name)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="select-UpdateAggregateProperty-AggregateProperty-Type">Typ</label>
+                            <select id="select-UpdateAggregateProperty-AggregateProperty-Type" type="text" class="form-control" required="required" name="@nameof(UpdateAggregatePropertyApiViewModel.Type)">
+                                <option value="bool">bool</option>
+                                <option value="int">int</option>
+                                <option value="string">string</option>
+                                <option value="Guid">Guid</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="select-UpdateAggregateProperty-AggregateProperty-LinkedAggregateId">Aggregate</label>
+                            <select id="select-UpdateAggregateProperty-AggregateProperty-LinkedAggregateId" type="text" class="form-control" required="required" disabled="disabled" name="@nameof(UpdateAggregatePropertyApiViewModel.LinkedAggregateId)" ></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-UpdateAggregateProperty-AggregateProperty-LinkedAggregateName">Aggregate Name</label>
+                            <input id="input-UpdateAggregateProperty-AggregateProperty-LinkedAggregateName" type="text" class="form-control" required="required" disabled="disabled" name="@nameof(UpdateAggregatePropertyApiViewModel.LinkedAggregateName)" />
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label class="control-label" for="input-UpdateAggregateProperty-AggregateProperty-IsAggregateRoot">
+                                    <input id="input-UpdateAggregateProperty-AggregateProperty-IsAggregateRoot" type="checkbox" required="required" disabled="disabled" name="@nameof(UpdateAggregatePropertyApiViewModel.IsAggregateRoot)" />
+                                    Aggregate Root
+                                </label>
+                            </div>
+                        </div>
+                        <button id="button-UpdateAggregateProperty" type="button" class="btn btn-success pull-right">Property aktualisieren</button>
                         <div class="clearfix"></div>
                     </form>
                 </div>
@@ -105,14 +185,18 @@
                         <tr>
                             <th>Name</th>
                             <th>Type</th>
-                            <th>LinkedAggregateId</th>
+                            <th>Aggregate</th>
+                            <th>Aggregate Name</th>
+                            <th>Aggregate Root</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>Name</th>
                             <th>Type</th>
-                            <th>LinkedAggregateId</th>
+                            <th>Aggregate</th>
+                            <th>Aggregate Name</th>
+                            <th>Aggregate Root</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -131,13 +215,28 @@
         $(function () {
             var $formDeleteAggregate = $('#form-DeleteAggregate'),
                 $formUpdateAggregate = $('#form-UpdateAggregate'),
+                $formCreateAggregateProperty = $('#form-CreateAggregateProperty'),
+                $formDeleteAggregateProperty = $('#form-DeleteAggregateProperty'),
+                $formUpdateAggregateProperty = $('#form-UpdateAggregateProperty'),
                 $selectCreateAggregatePropertyAggregatePropertyType = $('#select-CreateAggregateProperty-AggregateProperty-Type'),
                 $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId = $('#select-CreateAggregateProperty-AggregateProperty-LinkedAggregateId'),
+                $selectUpdateAggregatePropertyAggregatePropertyType = $('#select-UpdateAggregateProperty-AggregateProperty-Type'),
+                $selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId = $('#select-UpdateAggregateProperty-AggregateProperty-LinkedAggregateId'),
                 $inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot = $('#input-CreateAggregateProperty-AggregateProperty-IsAggregateRoot'),
+                $inputCreateAggregatePropertyAggregatePropertyLinkedAggregateName = $('#input-CreateAggregateProperty-AggregateProperty-LinkedAggregateName'),
+                $inputDeleteAggregatePropertyAggregatePropertyId = $('#input-DeleteAggregateProperty-AggregateProperty-Id'),
+                $inputUpdateAggregatePropertyAggregatePropertyId = $('#input-UpdateAggregateProperty-AggregateProperty-Id'),
+                $inputUpdateAggregatePropertyAggregatePropertyName = $('#input-UpdateAggregateProperty-AggregateProperty-Name'),
+                $inputUpdateAggregatePropertyAggregatePropertyLinkedAggregateName = $('#input-UpdateAggregateProperty-AggregateProperty-LinkedAggregateName'),
+                $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot = $('#input-UpdateAggregateProperty-AggregateProperty-IsAggregateRoot'),
                 $buttonDeleteAggregate = $('#button-DeleteAggregate'),
                 $buttonUpdateAggregate = $('#button-UpdateAggregate'),
+                $buttonCreateAggregateProperty = $('#button-CreateAggregateProperty'),
+                $buttonDeleteAggregateProperty = $('#button-DeleteAggregateProperty'),
+                $buttonUpdateAggregateProperty = $('#button-UpdateAggregateProperty'),
                 $tableAggregateProperties = $('#table-AggregateProperties'),
                 $modalCreateAggregateProperty = $('#modal-create-AggregateProperty'),
+                $modalDetailAggregateProperty = $('#modal-detail-AggregateProperty'),
                 $body = $('body'),
                 dataTableAggregateProperties = $tableAggregateProperties.DataTable(),
                 dataTableAggregatePropertiesUrl = '@Url.RouteUrl(nameof(AggregatePropertyApiController.AggregatePropertiesDataTable))',
@@ -159,11 +258,15 @@
                 });
             }
 
-            function initSelectCreateAggregatePropertyAggregatePropertyLinkedAggregateId() {
+            function initSelectsLinkedAggregate() {
                 $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId.find('option')
+                    .remove().end();
+                $selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId.find('option')
                     .remove().end();
                 $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId
                     .append('<option value="">Kein Aggregate</option>');
+                $selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId
+                    .append('<option value="">Kein Aggregate</option>')
                 $.ajax({
                     type: 'GET',
                     url: productAggregatesJsonArrayUrl,
@@ -173,6 +276,8 @@
                             $option.text(item.name);
                             $option.val(item.id);
                             $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId
+                                .append($option);
+                            $selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId
                                 .append($option);
                         });
                     },
@@ -192,6 +297,9 @@
                     if ($inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('disabled')) {
                         $inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot.removeAttr('disabled');
                     }
+                    if ($inputCreateAggregatePropertyAggregatePropertyLinkedAggregateName.attr('disabled')) {
+                        $inputCreateAggregatePropertyAggregatePropertyLinkedAggregateName.removeAttr('disabled');
+                    }
                 } else {
                     if (!$selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId.attr('disabled')) {
                         $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId.attr('disabled', 'disabled');
@@ -201,9 +309,53 @@
                         $inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('disabled', 'disabled');
                         $inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('checked', false);
                     }
+                    if (!$inputCreateAggregatePropertyAggregatePropertyLinkedAggregateName.attr('disabled')) {
+                        $inputCreateAggregatePropertyAggregatePropertyLinkedAggregateName.attr('disabled', 'disabled');
+                        $inputCreateAggregatePropertyAggregatePropertyLinkedAggregateName.val('');
+                    }
                 }
             });
 
+            $selectUpdateAggregatePropertyAggregatePropertyType.change(function () { 
+                var $this = $(this),
+                    value = $this.val();
+                if (value === 'Guid') {
+                    if ($selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId.attr('disabled')) {
+                        $selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId.removeAttr('disabled');
+                    }
+                    if ($inputUpdateAggregatePropertyAggregatePropertyLinkedAggregateName.attr('disabled')) {
+                        $inputUpdateAggregatePropertyAggregatePropertyLinkedAggregateName.removeAttr('disabled');
+                    }
+                    if ($inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('disabled')) {
+                        $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.removeAttr('disabled');
+                    }
+                } else {
+                    if (!$selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId.attr('disabled')) {
+                        $selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId.attr('disabled', 'disabled');
+                        $selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId.val('');
+                    }
+                    if (!$inputUpdateAggregatePropertyAggregatePropertyLinkedAggregateName.attr('disabled')) {
+                        $inputUpdateAggregatePropertyAggregatePropertyLinkedAggregateName.attr('disabled', 'disabled');
+                        $inputUpdateAggregatePropertyAggregatePropertyLinkedAggregateName.val('');
+                    }
+                    if (!$inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('disabled')) {
+                        $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('disabled', 'disabled');
+                        $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.prop('checked', false);
+                        $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.val(false);
+                    }
+                }
+            });
+
+            $inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot.change(function () {
+                var checked = $inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot.prop('checked');
+                $inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot.val(checked);
+            });
+
+            $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.change(function () {
+                var checked = $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.prop('checked');
+                $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.val(checked);
+            });
+            
             $buttonDeleteAggregate.click(function () {
                 $formDeleteAggregate.find('.has-error').each(function () {
                     $(this).removeClass('has-error');
@@ -250,14 +402,133 @@
                 });
             });
 
+            $buttonCreateAggregateProperty.click(function () {
+                $formCreateAggregateProperty.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formCreateAggregateProperty[0].checkValidity()) {
+                    $formCreateAggregateProperty.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formCreateAggregateProperty.attr('action'),
+                    data: $formCreateAggregateProperty.serialize(),
+                    success: function () {
+                        $formCreateAggregateProperty[0].reset();
+                        initDataTableAggregateProperties();
+                        $modalCreateAggregateProperty.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonDeleteAggregateProperty.click(function () {
+                $formDeleteAggregateProperty.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formDeleteAggregateProperty[0].checkValidity()) {
+                    $formDeleteAggregateProperty.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formDeleteAggregateProperty.attr('action'),
+                    data: $formDeleteAggregateProperty.serialize(),
+                    success: function () {
+                        $formDeleteAggregateProperty[0].reset();
+                        initDataTableAggregateProperties();
+                        $modalDetailAggregateProperty.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonUpdateAggregateProperty.click(function () {
+                $formUpdateAggregateProperty.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formUpdateAggregateProperty[0].checkValidity()) {
+                    $formUpdateAggregateProperty.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formUpdateAggregateProperty.attr('action'),
+                    data: $formUpdateAggregateProperty.serialize(),
+                    success: function () {
+                        $formUpdateAggregateProperty[0].reset();
+                        initDataTableAggregateProperties();
+                        $modalDetailAggregateProperty.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
             $body.on('click', '.ajax-data-table-AggregateProperty', function () {
                 var $this = $(this),
-                    id = $this.attr('data-Id');
+                    id = $this.attr('data-Id'),
+                    name = $this.attr('data-Name'),
+                    type = $this.attr('data-Type'),
+                    linkedAggregateId = $this.attr('data-LinkedAggregateId'),
+                    linkedAggregateName = $this.attr('data-LinkedAggregateName'),
+                    isAggregateRoot = $this.attr('data-IsAggregateRoot');
+
+                if (isAggregateRoot === 'true') {
+                    isAggregateRoot = true;
+                } else {
+                    isAggregateRoot = false;
+                }
+
+                $inputDeleteAggregatePropertyAggregatePropertyId.val(id);
+                $inputUpdateAggregatePropertyAggregatePropertyId.val(id);
+                $inputUpdateAggregatePropertyAggregatePropertyName.val(name);
+                $selectUpdateAggregatePropertyAggregatePropertyType.val(type);
+                $selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId.val(linkedAggregateId);
+                $inputUpdateAggregatePropertyAggregatePropertyLinkedAggregateName.val(linkedAggregateName);
+                $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.val(isAggregateRoot);
+                $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.prop('checked', isAggregateRoot);
+
+                if (type === 'Guid') {
+                    if ($selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId.attr('disabled')) {
+                        $selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId.removeAttr('disabled');
+                    }
+                    if ($inputUpdateAggregatePropertyAggregatePropertyLinkedAggregateName.attr('disabled')) {
+                        $inputUpdateAggregatePropertyAggregatePropertyLinkedAggregateName.removeAttr('disabled');
+                    }
+                    if ($inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('disabled')) {
+                        $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.removeAttr('disabled');
+                    }
+                } else {
+                    if (!$selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId.attr('disabled')) {
+                        $selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId.attr('disabled', 'disabled');
+                    }
+                    if (!$inputUpdateAggregatePropertyAggregatePropertyLinkedAggregateName.attr('disabled')) {
+                        $inputUpdateAggregatePropertyAggregatePropertyLinkedAggregateName.attr('disabled', 'disabled');
+                    }
+                    if (!$inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('disabled')) {
+                        $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.attr('disabled', 'disabled');
+                    }
+                }
+
+                $modalDetailAggregateProperty.modal();
             });
 
             (function () { 
                 initDataTableAggregateProperties();
-                initSelectCreateAggregatePropertyAggregatePropertyLinkedAggregateId();
+                initSelectsLinkedAggregate();
             })();
         });
     </script>

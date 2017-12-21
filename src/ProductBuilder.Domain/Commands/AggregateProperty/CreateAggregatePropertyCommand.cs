@@ -6,9 +6,15 @@
 
     public class CreateAggregatePropertyCommand : AggregatePropertyCommand
     {
-        public CreateAggregatePropertyCommand(Guid id, Guid aggregateId)
+        public CreateAggregatePropertyCommand(Guid id, string name, string type, Guid asdAggregateId, Guid linkedAggregateId, string linkedAggregateName, bool isAggregateRoot, Guid aggregateId)
         {
             Id = id;
+            Name = name;
+            Type = type;
+            AsdAggregateId = asdAggregateId;
+            LinkedAggregateId = linkedAggregateId;
+            LinkedAggregateName = linkedAggregateName;
+            IsAggregateRoot = isAggregateRoot;
             AggregateId = aggregateId;
         }
 

@@ -66,9 +66,11 @@
                 {
                     Data = x.Select(y => new string[]
                     {
-                        $"<div class=\"ajax-data-table-AggregateProperty\" data-Name=\"{y.Name}\" data-Type=\"{y.Type}\" data-LinkedAggregateId=\"{y.LinkedAggregateId}\">{y.Name}</div>",
-                        $"<div class=\"ajax-data-table-AggregateProperty\" data-Name=\"{y.Name}\" data-Type=\"{y.Type}\" data-LinkedAggregateId=\"{y.LinkedAggregateId}\">{y.Type}</div>",
-                        $"<div class=\"ajax-data-table-AggregateProperty\" data-Name=\"{y.Name}\" data-Type=\"{y.Type}\" data-LinkedAggregateId=\"{y.LinkedAggregateId}\">{y.LinkedAggregateId}</div>"
+                        $"<div class=\"ajax-data-table-AggregateProperty\" data-Id=\"{y.Id}\" data-Name=\"{y.Name}\" data-Type=\"{y.Type}\" data-LinkedAggregateId=\"{y.LinkedAggregateId}\" data-LinkedAggregateName=\"{y.LinkedAggregateName}\" data-IsAggregateRoot=\"{y.IsAggregateRoot.ToString().ToLower()}\">{y.Name}</div>",
+                        $"<div class=\"ajax-data-table-AggregateProperty\" data-Id=\"{y.Id}\" data-Name=\"{y.Name}\" data-Type=\"{y.Type}\" data-LinkedAggregateId=\"{y.LinkedAggregateId}\" data-LinkedAggregateName=\"{y.LinkedAggregateName}\" data-IsAggregateRoot=\"{y.IsAggregateRoot.ToString().ToLower()}\">{y.Type}</div>",
+                        $"<div class=\"ajax-data-table-AggregateProperty\" data-Id=\"{y.Id}\" data-Name=\"{y.Name}\" data-Type=\"{y.Type}\" data-LinkedAggregateId=\"{y.LinkedAggregateId}\" data-LinkedAggregateName=\"{y.LinkedAggregateName}\" data-IsAggregateRoot=\"{y.IsAggregateRoot.ToString().ToLower()}\">{y.LinkedAggregate?.Name}</div>",
+                        $"<div class=\"ajax-data-table-AggregateProperty\" data-Id=\"{y.Id}\" data-Name=\"{y.Name}\" data-Type=\"{y.Type}\" data-LinkedAggregateId=\"{y.LinkedAggregateId}\" data-LinkedAggregateName=\"{y.LinkedAggregateName}\" data-IsAggregateRoot=\"{y.IsAggregateRoot.ToString().ToLower()}\">{y.LinkedAggregateName}</div>",
+                        $"<div class=\"ajax-data-table-AggregateProperty\" data-Id=\"{y.Id}\" data-Name=\"{y.Name}\" data-Type=\"{y.Type}\" data-LinkedAggregateId=\"{y.LinkedAggregateId}\" data-LinkedAggregateName=\"{y.LinkedAggregateName}\" data-IsAggregateRoot=\"{y.IsAggregateRoot.ToString().ToLower()}\">{y.IsAggregateRoot}</div>"
                     })
                 });
         }

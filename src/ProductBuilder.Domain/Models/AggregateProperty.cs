@@ -6,6 +6,8 @@
 
     public class AggregateProperty : AsdEntity
     {
+        public string LinkedAggregateName { get; set; }
+
         public bool IsAggregateRoot { get; set; }
 
         public Guid? AsdAggregateId { get; set; }

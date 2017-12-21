@@ -36,8 +36,14 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.Name = message.Name;
+            entity.Type = message.Type;
+            entity.LinkedAggregateId = message.LinkedAggregateId;
+            entity.LinkedAggregateName = message.LinkedAggregateName;
+            entity.IsAggregateRoot = message.IsAggregateRoot;
+            if (entity.LinkedAggregateId == Guid.Empty)
+                entity.LinkedAggregateId = null;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new AggregatePropertyUpdatedEvent(entity, message.AggregateId));
         }
@@ -55,7 +61,6 @@
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
             _repository.Remove(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new AggregatePropertyDeletedEvent(entity, message.AggregateId));
         }
@@ -69,9 +74,20 @@
                 NotifyValidationErrors(message);
                 return;
             }
-            var entity = new AggregateProperty(message.Id) { };
+            var entity = new AggregateProperty(message.Id)
+            {
+                Name = message.Name,
+                Type = message.Type,
+                AsdAggregateId = message.AsdAggregateId,
+                LinkedAggregateId = message.LinkedAggregateId,
+                LinkedAggregateName = message.LinkedAggregateName,
+                IsAggregateRoot = message.IsAggregateRoot
+            };
+
+            if (entity.LinkedAggregateId == Guid.Empty)
+                entity.LinkedAggregateId = null;
+
             _repository.Add(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new AggregatePropertyCreatedEvent(entity, message.AggregateId));
         }

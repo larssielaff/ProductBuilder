@@ -9,6 +9,7 @@
     using ProductBuilder.Application.ViewModels.AggregatePropertyApi;
     using global::AutoMapper;
     using System;
+    using System.Linq;
 
     public class AggregatePropertyAppService : AsdAppService, IAggregatePropertyAppService
     {
@@ -20,29 +21,33 @@
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public AjaxDataTableViewModel GetDataTableViewModel()
+        public AjaxDataTableViewModel GetDataTableViewModel(Guid asdAggregateId)
         {
-            return Mapper.Map<AjaxDataTableViewModel>(_repository.GetAll());
+            if (asdAggregateId == Guid.Empty)
+                throw new ArgumentNullException(nameof(asdAggregateId));
+            return Mapper.Map<AjaxDataTableViewModel>(_repository.Find(x => x.AsdAggregateId == asdAggregateId).ToList());
         }
 
-        public void UpdateAggregate(UpdateAggregateApiViewModel model)
+        public void UpdateAggregate(UpdateAggregatePropertyApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
             Bus.SendCommand(Mapper.Map<UpdateAggregatePropertyCommand>(model));
         }
 
-        public void DeleteAggregate(DeleteAggregateApiViewModel model)
+        public void DeleteAggregate(DeleteAggregatePropertyApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
             Bus.SendCommand(Mapper.Map<DeleteAggregatePropertyCommand>(model));
         }
 
-        public void CreateAggregate(CreateAggregateApiViewModel model)
+        public void CreateAggregate(CreateAggregatePropertyApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
+            if (model.Id == Guid.Empty)
+                model.Id = Guid.NewGuid();
             Bus.SendCommand(Mapper.Map<CreateAggregatePropertyCommand>(model));
         }
 
