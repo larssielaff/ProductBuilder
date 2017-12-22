@@ -12,6 +12,8 @@
 
         AggregateViewModel GetAggregateViewModel(Guid aggregateId);
 
+        VisJsNetworkApiViewModel GetAggregateMapQueryResult(Guid productId);
+
         IEnumerable<AggregateQueryResult> GetProductAggregatesJsonArray(Guid productId);
 
         void DeleteAggregate(DeleteAggregateApiViewModel model);

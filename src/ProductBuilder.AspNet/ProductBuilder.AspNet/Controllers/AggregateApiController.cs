@@ -36,6 +36,14 @@
             return Json(_appService.GetProductAggregatesJsonArray(productId));
         }
 
+        [Route("api/{productid}/aggregate-map", Name = nameof(AggregateMap))]
+        public IActionResult AggregateMap(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetAggregateMapQueryResult(productId));
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("api/{productid}/delete-aggregate", Name = nameof(DeleteAggregate))]

@@ -56,7 +56,7 @@
                         <div class="form-group">
                             <div class="checkbox">
                                 <label class="control-label" for="input-CreateAggregateProperty-AggregateProperty-IsAggregateRoot">
-                                    <input id="input-CreateAggregateProperty-AggregateProperty-IsAggregateRoot" type="checkbox" required="required" disabled="disabled" name="@nameof(CreateAggregatePropertyApiViewModel.IsAggregateRoot)" />
+                                    <input id="input-CreateAggregateProperty-AggregateProperty-IsAggregateRoot" type="checkbox" disabled="disabled" name="@nameof(CreateAggregatePropertyApiViewModel.IsAggregateRoot)" />
                                     Aggregate Root
                                 </label>
                             </div>
@@ -125,7 +125,7 @@
                         <div class="form-group">
                             <div class="checkbox">
                                 <label class="control-label" for="input-UpdateAggregateProperty-AggregateProperty-IsAggregateRoot">
-                                    <input id="input-UpdateAggregateProperty-AggregateProperty-IsAggregateRoot" type="checkbox" required="required" disabled="disabled" name="@nameof(UpdateAggregatePropertyApiViewModel.IsAggregateRoot)" />
+                                    <input id="input-UpdateAggregateProperty-AggregateProperty-IsAggregateRoot" type="checkbox" disabled="disabled" name="@nameof(UpdateAggregatePropertyApiViewModel.IsAggregateRoot)" />
                                     Aggregate Root
                                 </label>
                             </div>
@@ -272,13 +272,10 @@
                     url: productAggregatesJsonArrayUrl,
                     success: function (response) {
                         response.forEach(function (item) {
-                            var $option = $('<option></option>');
-                            $option.text(item.name);
-                            $option.val(item.id);
                             $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId
-                                .append($option);
+                                .append('<option value="' + item.id + '">' + item.name + '</option>');
                             $selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId
-                                .append($option);
+                                .append('<option value="' + item.id + '">' + item.name + '</option>');
                         });
                     },
                     error: function () {

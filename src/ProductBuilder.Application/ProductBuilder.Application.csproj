@@ -127,6 +127,9 @@
     <Compile Include="ViewModels\UserStoryApi\UpdateUserStoryApiViewModel.cs" />
     <Compile Include="ViewModels\UserStoryApi\UpdateValueApiViewModel.cs" />
     <Compile Include="ViewModels\UserStory\ProductUserStoryViewModel.cs" />
+    <Compile Include="ViewModels\VisJsNetworkApiViewModel.cs" />
+    <Compile Include="ViewModels\VisJsNetworkEdgeApiViewModel.cs" />
+    <Compile Include="ViewModels\VisJsNetworkNodeApiViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProductBuilder.Domain\ProductBuilder.Domain.csproj">

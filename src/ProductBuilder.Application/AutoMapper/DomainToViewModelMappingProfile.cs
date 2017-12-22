@@ -207,6 +207,25 @@
                     Id = y.Id,
                     Name = y.Name
                 }));
+
+            CreateMap<IEnumerable<Aggregate>, VisJsNetworkApiViewModel>()
+                .ConstructUsing(x => new VisJsNetworkApiViewModel()
+                {
+                    Nodes = x.Select(y => new VisJsNetworkNodeApiViewModel()
+                    {
+                        Id = y.Id.ToString(),
+                        Label = y.Name
+                    }),
+                    Edges = x.SelectMany(y => y.LinkedAggregateProperties
+                        .Where(z => z.LinkedAggregateId != null && !z.Deleted))
+                        .Select(y => new VisJsNetworkEdgeApiViewModel()
+                        {
+                            From = y.AsdAggregateId.ToString(),
+                            To = y.LinkedAggregateId.ToString(),
+                            Arrows = "to",
+                            Dashes = y.IsAggregateRoot
+                        })
+                });
         }
 
         private void CreateMapForAcceptanceCriteria()
