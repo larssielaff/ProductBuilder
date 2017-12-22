@@ -62,6 +62,7 @@
     <Compile Include="Interfaces\IAggregateAppService.cs" />
     <Compile Include="Interfaces\IAggregatePropertyAppService.cs" />
     <Compile Include="Interfaces\IEpicAppService.cs" />
+    <Compile Include="Interfaces\IQueryAppService.cs" />
     <Compile Include="Interfaces\ITeamAppService.cs" />
     <Compile Include="Interfaces\ITeamMemberAppService.cs" />
     <Compile Include="Interfaces\ITopicAppService.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Services\AggregatePropertyAppService.cs" />
     <Compile Include="Services\EpicAppService.cs" />
     <Compile Include="Services\ProductAppService.cs" />
+    <Compile Include="Services\QueryAppService.cs" />
     <Compile Include="Services\TeamAppService.cs" />
     <Compile Include="Services\TeamMemberAppService.cs" />
     <Compile Include="Services\TopicAppService.cs" />
@@ -101,6 +103,9 @@
     <Compile Include="ViewModels\OkApiViewModel.cs" />
     <Compile Include="ViewModels\ProductApi\CreateProductApiViewModel.cs" />
     <Compile Include="ViewModels\ProductApi\ProductTeamMembersApiViewModel.cs" />
+    <Compile Include="ViewModels\QueryApi\CreateQueryApiViewModel.cs" />
+    <Compile Include="ViewModels\QueryApi\DeleteQueryApiViewModel.cs" />
+    <Compile Include="ViewModels\QueryApi\UpdateQueryApiViewModel.cs" />
     <Compile Include="ViewModels\TeamApi\CreateTeamApiViewModel.cs" />
     <Compile Include="ViewModels\TeamMember\CreateTeamMemberApiViewModel.cs" />
     <Compile Include="ViewModels\TopicApi\CreateTopicApiViewModel.cs" />
