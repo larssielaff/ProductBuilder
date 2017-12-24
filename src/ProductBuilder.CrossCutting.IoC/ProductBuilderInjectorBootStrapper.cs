@@ -30,6 +30,8 @@
     using ProductBuilder.Domain.Events.Product;
     using ProductBuilder.Domain.Commands.Team;
     using ProductBuilder.Domain.Events.Team;
+    using ProductBuilder.Domain.Commands.Query;
+    using ProductBuilder.Domain.Events.Query;
     using ProductBuilder.Domain.Commands.TeamMember;
     using ProductBuilder.Domain.Events.TeamMember;
     using ProductBuilder.Domain.Commands.UserRole;
@@ -53,6 +55,7 @@
             .RegisterUserProfile()?
             .RegisterProduct()?
             .RegisterTeam()?
+            .RegisterQuery()?
             .RegisterTeamMember()?
             .RegisterUserRole()?
             .RegisterEpic()?
@@ -131,6 +134,7 @@
             services?.AddScoped<IAsdHandler<TopicCreatedEvent>, TopicEventHandler>();
             services?.AddScoped<IAsdHandler<TopicDeletedEvent>, TopicEventHandler>();
             return services;
+
         }
 
         private static IServiceCollection RegisterUserProfile(this IServiceCollection services)
@@ -157,6 +161,19 @@
             services?.AddScoped<ITeamRepository, TeamRepository>();
             services?.AddScoped<IAsdHandler<CreateTeamCommand>, TeamCommandHandler>();
             services?.AddScoped<IAsdHandler<TeamCreatedEvent>, TeamEventHandler>();
+            return services;
+        }
+
+        private static IServiceCollection RegisterQuery(this IServiceCollection services)
+        {
+            services?.AddScoped<IQueryAppService, QueryAppService>();
+            services?.AddScoped<IQueryRepository, QueryRepository>();
+            services?.AddScoped<IAsdHandler<CreateQueryCommand>, QueryCommandHandler>();
+            services?.AddScoped<IAsdHandler<UpdateQueryCommand>, QueryCommandHandler>();
+            services?.AddScoped<IAsdHandler<DeleteQueryCommand>, QueryCommandHandler>();
+            services?.AddScoped<IAsdHandler<QueryDeletedEvent>, QueryEventHandler>();
+            services?.AddScoped<IAsdHandler<QueryUpdatedEvent>, QueryEventHandler>();
+            services?.AddScoped<IAsdHandler<QueryCreatedEvent>, QueryEventHandler>();
             return services;
         }
 
