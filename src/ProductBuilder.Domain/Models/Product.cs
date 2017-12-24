@@ -16,6 +16,8 @@
 
         public virtual ICollection<UserStory> UserStories { get; set; }
 
+        public virtual ICollection<Query> Queries { get; set; }
+
         public virtual ICollection<Epic> Epics { get; set; }
 
         public virtual ICollection<Aggregate> Aggregates { get; set; }
@@ -35,6 +37,7 @@
             Topics = new HashSet<Topic>();
             UserRoles = new HashSet<UserRole>();
             UserStories = new HashSet<UserStory>();
+            Queries = new HashSet<Query>();
             Epics = new HashSet<Epic>();
             Aggregates = new HashSet<Aggregate>();
             Teams = new HashSet<Team>();
