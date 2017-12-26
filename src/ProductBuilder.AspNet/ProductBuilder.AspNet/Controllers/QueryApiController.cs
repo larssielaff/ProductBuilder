@@ -19,15 +19,17 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
-        [Route("api/QueriesDataTable", Name = nameof(QueriesDataTable))]
-        public IActionResult QueriesDataTable()
+        [Route("api/{productid}/queriesdatatable", Name = nameof(QueriesDataTable))]
+        public IActionResult QueriesDataTable(Guid productId)
         {
-            return Json(_appService.GetDataTableViewModel());
+            if (productId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetDataTableViewModel(productId));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/CreateQuery", Name = nameof(CreateQuery))]
+        [Route("api/{productid}/create-query", Name = nameof(CreateQuery))]
         public IActionResult CreateQuery(CreateQueryApiViewModel model)
         {
             if (model == null)

@@ -3,6 +3,7 @@
 @using ProductBuilder.Application.ViewModels.TopicApi
 @using ProductBuilder.Application.ViewModels.UserStoryApi
 @using ProductBuilder.Application.ViewModels.AggregateApi
+@using ProductBuilder.Application.ViewModels.QueryApi
 
 @{
     ViewData["Title"] = "Product";
@@ -20,6 +21,10 @@
         }
 
         .ajax-data-table-Aggregate{
+            cursor: pointer;
+        }
+
+        .ajax-data-table-Query {
             cursor: pointer;
         }
     </style>
@@ -481,6 +486,44 @@
             </div>
         </div>
     </div>
+    @* modal-create-Query *@
+    <div id="modal-create-Query" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-Query-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-create-Query-label" class="modal-title">Abfrage erstellen</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-CreateQuery *@
+                    <form id="form-CreateQuery" action="@Url.RouteUrl(nameof(QueryApiController.CreateQuery))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateQuery-Query-QueryName">Abfragename</label>
+                            <input id="input-CreateQuery-Query-QueryName" type="text" class="form-control" required="required" name="@nameof(CreateQueryApiViewModel.QueryName)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateQuery-Query-RouteTemplate">Route template</label>
+                            <input id="input-CreateQuery-Query-RouteTemplate" type="text" class="form-control" required="required" name="@nameof(CreateQueryApiViewModel.RouteTemplate)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="select-CreateQuery-Query-AsdAggregateId">Aggregate</label>
+                            <select id="select-CreateQuery-Query-AsdAggregateId" class="form-control" required="required" name="@nameof(CreateQueryApiViewModel.AsdAggregateId)" ></select>
+                        </div>
+                        <button id="button-CreateQuery" type="button" class="btn btn-success pull-right">Abfrage erstellen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -493,6 +536,7 @@
             <li role="presentation"><a href="#epics" role="tab" data-toggle="tab">Epics</a></li>
             <li role="presentation"><a href="#topics" role="tab" data-toggle="tab">Themen</a></li>
             <li role="presentation"><a href="#aggregates" role="tab" data-toggle="tab">Aggregate</a></li>
+            <li role="presentation"><a href="#queries" role="tab" data-toggle="tab">Abfragen</a></li>
         </ul>
         <div class="tab-content">
             <div id="overview" class="tab-pane active" role="tabpanel">
@@ -610,6 +654,23 @@
                     </tfoot>
                 </table>
             </div>
+            <div id="queries" class="tab-pane" role="tabpanel">
+                @* table-Queries *@
+                <table id="table-Queries" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Abfragename</th>
+                            <th>Route template</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Abfragename</th>
+                            <th>Route template</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -638,6 +699,7 @@
                 $formRemoveEpic = $('#form-RemoveEpic'),
                 $formRemoveTopic = $('#form-RemoveTopic'),
                 $formCreateAggregate = $('#form-CreateAggregate'),
+                $formCreateQuery = $('#form-CreateQuery'),
                 $modalCreateUserRole = $('#modal-create-UserRole'),
                 $modalDetailUserRole = $('#modal-detail-UserRole'),
                 $modalCreateEpic = $('#modal-create-Epic'),
@@ -648,6 +710,7 @@
                 $modalDetailUserStory = $('#modal-detail-UserStory'),
                 $modalCreateAggregate = $('#modal-create-Aggregate'),
                 $modalAggregateMap = $('#modal-AggregateMap'),
+                $modalCreateQuery = $('#modal-create-Query'),
                 $inputDeleteUserRoleUserRoleId = $('#input-DeleteUserRole-UserRole-Id'),
                 $inputUpdateUserRoleUserRoleId = $('#input-UpdateUserRole-UserRole-Id'),
                 $inputUpdateUserRoleUserRoleRole = $('#input-UpdateUserRole-UserRole-Role'),
@@ -676,12 +739,14 @@
                 $selectAssignUserRoleUserStoryUserRoleId = $('#select-AssignUserRole-UserStory-UserRoleId'),
                 $selectAssignEpicUserStoryEpicId = $('#select-AssignEpic-UserStory-EpicId'),
                 $selectAssignTopicUserStoryTopicId = $('#select-AssignTopic-UserStory-TopicId'),
+                $selectCreateQueryQueryAsdAggregateId = $('#select-CreateQuery-Query-AsdAggregateId'),
                 $tableTeamMembers = $('#table-TeamMembers'),
                 $tableUserRoles = $('#table-UserRoles'),
                 $tableEpics = $('#table-Epics'),
                 $tableTopics = $('#table-Topics'),
                 $tableUserStories = $('#table-UserStories'),
                 $tableAggregates = $('#table-Aggregates'),
+                $tableQueries = $('#table-Queries'),
                 $buttonCreateUserRole = $('#button-CreateUserRole'),
                 $buttonDeleteUserRole = $('#button-DeleteUserRole'),
                 $buttonUpdateUserRole = $('#button-UpdateUserRole'),
@@ -703,6 +768,7 @@
                 $buttonRemoveEpic = $('#button-RemoveEpic'),
                 $buttonRemoveTopic = $('#button-RemoveTopic'),
                 $buttonCreateAggregate = $('#button-CreateAggregate'),
+                $buttonCreateQuery = $('#button-CreateQuery'),
                 $body = $('body'),
                 $aUserStoryDetailView = $('#a-UserStory-Detail-View'),
                 dataTableTeamMembers = $tableTeamMembers.DataTable(),
@@ -711,13 +777,16 @@
                 dataTableTopics = $tableTopics.DataTable(),
                 dataTableUserStories = $tableUserStories.DataTable(),
                 dataTableAggregates = $tableAggregates.DataTable(),
+                dataTableQueries = $tableQueries.DataTable(),
                 dataTableTeamMembersUrl = '@Url.RouteUrl(nameof(ProductApiController.ProductTeamMembers))',
                 dataTableUserRolesUrl = '@Url.RouteUrl(nameof(UserRoleApiController.ProductUserRolesDataTable))',
                 dataTableEpicsUrl = '@Url.RouteUrl(nameof(EpicApiController.ProductEpicsDataTable))',
                 dataTableTopicsUrl = '@Url.RouteUrl(nameof(TopicApiController.ProductTopicsDataTable))',
                 dataTableUserStoriesUrl = '@Url.RouteUrl(nameof(UserStoryApiController.ProductUserStoriesDataTable))',
                 dataTableAggregatesUrl = '@Url.RouteUrl(nameof(AggregateApiController.AggregatesDataTable))',
+                dataTableQueriesUrl = '@Url.RouteUrl(nameof(QueryApiController.QueriesDataTable))',
                 aggregateMapQueryUrl = '@Url.RouteUrl(nameof(AggregateApiController.AggregateMap))',
+                productAggregatesJsonArrayUrl = '@Url.RouteUrl(nameof(AggregateApiController.ProductAggregatesJsonArray))',
                 userStoryDetailViewUrl = '@Url.RouteUrl(nameof(UserStoryController.ProductUserStory), new { userStoryId = "userStoryId" })',
                 aggregateViewUrl = '@Url.RouteUrl(nameof(AggregateController.Aggregate), new { aggregateId = "aggregateId" })';
 
@@ -807,6 +876,40 @@
                             }
                         }
                     ]
+                });
+            }
+
+            function initDataTableQueries() {
+                dataTableQueries.destroy();
+                dataTableQueries = $tableQueries.DataTable({
+                    dom: 'Bfrtip',
+                    ajax: dataTableQueriesUrl,
+                    buttons: [
+                        {
+                            text: 'Abfrage erstellen',
+                            action: function () {
+                                $modalCreateQuery.modal();
+                            }
+                        }
+                    ]
+                });
+            }
+
+            function initCreateQueryForm() {
+                $selectCreateQueryQueryAsdAggregateId.find('option')
+                    .remove().end();
+                $.ajax({
+                    type: 'GET',
+                    url: productAggregatesJsonArrayUrl,
+                    success: function (response) {
+                        response.forEach(function (item) {
+                            $selectCreateQueryQueryAsdAggregateId
+                                .append('<option value="' + item.id + '">' + item.name + '</option>');
+                        });
+                    },
+                    error: function (response) {
+                        alert('error');
+                    }
                 });
             }
 
@@ -1333,6 +1436,31 @@
                 });
             });
 
+            $buttonCreateQuery.click(function () {
+                $formCreateQuery.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formCreateQuery[0].checkValidity()) {
+                    $formCreateQuery.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formCreateQuery.attr('action'),
+                    data: $formCreateQuery.serialize(),
+                    success: function () {
+                        $formCreateQuery[0].reset();
+                        $modalCreateQuery.modal('hide');
+                        initDataTableQueries();
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
             $modalAggregateMap.on('shown.bs.modal', function () {
                 $.ajax({
                     type: 'GET',
@@ -1450,6 +1578,11 @@
                 location.href = aggregateViewUrl.replace('aggregateId', id);
             });
 
+            $body.on('click', '.ajax-data-table-Query', function () {
+                var $this = $(this),
+                    id = $this.attr('data-Id');
+            });
+
             (function () {
                 initDataTableTeamMembers();
                 initDataTableUserRoles();
@@ -1457,6 +1590,8 @@
                 initDataTableTopics();
                 initDataTableUserStories();
                 initDataTableAggregates();
+                initDataTableQueries();
+                initCreateQueryForm();
             })();
         });
     </script>

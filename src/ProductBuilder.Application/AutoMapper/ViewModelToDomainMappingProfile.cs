@@ -25,6 +25,8 @@
     using ProductBuilder.Domain.Commands.Aggregate;
     using ProductBuilder.Application.ViewModels.AggregatePropertyApi;
     using ProductBuilder.Domain.Commands.AggregateProperty;
+    using ProductBuilder.Application.ViewModels.QueryApi;
+    using ProductBuilder.Domain.Commands.Query;
 
     public class ViewModelToDomainMappingProfile : Profile
     {
@@ -36,6 +38,7 @@
             CreateMapForUserProfile();
             CreateMapForProduct();
             CreateMapForTeam();
+            CreateMapForQuery();
             CreateMapForTeamMember();
             CreateMapForUserRole();
             CreateMapForEpic();
@@ -115,6 +118,12 @@
         {
             CreateMap<CreateTeamApiViewModel, CreateTeamCommand>()
                 .ConstructUsing(x => new CreateTeamCommand(x.Id, x.Title, x.ProductId, x.ProductId));
+        }
+
+        private void CreateMapForQuery()
+        {
+            CreateMap<CreateQueryApiViewModel, CreateQueryCommand>()
+                .ConstructUsing(x => new CreateQueryCommand(x.Id, x.QueryName, x.RouteTemplate, x.AsdAggregateId, x.ProductId, x.ProductId));
         }
 
         private void CreateMapForTeamMember()

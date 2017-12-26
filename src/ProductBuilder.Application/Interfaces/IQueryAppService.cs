@@ -6,7 +6,7 @@
 
     public interface IQueryAppService : IDisposable
     {
-        AjaxDataTableViewModel GetDataTableViewModel();
+        AjaxDataTableViewModel GetDataTableViewModel(Guid productId);
 
         void CreateQuery(CreateQueryApiViewModel model);
 

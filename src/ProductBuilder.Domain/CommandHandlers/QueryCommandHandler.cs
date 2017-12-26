@@ -33,9 +33,14 @@
                 NotifyValidationErrors(message);
                 return;
             }
-            var entity = new Query(message.Id) { };
+            var entity = new Query(message.Id)
+            {
+                QueryName = message.QueryName,
+                RouteTemplate = message.RouteTemplate,
+                AsdAggregateId = message.AsdAggregateId,
+                ProductId = message.ProductId
+            };
             _repository.Add(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new QueryCreatedEvent(entity, message.AggregateId));
         }

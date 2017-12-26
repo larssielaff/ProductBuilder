@@ -18,6 +18,8 @@
 
         public virtual DbSet<Team> Teams { get; set; }
 
+        public virtual DbSet<Query> Queries { get; set; }
+
         public virtual DbSet<TeamMember> TeamMembers { get; set; }
 
         public virtual DbSet<UserRole> UserRoles { get; set; }
@@ -71,6 +73,12 @@
                 .HasForeignKey(x => x.ProductId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Query>()
+                .HasOptional(x => x.Product)
+                .WithMany(x => x.Queries)
+                .HasForeignKey(x => x.ProductId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Epic>()
                 .HasOptional(x => x.Product)
                 .WithMany(x => x.Epics)
@@ -116,7 +124,12 @@
             modelBuilder.Entity<AggregateProperty>()
                 .HasOptional(x => x.LinkedAggregate)
                 .WithMany(x => x.LinkedAggregateProperties)
-                .HasForeignKey(x => x.LinkedAggregateId)
+                .HasForeignKey(x => x.LinkedAggregateId);
+
+            modelBuilder.Entity<Query>()
+                .HasOptional(x => x.Aggregate)
+                .WithMany(x => x.Queries)
+                .HasForeignKey(x => x.AsdAggregateId)
                 .WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);

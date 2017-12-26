@@ -24,6 +24,7 @@
             CreateMapForUserProfile();
             CreateMapForProduct();
             CreateMapForTeam();
+            CreateMapForQuery();
             CreateMapForTeamMember();
             CreateMapForUserRole();
             CreateMapForEpic();
@@ -120,6 +121,19 @@
                 {
                     $"<div class=\"ajax-data-table-Team\" data-Id=\"{z.Id}\" data-Title=\"{z.Title}\">{z.Title}</div>",
                 })));
+        }
+
+        private void CreateMapForQuery()
+        {
+            CreateMap<IEnumerable<Query>, AjaxDataTableViewModel>()
+                .ConstructUsing(x => new AjaxDataTableViewModel()
+                {
+                    Data = x.Select(y => new string[] 
+                    {
+                        $"<div class=\"ajax-data-table-Query\" data-Id=\"{y.Id}\" data-QueryName=\"{y.QueryName}\" data-RouteTemplate=\"{y.RouteTemplate}\">{y.QueryName}</div>",
+                        $"<div class=\"ajax-data-table-Query\" data-Id=\"{y.Id}\" data-QueryName=\"{y.QueryName}\" data-RouteTemplate=\"{y.RouteTemplate}\">{y.RouteTemplate}</div>"
+                    })
+                });
         }
 
         private void CreateMapForTeamMember()

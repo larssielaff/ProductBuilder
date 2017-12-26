@@ -6,9 +6,13 @@
 
     public class CreateQueryCommand : QueryCommand
     {
-        public CreateQueryCommand(Guid id, Guid aggregateId)
+        public CreateQueryCommand(Guid id, string queryName, string routeTemplate, Guid asdAggregateId, Guid productId, Guid aggregateId)
         {
             Id = id;
+            QueryName = queryName;
+            RouteTemplate = routeTemplate;
+            AsdAggregateId = asdAggregateId;
+            ProductId = productId;
             AggregateId = aggregateId;
         }
 

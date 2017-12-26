@@ -9,6 +9,7 @@
     using ProductBuilder.Application.ViewModels.QueryApi;
     using global::AutoMapper;
     using System;
+    using System.Linq;
 
     public class QueryAppService : AsdAppService, IQueryAppService
     {
@@ -18,15 +19,19 @@
             : base(bus, mapper) { _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public AjaxDataTableViewModel GetDataTableViewModel()
+        public AjaxDataTableViewModel GetDataTableViewModel(Guid productId)
         {
-            return Mapper.Map<AjaxDataTableViewModel>(_repository.GetAll());
+            if (productId == Guid.Empty)
+                throw new ArgumentNullException(nameof(productId));
+            return Mapper.Map<AjaxDataTableViewModel>(_repository.Find(x => x.ProductId == productId).ToList());
         }
 
         public void CreateQuery(CreateQueryApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
+            if (model.Id == Guid.Empty)
+                model.Id = Guid.NewGuid();
             Bus.SendCommand(Mapper.Map<CreateQueryCommand>(model));
         }
 
