@@ -124,6 +124,12 @@
         {
             CreateMap<CreateQueryApiViewModel, CreateQueryCommand>()
                 .ConstructUsing(x => new CreateQueryCommand(x.Id, x.QueryName, x.RouteTemplate, x.AsdAggregateId, x.ProductId, x.ProductId));
+
+            CreateMap<DeleteQueryApiViewModel, DeleteQueryCommand>()
+                .ConstructUsing(x => new DeleteQueryCommand(x.Id, x.ProductId));
+
+            CreateMap<UpdateQueryApiViewModel, UpdateQueryCommand>()
+                .ConstructUsing(x => new UpdateQueryCommand(x.Id, x.QueryName, x.RouteTemplate, x.AsdAggregateId, x.ProductId));
         }
 
         private void CreateMapForTeamMember()

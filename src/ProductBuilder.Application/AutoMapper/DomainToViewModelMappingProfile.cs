@@ -13,6 +13,8 @@
     using ProductBuilder.Application.ViewModels.UserStory;
     using ProductBuilder.Application.ViewModels.Aggregate;
     using ProductBuilder.Application.ViewModels.AggregateApi;
+    using ProductBuilder.Application.ViewModels.Query;
+    using ProductBuilder.Application.AutoMapper.Extensions;
 
     public class DomainToViewModelMappingProfile : Profile
     {
@@ -134,6 +136,15 @@
                         $"<div class=\"ajax-data-table-Query\" data-Id=\"{y.Id}\" data-QueryName=\"{y.QueryName}\" data-RouteTemplate=\"{y.RouteTemplate}\">{y.RouteTemplate}</div>"
                     })
                 });
+
+            CreateMap<Query, QueryViewModel>()
+                .ConstructUsing(x => new QueryViewModel()
+                {
+                    Id = x.Id,
+                    QueryName = x.QueryName,
+                    RouteTemplate = x.RouteTemplate,
+                    AsdAggregateId = x.AsdAggregateId.Value
+                });
         }
 
         private void CreateMapForTeamMember()
@@ -200,7 +211,7 @@
             CreateMap<IEnumerable<Aggregate>, AjaxDataTableViewModel>()
                 .ConstructUsing(x => new AjaxDataTableViewModel()
                 {
-                    Data = x.Select(y => new string[] 
+                    Data = x.Select(y => new string[]
                     {
                         $"<div class=\"ajax-data-table-Aggregate\" data-Id=\"{y.Id}\" data-Name=\"{y.Name}\" data-NamePluralized=\"{y.NamePluralized}\">{y.Name}</div>",
                         $"<div class=\"ajax-data-table-Aggregate\" data-Id=\"{y.Id}\" data-Name=\"{y.Name}\" data-NamePluralized=\"{y.NamePluralized}\">{y.NamePluralized}</div>"
@@ -239,6 +250,22 @@
                             Arrows = "to",
                             Dashes = y.IsAggregateRoot
                         })
+                });
+
+            CreateMap<Aggregate, AggregateCodeViewModel>()
+                .ConstructUsing(x => new AggregateCodeViewModel()
+                {
+                    AggregateClassName = x.Name,
+                    AggregateCode = x.ToAggregateCode(),
+                    BaseCommandClassName = $"{x.Name}Command",
+                    BaseCommandCode = x.ToBaseCommandCode(),
+                    AggregateValidatorClassName = $"{x.Name}Validator",
+                    AggregateValidatorCode = x.ToAggregateValidatorCode(),
+                    IAggregateRepositoryInterfaceName = $"I{x.Name}Repository",
+                    IAggregateRepositoryCode = x.ToIAggregateRepositoryCode(),
+                    AggregateRepositoryClasseName = $"{x.Name}Repository",
+                    AggregateRepositoryCode = x.ToAggregateRepositoryCode(),
+                    
                 });
         }
 

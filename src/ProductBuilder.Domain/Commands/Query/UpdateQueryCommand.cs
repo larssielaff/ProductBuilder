@@ -6,9 +6,12 @@
 
     public class UpdateQueryCommand : QueryCommand
     {
-        public UpdateQueryCommand(Guid id, Guid aggregateId)
+        public UpdateQueryCommand(Guid id, string queryName, string routeTemplate, Guid asdAggregateId, Guid aggregateId)
         {
             Id = id;
+            QueryName = queryName;
+            RouteTemplate = routeTemplate;
+            AsdAggregateId = asdAggregateId;
             AggregateId = aggregateId;
         }
 

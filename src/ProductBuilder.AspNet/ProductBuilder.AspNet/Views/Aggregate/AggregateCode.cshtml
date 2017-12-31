@@ -1,0 +1,120 @@
+﻿@model ProductBuilder.Application.ViewModels.Aggregate.AggregateCodeViewModel
+
+@{
+    ViewData["Title"] = "AggregateCode";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Title</h3>
+            </div>
+            <div class="panel-body">
+                <div class="panel-group" id="code" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="aggregate-code-heading">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#code" href="#aggregate-code" aria-expanded="true" aria-controls="aggregate-code">
+                                    @string.Format($"{Model.AggregateClassName}.cs")
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="aggregate-code" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="aggregate-code-heading">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <pre class="prettyprint">@Model.AggregateCode</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="base-command-code-heading">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#code" href="#base-command-code" aria-expanded="false" aria-controls="base-command-code">
+                                    @string.Format($"{Model.BaseCommandClassName}.cs")
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="base-command-code" class="panel-collapse collapse" role="tabpanel" aria-labelledby="base-command-code-heading">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <pre class="prettyprint">@Model.BaseCommandCode</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="aggregate-validator-code-heading">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#code" href="#aggregate-validator-code" aria-expanded="false" aria-controls="aggregate-validator-code">
+                                    @string.Format($"{Model.AggregateValidatorClassName}.cs")
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="aggregate-validator-code" class="panel-collapse collapse" role="tabpanel" aria-labelledby="aggregate-validator-code-heading">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <pre class="prettyprint">@Model.AggregateValidatorCode</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="i-aggregate-repository-heading">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#code" href="#i-aggregate-repository" aria-expanded="false" aria-controls="i-aggregate-repository">
+                                    @string.Format($"{Model.IAggregateRepositoryInterfaceName}.cs")
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="i-aggregate-repository" class="panel-collapse collapse" role="tabpanel" aria-labelledby="i-aggregate-repository-heading">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <pre class="prettyprint">@Model.IAggregateRepositoryCode</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="aggregate-repository-heading">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#code" href="#aggregate-repository" aria-expanded="false" aria-controls="aggregate-repository">
+                                    @string.Format($"{Model.AggregateRepositoryClasseName}.cs")
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="aggregate-repository" class="panel-collapse collapse" role="tabpanel" aria-labelledby="aggregate-repository-heading">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <pre class="prettyprint">@Model.AggregateRepositoryCode</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*foreach(var @event in Model.Events)
+    {
+
+    }*@
+                </div>
+            </div>
+            <div class="panel-footer">
+                footer
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+}

@@ -1,0 +1,141 @@
+﻿@model ProductBuilder.Application.ViewModels.Query.QueryViewModel
+@using ProductBuilder.Application.ViewModels.QueryApi
+
+@{
+    ViewData["Title"] = "Query";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Title</h3>
+            </div>
+            <div class="panel-body">
+                <h3>Stammdaten</h3>
+                <hr />
+                @* form-DeleteQuery *@
+                <form id="form-DeleteQuery" action="@Url.RouteUrl(nameof(QueryApiController.DeleteQuery))">
+                    <div>
+                        @Html.AntiForgeryToken()
+                        <input id="input-DeleteQuery-Query-Id" required="required" hidden="hidden" name="@nameof(DeleteQueryApiViewModel.Id)" value="@Model.Id"/>
+                    </div>
+                    <button id="button-DeleteQuery" type="button" class="btn btn-danger pull-right">Abfrage löschen</button>
+                    <div class="clearfix"></div>
+                </form>
+                @* form-UpdateQuery *@
+                <form id="form-UpdateQuery" action="@Url.RouteUrl(nameof(QueryApiController.UpdateQuery))">
+                    <div>
+                        @Html.AntiForgeryToken()
+                        <input id="input-UpdateQuery-Query-Id" required="required" hidden="hidden" name="@nameof(UpdateQueryApiViewModel.Id)" value="@Model.Id" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="input-UpdateQuery-Query-QueryName">Abfragename</label>
+                        <input id="input-UpdateQuery-Query-QueryName" type="text" class="form-control" required="required" name="@nameof(UpdateQueryApiViewModel.QueryName)" value="@Model.QueryName" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="input-UpdateQuery-Query-RouteTemplate">Route template</label>
+                        <input id="input-UpdateQuery-Query-RouteTemplate" type="text" class="form-control" required="required" name="@nameof(UpdateQueryApiViewModel.RouteTemplate)" value="@Model.RouteTemplate" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="select-UpdateQuery-Query-AsdAggregateId">Aggregate</label>
+                        <select id="select-UpdateQuery-Query-AsdAggregateId" type="text" class="form-control" required="required" name="@nameof(UpdateQueryApiViewModel.AsdAggregateId)"></select>
+                    </div>
+                    <button id="button-UpdateQuery" type="button" class="btn btn-success pull-right">UpdateQuery</button>
+                    <div class="clearfix"></div>
+                </form>
+                <h3>Argumente</h3>
+                <hr />
+            </div>
+            <div class="panel-footer">
+                footer
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{ 
+    <script type="text/javascript">
+        $(function () { 
+            var $formDeleteQuery = $('#form-DeleteQuery'),
+                $formUpdateQuery = $('#form-UpdateQuery'),
+                $selectUpdateQueryQueryAsdAggregateId = $('#select-UpdateQuery-Query-AsdAggregateId'),
+                $buttonDeleteQuery = $('#button-DeleteQuery'),
+                $buttonUpdateQuery = $('#button-UpdateQuery'),
+                asdAggregateId = '@Model.AsdAggregateId',
+                productAggregatesJsonArrayUrl = '@Url.RouteUrl(nameof(AggregateApiController.ProductAggregatesJsonArray))';
+
+            function initSelectUpdateQueryQueryAsdAggregateId() {
+                $selectUpdateQueryQueryAsdAggregateId.find('option')
+                    .remove().end();
+                $.ajax({
+                    type: 'GET',
+                    url: productAggregatesJsonArrayUrl,
+                    success: function (response) {
+                        response.forEach(function (item) { 
+                            $selectUpdateQueryQueryAsdAggregateId
+                                .append($('<option>', {
+                                    value: item.id,
+                                    text: item.name,
+                                    selected: asdAggregateId === item.id
+                            }));
+                        });
+                    },
+                    error: function () {
+                        alert("error");
+                     }
+                });
+            }
+
+            $buttonDeleteQuery.click(function () {
+                $formDeleteQuery.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formDeleteQuery[0].checkValidity()) {
+                    $formDeleteQuery.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formDeleteQuery.attr('action'),
+                    data: $formDeleteQuery.serialize(),
+                    success: function (response) {
+                        location.href = response.redirectUrl;
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonUpdateQuery.click(function () {
+                $formUpdateQuery.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formUpdateQuery[0].checkValidity()) {
+                    $formUpdateQuery.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formUpdateQuery.attr('action'),
+                    data: $formUpdateQuery.serialize(),
+                    success: function () {
+                        $.notify({ message: 'Abfrage aktualisiert!' }, { type: 'success' });
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            (function () {
+                initSelectUpdateQueryQueryAsdAggregateId();
+            })();
+        });
+    </script>
+}

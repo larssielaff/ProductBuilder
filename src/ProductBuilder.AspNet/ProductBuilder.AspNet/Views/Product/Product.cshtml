@@ -788,7 +788,8 @@
                 aggregateMapQueryUrl = '@Url.RouteUrl(nameof(AggregateApiController.AggregateMap))',
                 productAggregatesJsonArrayUrl = '@Url.RouteUrl(nameof(AggregateApiController.ProductAggregatesJsonArray))',
                 userStoryDetailViewUrl = '@Url.RouteUrl(nameof(UserStoryController.ProductUserStory), new { userStoryId = "userStoryId" })',
-                aggregateViewUrl = '@Url.RouteUrl(nameof(AggregateController.Aggregate), new { aggregateId = "aggregateId" })';
+                aggregateViewUrl = '@Url.RouteUrl(nameof(AggregateController.Aggregate), new { aggregateId = "aggregateId" })',
+                queryViewUrl = '@Url.RouteUrl(nameof(QueryController.Query), new { queryId = "queryId" })';
 
             function initDataTableTeamMembers() {
                 dataTableTeamMembers.destroy();
@@ -1450,10 +1451,9 @@
                     type: 'POST',
                     url: $formCreateQuery.attr('action'),
                     data: $formCreateQuery.serialize(),
-                    success: function () {
+                    success: function (response) {
                         $formCreateQuery[0].reset();
-                        $modalCreateQuery.modal('hide');
-                        initDataTableQueries();
+                        location.href = response.redirectUrl
                     },
                     error: function () {
                         alert('error');
@@ -1581,6 +1581,7 @@
             $body.on('click', '.ajax-data-table-Query', function () {
                 var $this = $(this),
                     id = $this.attr('data-Id');
+                location.href = queryViewUrl.replace('queryId', id);
             });
 
             (function () {

@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System;
     using Microsoft.AspNetCore.Authorization;
+    using ProductBuilder.Application.ViewModels;
 
     [Authorize]
     public class QueryApiController : AsdController
@@ -36,15 +37,22 @@
                 throw new ArgumentNullException(nameof(model));
             if (!ModelState.IsValid)
                 return BadRequest();
+            model.Id = Guid.NewGuid();
             _appService.CreateQuery(model);
             if (IsValidOperation)
-                return Ok();
+                return Ok(new OkApiViewModel()
+                {
+                    RedirectUrl = Url.RouteUrl(nameof(QueryController.Query), new
+                    {
+                        queryid = model.Id
+                    })
+                });
             return BadRequest();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/UpdateQuery", Name = nameof(UpdateQuery))]
+        [Route("api/{productid}/update-query", Name = nameof(UpdateQuery))]
         public IActionResult UpdateQuery(UpdateQueryApiViewModel model)
         {
             if (model == null)
@@ -59,7 +67,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/DeleteQuery", Name = nameof(DeleteQuery))]
+        [Route("api/{productid}/delete-query", Name = nameof(DeleteQuery))]
         public IActionResult DeleteQuery(DeleteQueryApiViewModel model)
         {
             if (model == null)
@@ -68,7 +76,10 @@
                 return BadRequest();
             _appService.DeleteQuery(model);
             if (IsValidOperation)
-                return Ok();
+                return Ok(new OkApiViewModel()
+                {
+                    RedirectUrl = Url.RouteUrl(nameof(ProductController.Product))
+                });
             return BadRequest();
         }
     }

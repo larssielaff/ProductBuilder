@@ -57,8 +57,10 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.QueryName = message.QueryName;
+            entity.RouteTemplate = message.RouteTemplate;
+            entity.AsdAggregateId = message.AsdAggregateId;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new QueryUpdatedEvent(entity, message.AggregateId));
         }
@@ -75,8 +77,7 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
-            _repository.Update(entity);
-            throw new NotImplementedException();
+            _repository.Remove(entity);
             if (Commit())
                 Bus.RaiseEvent(new QueryDeletedEvent(entity, message.AggregateId));
         }

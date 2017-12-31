@@ -15,6 +15,8 @@ using ProductBuilder.AspNet.Services;
 using ProductBuilder.Infra.CrossCutting.IoC;
 using Asd.Infra.CrossCutting.Bus;
 using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
+using System.Threading;
 
 namespace ProductBuilder.AspNet
 {
@@ -92,6 +94,38 @@ namespace ProductBuilder.AspNet
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
             AsdInMemoryBus.ContainerAccessor = () => accessor.HttpContext.RequestServices;
+
+            if(true)
+            {
+                new Thread(() => 
+                {
+                    Thread.CurrentThread.IsBackground = true;
+                    using (var p = new Process())
+                    {
+                        p.StartInfo = new ProcessStartInfo("cmd.exe")
+                        {
+                            RedirectStandardInput = true,
+                            UseShellExecute = false,
+                        };
+
+                        p.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
+                        {
+                            throw new NotImplementedException();
+                        };
+
+                        p.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
+                        {
+                            throw new NotImplementedException();
+                        };
+
+                        p.Start();
+                        p.StandardInput.Write("lt --port 8080 --subdomain asdaas --open \n");
+                        p.WaitForExit();
+
+                        var t = this;
+                    }
+                }).Start();
+            }
         }
     }
 }

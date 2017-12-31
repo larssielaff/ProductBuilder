@@ -51,6 +51,13 @@
             return Mapper.Map<VisJsNetworkApiViewModel>(_repository.Find(x => x.ProductId == productId).ToList());
         }
 
+        public AggregateCodeViewModel GetAggregateCodeViewModel(Guid aggregateId)
+        {
+            if (aggregateId == Guid.Empty)
+                throw new ArgumentNullException(nameof(aggregateId));
+            return Mapper.Map<AggregateCodeViewModel>(_repository.GetById(aggregateId));
+        }
+
         public void DeleteAggregate(DeleteAggregateApiViewModel model)
         {
             if (model == null)

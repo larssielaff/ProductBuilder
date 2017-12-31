@@ -10,6 +10,7 @@
     using global::AutoMapper;
     using System;
     using System.Linq;
+    using ProductBuilder.Application.ViewModels.Query;
 
     public class QueryAppService : AsdAppService, IQueryAppService
     {
@@ -24,6 +25,13 @@
             if (productId == Guid.Empty)
                 throw new ArgumentNullException(nameof(productId));
             return Mapper.Map<AjaxDataTableViewModel>(_repository.Find(x => x.ProductId == productId).ToList());
+        }
+
+        public QueryViewModel GetQueryViewModel(Guid queryId)
+        {
+            if (queryId == Guid.Empty)
+                throw new ArgumentNullException(nameof(queryId));
+            return Mapper.Map<QueryViewModel>(_repository.GetById(queryId));
         }
 
         public void CreateQuery(CreateQueryApiViewModel model)
