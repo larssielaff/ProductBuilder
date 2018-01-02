@@ -10,6 +10,8 @@
 
         public virtual DbSet<AggregateProperty> AggregateProperties { get; set; }
 
+        public virtual DbSet<Event> Events { get; set; }
+
         public virtual DbSet<Topic> Topics { get; set; }
 
         public virtual DbSet<UserProfile> UserProfiles { get; set; }
@@ -124,7 +126,14 @@
             modelBuilder.Entity<AggregateProperty>()
                 .HasOptional(x => x.LinkedAggregate)
                 .WithMany(x => x.LinkedAggregateProperties)
-                .HasForeignKey(x => x.LinkedAggregateId);
+                .HasForeignKey(x => x.LinkedAggregateId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Event>()
+                .HasOptional(x => x.Aggregate)
+                .WithMany(x => x.Events)
+                .HasForeignKey(x => x.AsdAggregateId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Query>()
                 .HasOptional(x => x.Aggregate)
