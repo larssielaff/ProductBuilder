@@ -53,6 +53,7 @@
     <Compile Include="CommandHandlers\AggregateCommandHandler.cs" />
     <Compile Include="CommandHandlers\AggregatePropertyCommandHandler.cs" />
     <Compile Include="CommandHandlers\EpicCommandHandler.cs" />
+    <Compile Include="CommandHandlers\EventCommandHandler.cs" />
     <Compile Include="CommandHandlers\ProductCommandHandler.cs" />
     <Compile Include="CommandHandlers\QueryCommandHandler.cs" />
     <Compile Include="CommandHandlers\TeamCommandHandler.cs" />
@@ -76,6 +77,10 @@
     <Compile Include="Commands\Epic\CreateEpicCommand.cs" />
     <Compile Include="Commands\Epic\DeleteEpicCommand.cs" />
     <Compile Include="Commands\Epic\UpdateEpicCommand.cs" />
+    <Compile Include="Commands\Event\Base\EventCommand.cs" />
+    <Compile Include="Commands\Event\CreateEventCommand.cs" />
+    <Compile Include="Commands\Event\DeleteEventCommand.cs" />
+    <Compile Include="Commands\Event\UpdateEventCommand.cs" />
     <Compile Include="Commands\Product\Base\ProductCommand.cs" />
     <Compile Include="Commands\Product\CreateProductCommand.cs" />
     <Compile Include="Commands\Query\Base\QueryCommand.cs" />
@@ -112,6 +117,7 @@
     <Compile Include="EventHandlers\AggregateEventHandler.cs" />
     <Compile Include="EventHandlers\AggregatePropertyEventHandler.cs" />
     <Compile Include="EventHandlers\EpicEventHandler.cs" />
+    <Compile Include="EventHandlers\EventEventHandler.cs" />
     <Compile Include="EventHandlers\ProductEventHandler.cs" />
     <Compile Include="EventHandlers\QueryEventHandler.cs" />
     <Compile Include="EventHandlers\TeamEventHandler.cs" />
@@ -133,6 +139,9 @@
     <Compile Include="Events\Epic\EpicCreatedEvent.cs" />
     <Compile Include="Events\Epic\EpicDeletedEvent.cs" />
     <Compile Include="Events\Epic\EpicUpdatedEvent.cs" />
+    <Compile Include="Events\Event\EventCreatedEvent.cs" />
+    <Compile Include="Events\Event\EventDeletedEvent.cs" />
+    <Compile Include="Events\Event\EventUpdatedEvent.cs" />
     <Compile Include="Events\Product\ProductCreatedEvent.cs" />
     <Compile Include="Events\Query\QueryCreatedEvent.cs" />
     <Compile Include="Events\Query\QueryDeletedEvent.cs" />
@@ -161,6 +170,7 @@
     <Compile Include="Interfaces\IAggregatePropertyRepository.cs" />
     <Compile Include="Interfaces\IAggregateRepository.cs" />
     <Compile Include="Interfaces\IEpicRepository.cs" />
+    <Compile Include="Interfaces\IEventRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\IQueryRepository.cs" />
     <Compile Include="Interfaces\ITeamMemberRepository.cs" />
@@ -173,6 +183,7 @@
     <Compile Include="Models\Aggregate.cs" />
     <Compile Include="Models\AggregateProperty.cs" />
     <Compile Include="Models\Epic.cs" />
+    <Compile Include="Models\Event.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Query.cs" />
     <Compile Include="Models\Team.cs" />
@@ -186,6 +197,7 @@
     <Compile Include="Validations\AggregateProperty\AggregatePropertyValidator.cs" />
     <Compile Include="Validations\Aggregate\AggregateValidator.cs" />
     <Compile Include="Validations\Epic\EpicValidator.cs" />
+    <Compile Include="Validations\Event\EventValidator.cs" />
     <Compile Include="Validations\Product\ProductValidator.cs" />
     <Compile Include="Validations\Query\QueryValidator.cs" />
     <Compile Include="Validations\TeamMember\TeamMemberValidator.cs" />

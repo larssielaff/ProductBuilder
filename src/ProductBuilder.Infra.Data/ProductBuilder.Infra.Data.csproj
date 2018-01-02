@@ -69,6 +69,7 @@
     <Compile Include="Repository\AggregatePropertyRepository.cs" />
     <Compile Include="Repository\AggregateRepository.cs" />
     <Compile Include="Repository\EpicRepository.cs" />
+    <Compile Include="Repository\EventRepository.cs" />
     <Compile Include="Repository\ProductRepository.cs" />
     <Compile Include="Repository\QueryRepository.cs" />
     <Compile Include="Repository\TeamMemberRepository.cs" />
