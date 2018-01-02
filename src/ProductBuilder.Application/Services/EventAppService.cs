@@ -20,15 +20,19 @@
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public AjaxDataTableViewModel GetDataTableViewModel()
+        public AjaxDataTableViewModel GetDataTableViewModel(Guid aggregateId)
         {
-            return Mapper.Map<AjaxDataTableViewModel>(_repository.GetAll());
+            if (aggregateId == Guid.Empty)
+                throw new ArgumentNullException(nameof(aggregateId));
+            return Mapper.Map<AjaxDataTableViewModel>(_repository.Find(x => x.AsdAggregateId == aggregateId));
         }
 
         public void CreateEvent(CreateEventApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
+            if (model.Id == Guid.Empty)
+                model.Id = Guid.NewGuid();
             Bus.SendCommand(Mapper.Map<CreateEventCommand>(model));
         }
 

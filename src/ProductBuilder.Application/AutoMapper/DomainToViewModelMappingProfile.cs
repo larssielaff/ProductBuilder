@@ -79,7 +79,17 @@
                 });
         }
 
-        private void CreateMapForEvent() { }
+        private void CreateMapForEvent()
+        {
+            CreateMap<IEnumerable<Event>, AjaxDataTableViewModel>()
+                .ConstructUsing(x => new AjaxDataTableViewModel()
+                {
+                    Data = x.Select(y => new [] 
+                    {
+                        $"<div class=\"ajax-data-table-Event\" data-Id=\"{y.Id}\" data-EventName=\"{y.EventName}\">{y.EventName}</div>"
+                    })
+                });
+        }
 
         private void CreateMapForTopic()
         {

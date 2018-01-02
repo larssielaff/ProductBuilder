@@ -6,9 +6,11 @@
 
     public class CreateEventCommand : EventCommand
     {
-        public CreateEventCommand(Guid id, Guid aggregateId)
+        public CreateEventCommand(Guid id, string eventName, Guid asdAggregate, Guid aggregateId)
         {
             Id = id;
+            EventName = eventName;
+            AsdAggregateId = asdAggregate;
             AggregateId = aggregateId;
         }
 

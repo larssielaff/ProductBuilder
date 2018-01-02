@@ -6,7 +6,7 @@
 
     public interface IEventAppService : IDisposable
     {
-        AjaxDataTableViewModel GetDataTableViewModel();
+        AjaxDataTableViewModel GetDataTableViewModel(Guid aggregateId);
 
         void CreateEvent(CreateEventApiViewModel model);
 

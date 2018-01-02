@@ -6,9 +6,10 @@
 
     public class UpdateEventCommand : EventCommand
     {
-        public UpdateEventCommand(Guid id, Guid aggregateId)
+        public UpdateEventCommand(Guid id, string eventName, Guid aggregateId)
         {
             Id = id;
+            EventName = eventName;
             AggregateId = aggregateId;
         }
 

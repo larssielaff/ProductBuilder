@@ -33,9 +33,12 @@
                 NotifyValidationErrors(message);
                 return;
             }
-            var entity = new Event(message.Id) { };
+            var entity = new Event(message.Id)
+            {
+                EventName = message.EventName,
+                AsdAggregateId = message.AsdAggregateId
+            };
             _repository.Add(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new EventCreatedEvent(entity, message.AggregateId));
         }
@@ -52,8 +55,8 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.EventName = message.EventName;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new EventUpdatedEvent(entity, message.AggregateId));
         }
@@ -71,7 +74,6 @@
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
             _repository.Remove(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new EventDeletedEvent(entity, message.AggregateId));
         }

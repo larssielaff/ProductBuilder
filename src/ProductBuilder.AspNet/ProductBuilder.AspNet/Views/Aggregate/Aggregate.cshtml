@@ -1,6 +1,7 @@
 ﻿@model ProductBuilder.Application.ViewModels.Aggregate.AggregateViewModel
 @using ProductBuilder.Application.ViewModels.AggregateApi
 @using ProductBuilder.Application.ViewModels.AggregatePropertyApi
+@using ProductBuilder.Application.ViewModels.EventApi
 
 @{
     ViewData["Title"] = "Aggregate";
@@ -8,8 +9,11 @@
 
 @section head{ 
     <style>
-        .ajax-data-table-AggregateProperty{
-            cursor:pointer;
+        .ajax-data-table-AggregateProperty {
+            cursor: pointer;
+        }
+        .ajax-data-table-Event {
+            cursor: pointer;
         }
     </style>
 }
@@ -140,6 +144,80 @@
             </div>
         </div>
     </div>
+    @* modal-create-Event *@
+    <div id="modal-create-Event" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-Event-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-create-Event-label" class="modal-title">Ereigniss erstellen</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-CreateEvent *@
+                    <form id="form-CreateEvent" action="@Url.RouteUrl(nameof(EventApiController.CreateEvent))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-CreateEvent-Event-AsdAggregateId" type="text" required="required" hidden="hidden" name="@nameof(CreateEventApiViewModel.AsdAggregateId)" value="@Model.Id" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateEvent-Event-EventName">Ereigniss</label>
+                            <input id="input-CreateEvent-Event-EventName" type="text" class="form-control" required="required" name="@nameof(CreateEventApiViewModel.EventName)" />
+                        </div>
+                        <button id="button-CreateEvent" type="button" class="btn btn-success pull-right">Ereigniss erstellen</button>
+                        <div class="clearfix"></div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* modal-detail-Event *@
+    <div id="modal-detail-Event" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-detail-Event-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-detail-Event-label" class="modal-title">Ereigniss</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-DeleteEvent *@
+                    <form id="form-DeleteEvent" action="@Url.RouteUrl(nameof(EventApiController.DeleteEvent))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-DeleteEvent-Event-Id" required="required" hidden="hidden" name="@nameof(DeleteEventApiViewModel.Id)" />
+                            <input id="input-DeleteEvent-Event-AsdAggregateId" type="text" required="required" hidden="hidden" name="@nameof(DeleteEventApiViewModel.AsdAggregateId)" value="@Model.Id" />
+                        </div>
+                        <button id="button-DeleteEvent" type="button" class="btn btn-danger pull-right">Ereigniss löschen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    @* form-UpdateEvent *@
+                    <form id="form-UpdateEvent" action="@Url.RouteUrl(nameof(EventApiController.UpdateEvent))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-UpdateEvent-Event-Id" required="required" hidden="hidden" name="@nameof(UpdateEventApiViewModel.Id)" />
+                            <input id="input-UpdateEvent-Event-AsdAggregateId" type="text" required="required" hidden="hidden" name="@nameof(UpdateEventApiViewModel.AsdAggregateId)" value="@Model.Id" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-UpdateEvent-Event-EventName">Ereigniss</label>
+                            <input id="input-UpdateEvent-Event-EventName" type="text" class="form-control" required="required" name="@nameof(UpdateEventApiViewModel.EventName)" />
+                        </div>
+                        <button id="button-UpdateEvent" type="button" class="btn btn-success pull-right">Ereigniss aktualisieren</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -200,11 +278,23 @@
                         </tr>
                     </tfoot>
                 </table>
-                @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create-AggregateProperty">AggregateProperty erstellen</button>*@
+                <h3>Ereignisse</h3>
+                <hr />
+                @* table-Events *@
+                <table id="table-Events" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Ereigniss</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Ereigniss</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
-            <div class="panel-footer">
-                footer
-            </div>
+            <div class="panel-footer">footer</div>
         </div>
     </div>
 </div>
@@ -217,6 +307,9 @@
                 $formCreateAggregateProperty = $('#form-CreateAggregateProperty'),
                 $formDeleteAggregateProperty = $('#form-DeleteAggregateProperty'),
                 $formUpdateAggregateProperty = $('#form-UpdateAggregateProperty'),
+                $formCreateEvent = $('#form-CreateEvent'),
+                $formDeleteEvent = $('#form-DeleteEvent'),
+                $formUpdateEvent = $('#form-UpdateEvent'),
                 $selectCreateAggregatePropertyAggregatePropertyType = $('#select-CreateAggregateProperty-AggregateProperty-Type'),
                 $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId = $('#select-CreateAggregateProperty-AggregateProperty-LinkedAggregateId'),
                 $selectUpdateAggregatePropertyAggregatePropertyType = $('#select-UpdateAggregateProperty-AggregateProperty-Type'),
@@ -228,17 +321,28 @@
                 $inputUpdateAggregatePropertyAggregatePropertyName = $('#input-UpdateAggregateProperty-AggregateProperty-Name'),
                 $inputUpdateAggregatePropertyAggregatePropertyLinkedAggregateName = $('#input-UpdateAggregateProperty-AggregateProperty-LinkedAggregateName'),
                 $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot = $('#input-UpdateAggregateProperty-AggregateProperty-IsAggregateRoot'),
+                $inputDeleteEventEventId = $('#input-DeleteEvent-Event-Id'),
+                $inputUpdateEventEventId = $('#input-UpdateEvent-Event-Id'),
+                $inputUpdateEventEventEventName = $('#input-UpdateEvent-Event-EventName'),
                 $buttonDeleteAggregate = $('#button-DeleteAggregate'),
                 $buttonUpdateAggregate = $('#button-UpdateAggregate'),
                 $buttonCreateAggregateProperty = $('#button-CreateAggregateProperty'),
                 $buttonDeleteAggregateProperty = $('#button-DeleteAggregateProperty'),
                 $buttonUpdateAggregateProperty = $('#button-UpdateAggregateProperty'),
+                $buttonCreateEvent = $('#button-CreateEvent'),
+                $buttonDeleteEvent = $('#button-DeleteEvent'),
+                $buttonUpdateEvent = $('#button-UpdateEvent'),
                 $tableAggregateProperties = $('#table-AggregateProperties'),
+                $tableEvents = $('#table-Events'),
                 $modalCreateAggregateProperty = $('#modal-create-AggregateProperty'),
                 $modalDetailAggregateProperty = $('#modal-detail-AggregateProperty'),
+                $modalCreateEvent = $('#modal-create-Event'),
+                $modalDetailEvent = $('#modal-detail-Event'),
                 $body = $('body'),
                 dataTableAggregateProperties = $tableAggregateProperties.DataTable(),
+                dataTableEvents = $tableEvents.DataTable(),
                 dataTableAggregatePropertiesUrl = '@Url.RouteUrl(nameof(AggregatePropertyApiController.AggregatePropertiesDataTable))',
+                dataTableEventsUrl = '@Url.RouteUrl(nameof(EventApiController.EventsDataTable))',
                 productAggregatesJsonArrayUrl = '@Url.RouteUrl(nameof(AggregateApiController.ProductAggregatesJsonArray))';
 
             function initDataTableAggregateProperties() {
@@ -281,7 +385,23 @@
                         alert('error');
                     }
                 });
-             }
+            }
+
+            function initDataTableEvents() {
+                dataTableEvents.destroy();
+                dataTableEvents = $tableEvents.DataTable({
+                    dom: 'Bfrtip',
+                    ajax: dataTableEventsUrl,
+                    buttons: [
+                        {
+                            text: 'Ereigniss erstellen',
+                            action: function () {
+                                $modalCreateEvent.modal();
+                            }
+                        }
+                    ]
+                });
+            }
 
             $selectCreateAggregatePropertyAggregatePropertyType.change(function () {
                 var $this = $(this),
@@ -312,7 +432,7 @@
                 }
             });
 
-            $selectUpdateAggregatePropertyAggregatePropertyType.change(function () { 
+            $selectUpdateAggregatePropertyAggregatePropertyType.change(function () {
                 var $this = $(this),
                     value = $this.val();
                 if (value === 'Guid') {
@@ -351,7 +471,7 @@
                 var checked = $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.prop('checked');
                 $inputUpdateAggregatePropertyAggregatePropertyIsAggregateRoot.val(checked);
             });
-            
+
             $buttonDeleteAggregate.click(function () {
                 $formDeleteAggregate.find('.has-error').each(function () {
                     $(this).removeClass('has-error');
@@ -473,6 +593,81 @@
                 });
             });
 
+            $buttonCreateEvent.click(function () {
+                $formCreateEvent.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formCreateEvent[0].checkValidity()) {
+                    $formCreateEvent.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formCreateEvent.attr('action'),
+                    data: $formCreateEvent.serialize(),
+                    success: function () {
+                        $formCreateEvent[0].reset();
+                        initDataTableEvents();
+                        $modalCreateEvent.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonDeleteEvent.click(function () {
+                $formDeleteEvent.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formDeleteEvent[0].checkValidity()) {
+                    $formDeleteEvent.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formDeleteEvent.attr('action'),
+                    data: $formDeleteEvent.serialize(),
+                    success: function () {
+                        $formDeleteEvent[0].reset();
+                        initDataTableEvents();
+                        $modalDetailEvent.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
+            $buttonUpdateEvent.click(function () {
+                $formUpdateEvent.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formUpdateEvent[0].checkValidity()) {
+                    $formUpdateEvent.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formUpdateEvent.attr('action'),
+                    data: $formUpdateEvent.serialize(),
+                    success: function () {
+                        $formUpdateEvent[0].reset();
+                        initDataTableEvents();
+                        $modalDetailEvent.modal('hide');
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
             $body.on('click', '.ajax-data-table-AggregateProperty', function () {
                 var $this = $(this),
                     id = $this.attr('data-Id'),
@@ -522,9 +717,22 @@
                 $modalDetailAggregateProperty.modal();
             });
 
-            (function () { 
+            $body.on('click', '.ajax-data-table-Event', function () {
+                var $this = $(this),
+                    id = $this.attr('data-Id'),
+                    eventName = $this.attr('data-EventName');
+
+                $inputDeleteEventEventId.val(id);
+                $inputUpdateEventEventId.val(id);
+                $inputUpdateEventEventEventName.val(eventName);
+
+                $modalDetailEvent.modal();
+            });
+
+            (function () {
                 initDataTableAggregateProperties();
                 initSelectsLinkedAggregate();
+                initDataTableEvents();
             })();
         });
     </script>

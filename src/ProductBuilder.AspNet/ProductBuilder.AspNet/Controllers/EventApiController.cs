@@ -19,15 +19,17 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
-        [Route("api/EventsDataTable", Name = nameof(EventsDataTable))]
-        public IActionResult EventsDataTable()
+        [Route("api/{productid}/{aggregateid}/events-data-table", Name = nameof(EventsDataTable))]
+        public IActionResult EventsDataTable(Guid aggregateId)
         {
-            return Json(_appService.GetDataTableViewModel());
+            if (aggregateId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetDataTableViewModel(aggregateId));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/CreateEvent", Name = nameof(CreateEvent))]
+        [Route("api/{productid}/{aggregateId}/create-event", Name = nameof(CreateEvent))]
         public IActionResult CreateEvent(CreateEventApiViewModel model)
         {
             if (model == null)
@@ -42,7 +44,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/UpdateEvent", Name = nameof(UpdateEvent))]
+        [Route("api/{productid}/{aggregateid}/UpdateEvent", Name = nameof(UpdateEvent))]
         public IActionResult UpdateEvent(UpdateEventApiViewModel model)
         {
             if (model == null)
@@ -57,7 +59,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/DeleteEvent", Name = nameof(DeleteEvent))]
+        [Route("api/{productid}/{aggregateid}/delete-event", Name = nameof(DeleteEvent))]
         public IActionResult DeleteEvent(DeleteEventApiViewModel model)
         {
             if (model == null)

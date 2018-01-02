@@ -27,6 +27,8 @@
     using ProductBuilder.Domain.Commands.AggregateProperty;
     using ProductBuilder.Application.ViewModels.QueryApi;
     using ProductBuilder.Domain.Commands.Query;
+    using ProductBuilder.Application.ViewModels.EventApi;
+    using ProductBuilder.Domain.Commands.Event;
 
     public class ViewModelToDomainMappingProfile : Profile
     {
@@ -95,7 +97,17 @@
                 .ConstructUsing(x => new UpdateAggregatePropertyCommand(x.Id, x.Name, x.Type, x.LinkedAggregateId, x.LinkedAggregateName, x.IsAggregateRoot, x.AsdAggregateId));
         }
 
-        private void CreateMapForEvent() { }
+        private void CreateMapForEvent()
+        {
+            CreateMap<CreateEventApiViewModel, CreateEventCommand>()
+                .ConstructUsing(x => new CreateEventCommand(x.Id, x.EventName, x.AsdAggregateId, x.AsdAggregateId));
+
+            CreateMap<DeleteEventApiViewModel, DeleteEventCommand>()
+                .ConstructUsing(x => new DeleteEventCommand(x.Id, x.AsdAggregateId));
+
+            CreateMap<UpdateEventApiViewModel, UpdateEventCommand>()
+                .ConstructUsing(x => new UpdateEventCommand(x.Id, x.EventName, x.AsdAggregateId));
+        }
 
         private void CreateMapForTopic()
         {
