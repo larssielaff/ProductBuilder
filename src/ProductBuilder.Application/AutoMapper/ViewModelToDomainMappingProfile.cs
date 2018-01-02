@@ -34,6 +34,7 @@
         {
             CreateMapForUserStory();
             CreateMapForAggregateProperty();
+            CreateMapForEvent();
             CreateMapForTopic();
             CreateMapForUserProfile();
             CreateMapForProduct();
@@ -93,6 +94,8 @@
             CreateMap<UpdateAggregatePropertyApiViewModel, UpdateAggregatePropertyCommand>()
                 .ConstructUsing(x => new UpdateAggregatePropertyCommand(x.Id, x.Name, x.Type, x.LinkedAggregateId, x.LinkedAggregateName, x.IsAggregateRoot, x.AsdAggregateId));
         }
+
+        private void CreateMapForEvent() { }
 
         private void CreateMapForTopic()
         {

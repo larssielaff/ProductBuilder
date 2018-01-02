@@ -22,6 +22,7 @@
         {
             CreateMapForUserStory();
             CreateMapForAggregateProperty();
+            CreateMapForEvent();
             CreateMapForTopic();
             CreateMapForUserProfile();
             CreateMapForProduct();
@@ -77,6 +78,8 @@
                     })
                 });
         }
+
+        private void CreateMapForEvent() { }
 
         private void CreateMapForTopic()
         {
