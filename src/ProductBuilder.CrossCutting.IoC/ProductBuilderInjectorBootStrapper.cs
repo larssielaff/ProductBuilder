@@ -22,6 +22,8 @@
     using ProductBuilder.Domain.Events.UserStory;
     using ProductBuilder.Domain.Commands.AggregateProperty;
     using ProductBuilder.Domain.Events.AggregateProperty;
+    using ProductBuilder.Domain.Commands.Event;
+    using ProductBuilder.Domain.Events.Event;
     using ProductBuilder.Domain.Commands.Topic;
     using ProductBuilder.Domain.Events.Topic;
     using ProductBuilder.Domain.Commands.UserProfile;
@@ -51,6 +53,7 @@
             .RegisterDDD(dataConnectionString, eventStoreConnectionString)?
             .RegisterUserStory()?
             .RegisterAggregateProperty()?
+            .RegisterEvent()?
             .RegisterTopic()?
             .RegisterUserProfile()?
             .RegisterProduct()?
@@ -123,6 +126,19 @@
             return services;
         }
 
+        private static IServiceCollection RegisterEvent(this IServiceCollection services)
+        {
+            services?.AddScoped<IEventAppService, EventAppService>();
+            services?.AddScoped<IEventRepository, EventRepository>();
+            services?.AddScoped<IAsdHandler<CreateEventCommand>, EventCommandHandler>();
+            services?.AddScoped<IAsdHandler<UpdateEventCommand>, EventCommandHandler>();
+            services?.AddScoped<IAsdHandler<DeleteEventCommand>, EventCommandHandler>();
+            services?.AddScoped<IAsdHandler<EventCreatedEvent>, EventEventHandler>();
+            services?.AddScoped<IAsdHandler<EventDeletedEvent>, EventEventHandler>();
+            services?.AddScoped<IAsdHandler<EventUpdatedEvent>, EventEventHandler>();
+            return services;
+        }
+
         private static IServiceCollection RegisterTopic(this IServiceCollection services)
         {
             services?.AddScoped<ITopicAppService, TopicAppService>();
@@ -134,7 +150,6 @@
             services?.AddScoped<IAsdHandler<TopicCreatedEvent>, TopicEventHandler>();
             services?.AddScoped<IAsdHandler<TopicDeletedEvent>, TopicEventHandler>();
             return services;
-
         }
 
         private static IServiceCollection RegisterUserProfile(this IServiceCollection services)
