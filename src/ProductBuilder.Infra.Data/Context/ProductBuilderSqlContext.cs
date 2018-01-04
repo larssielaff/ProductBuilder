@@ -47,6 +47,12 @@
                 .HasForeignKey(x => x.UserStoryId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Command>()
+                .HasOptional(x => x.Event)
+                .WithMany(x => x.Commands)
+                .HasForeignKey(x => x.DomainEventId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<UserStory>()
                 .HasOptional(x => x.Topic)
                 .WithMany(x => x.UserStories)
