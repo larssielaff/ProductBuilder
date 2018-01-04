@@ -68,6 +68,7 @@
     <Compile Include="Repository\AcceptanceCriteriaRepository.cs" />
     <Compile Include="Repository\AggregatePropertyRepository.cs" />
     <Compile Include="Repository\AggregateRepository.cs" />
+    <Compile Include="Repository\CommandRepository.cs" />
     <Compile Include="Repository\EpicRepository.cs" />
     <Compile Include="Repository\EventRepository.cs" />
     <Compile Include="Repository\ProductRepository.cs" />

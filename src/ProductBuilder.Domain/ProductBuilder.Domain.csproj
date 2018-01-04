@@ -52,6 +52,7 @@
     <Compile Include="CommandHandlers\AcceptanceCriteriaCommandHandler.cs" />
     <Compile Include="CommandHandlers\AggregateCommandHandler.cs" />
     <Compile Include="CommandHandlers\AggregatePropertyCommandHandler.cs" />
+    <Compile Include="CommandHandlers\CommandCommandHandler.cs" />
     <Compile Include="CommandHandlers\EpicCommandHandler.cs" />
     <Compile Include="CommandHandlers\EventCommandHandler.cs" />
     <Compile Include="CommandHandlers\ProductCommandHandler.cs" />
@@ -73,6 +74,10 @@
     <Compile Include="Commands\Aggregate\Base\AggregateCommand.cs" />
     <Compile Include="Commands\Aggregate\CreateAggregateCommand.cs" />
     <Compile Include="Commands\Aggregate\UpdateAggregateCommand.cs" />
+    <Compile Include="Commands\Command\Base\CommandCommand.cs" />
+    <Compile Include="Commands\Command\CreateCommandCommand.cs" />
+    <Compile Include="Commands\Command\DeleteCommandCommand.cs" />
+    <Compile Include="Commands\Command\UpdateCommandCommand.cs" />
     <Compile Include="Commands\Epic\Base\EpicCommand.cs" />
     <Compile Include="Commands\Epic\CreateEpicCommand.cs" />
     <Compile Include="Commands\Epic\DeleteEpicCommand.cs" />
@@ -116,6 +121,7 @@
     <Compile Include="EventHandlers\AcceptanceCriteriaEventHandler.cs" />
     <Compile Include="EventHandlers\AggregateEventHandler.cs" />
     <Compile Include="EventHandlers\AggregatePropertyEventHandler.cs" />
+    <Compile Include="EventHandlers\CommandEventHandler.cs" />
     <Compile Include="EventHandlers\EpicEventHandler.cs" />
     <Compile Include="EventHandlers\EventEventHandler.cs" />
     <Compile Include="EventHandlers\ProductEventHandler.cs" />
@@ -136,6 +142,9 @@
     <Compile Include="Events\Aggregate\AggregateDeletedEvent.cs" />
     <Compile Include="Events\Aggregate\AggregateUpdatedEvent.cs" />
     <Compile Include="Events\Aggregate\DeleteAggregateCommand.cs" />
+    <Compile Include="Events\Command\CommandCreatedEvent.cs" />
+    <Compile Include="Events\Command\CommandDeletedEvent.cs" />
+    <Compile Include="Events\Command\CommandUpdatedEvent.cs" />
     <Compile Include="Events\Epic\EpicCreatedEvent.cs" />
     <Compile Include="Events\Epic\EpicDeletedEvent.cs" />
     <Compile Include="Events\Epic\EpicUpdatedEvent.cs" />
@@ -169,6 +178,7 @@
     <Compile Include="Interfaces\IAcceptanceCriteriaRepository.cs" />
     <Compile Include="Interfaces\IAggregatePropertyRepository.cs" />
     <Compile Include="Interfaces\IAggregateRepository.cs" />
+    <Compile Include="Interfaces\ICommandRepository.cs" />
     <Compile Include="Interfaces\IEpicRepository.cs" />
     <Compile Include="Interfaces\IEventRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
@@ -182,6 +192,7 @@
     <Compile Include="Models\AcceptanceCriteria.cs" />
     <Compile Include="Models\Aggregate.cs" />
     <Compile Include="Models\AggregateProperty.cs" />
+    <Compile Include="Models\Command.cs" />
     <Compile Include="Models\Epic.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\Product.cs" />
@@ -196,6 +207,7 @@
     <Compile Include="Validations\AcceptanceCriteria\AcceptanceCriteriaValidator.cs" />
     <Compile Include="Validations\AggregateProperty\AggregatePropertyValidator.cs" />
     <Compile Include="Validations\Aggregate\AggregateValidator.cs" />
+    <Compile Include="Validations\Command\CommandValidator.cs" />
     <Compile Include="Validations\Epic\EpicValidator.cs" />
     <Compile Include="Validations\Event\EventValidator.cs" />
     <Compile Include="Validations\Product\ProductValidator.cs" />
