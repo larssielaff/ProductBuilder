@@ -15,12 +15,14 @@
         public string Name { get; set; }
 
         public virtual ICollection<AggregateProperty> AggregateProperties { get; set; }
-        
+
         public virtual ICollection<Query> Queries { get; set; }
 
         public virtual ICollection<AggregateProperty> LinkedAggregateProperties { get; set; }
 
         public virtual ICollection<Event> Events { get; set; }
+
+        public virtual ICollection<Command> Commands { get; set; }
 
         public Aggregate(Guid id) 
             : this()
@@ -36,6 +38,7 @@
             Queries = new HashSet<Query>();
             LinkedAggregateProperties = new HashSet<AggregateProperty>();
             Events = new HashSet<Event>();
+            Commands = new HashSet<Command>();
         }
     }
 }
