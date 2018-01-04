@@ -278,7 +278,9 @@
                     IAggregateRepositoryCode = x.ToIAggregateRepositoryCode(),
                     AggregateRepositoryClasseName = $"{x.Name}Repository",
                     AggregateRepositoryCode = x.ToAggregateRepositoryCode(),
-                    
+                    DomainEvents = x.Events
+                        .Where(y => !y.Deleted)
+                        .ToDictionary(y => $"{y.EventName}Event", y => y.ToDomainEventCode())
                 });
         }
 

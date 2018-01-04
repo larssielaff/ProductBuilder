@@ -1,6 +1,7 @@
 ﻿namespace ProductBuilder.Application.AutoMapper.Extensions
 {
     using Asd.Domain.Core.Commands;
+    using Asd.Domain.Core.Events;
     using Asd.Domain.Core.Models;
     using Asd.Domain.Interfaces;
     using Microsoft.CodeAnalysis;
@@ -168,6 +169,22 @@
 
             return CompilationUnit()
                 .WithMembers(GetMembers(aggregateRepositoryClassNamespace))
+                .NormalizeWhitespace()
+                .ToFullString();
+        }
+
+        public static string ToDomainEventCode(this Event aggregateEvent)
+        {
+            if (aggregateEvent == null)
+                throw new ArgumentNullException(nameof(aggregateEvent));
+
+            var domainEventClass = GetDomainEventClass(aggregateEvent.EventName);
+            var domainEventClassNamespace = GetNamespace($"{aggregateEvent.Aggregate?.Product?.Title}.Domain.Events.{aggregateEvent.Aggregate.Name}")
+                .WithUsings(GetUsings("Asd.Domain.Core.Events", $"{aggregateEvent.Aggregate?.Product?.Title}.Domain.Models", "System"))
+                .WithMembers(GetMembers(domainEventClass));
+
+            return CompilationUnit()
+                .WithMembers(GetMembers(domainEventClassNamespace))
                 .NormalizeWhitespace()
                 .ToFullString();
         }
@@ -400,6 +417,44 @@
                 .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
                 .WithBaseList(GetAggregateRepositoryBaseList(aggregateName))
                 .WithMembers(SingletonList<MemberDeclarationSyntax>(GetAggregateRepositoryConstructor(aggregateName)));
+        }
+
+        private static ClassDeclarationSyntax GetDomainEventClass(string eventName)
+        {
+            if (string.IsNullOrWhiteSpace(eventName))
+                throw new ArgumentNullException(nameof(eventName));
+
+            return ClassDeclaration($"{eventName}Event")
+                .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                .WithBaseList(GetDomainEventBaseList())
+                .WithMembers(SingletonList<MemberDeclarationSyntax>(GetDomainEventConstructor(eventName)));
+        }
+
+        private static BaseListSyntax GetDomainEventBaseList()
+        {
+            return BaseList(SingletonSeparatedList<BaseTypeSyntax>(SimpleBaseType(IdentifierName(nameof(AsdEvent)))));
+        }
+
+        private static ConstructorDeclarationSyntax GetDomainEventConstructor(string eventName)
+        {
+            if (string.IsNullOrWhiteSpace(eventName))
+                throw new ArgumentNullException(nameof(eventName));
+
+            return ConstructorDeclaration(Identifier($"{eventName}Event"))
+                .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                .WithParameterList(ParameterList(SeparatedList<ParameterSyntax>(new SyntaxNodeOrToken[]
+                {
+                    Parameter(Identifier("entity")).WithType(IdentifierName("Event")),
+                    Token(SyntaxKind.CommaToken),
+                    Parameter(Identifier("aggregateId")).WithType(IdentifierName("Guid"))
+                })))
+                .WithInitializer(ConstructorInitializer(SyntaxKind.BaseConstructorInitializer, ArgumentList(SeparatedList<ArgumentSyntax>(new SyntaxNodeOrToken[]
+                {
+                    Argument(IdentifierName("entity")),
+                    Token(SyntaxKind.CommaToken),
+                    Argument(IdentifierName("aggregateId"))
+                }))))
+                .WithBody(Block());
         }
 
         private static BaseListSyntax GetAggregateRepositoryBaseList(string aggregateName)

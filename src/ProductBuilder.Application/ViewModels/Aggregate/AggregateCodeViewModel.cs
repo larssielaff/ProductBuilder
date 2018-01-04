@@ -23,7 +23,7 @@ namespace ProductBuilder.Application.ViewModels.Aggregate
         public string AggregateRepositoryClasseName { get; set; }
 
         public string AggregateRepositoryCode { get; set; }
-
-        public IDictionary<string, string> Events { get; set; }
+        
+        public IDictionary<string, string> DomainEvents { get; set; }
     }
 }
