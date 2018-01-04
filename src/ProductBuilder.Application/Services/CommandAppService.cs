@@ -20,9 +20,11 @@
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public AjaxDataTableViewModel GetDataTableViewModel()
+        public AjaxDataTableViewModel GetDataTableViewModel(Guid aggregateId)
         {
-            return Mapper.Map<AjaxDataTableViewModel>(_repository.GetAll());
+            if (aggregateId == Guid.Empty)
+                throw new ArgumentNullException(nameof(aggregateId));
+            return Mapper.Map<AjaxDataTableViewModel>(_repository.Find(x => x.DomainAggregateId == aggregateId));
         }
 
         public void UpdateCommand(UpdateCommandApiViewModel model)

@@ -19,15 +19,17 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
-        [Route("", Name = nameof(CommandsDataTable))]
-        public IActionResult CommandsDataTable()
+        [Route("api/{productid}/{aggregateid}/commands-data-table", Name = nameof(CommandsDataTable))]
+        public IActionResult CommandsDataTable(Guid aggregateId)
         {
-            return Json(_appService.GetDataTableViewModel());
+            if (aggregateId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetDataTableViewModel(aggregateId));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("", Name = nameof(UpdateCommand))]
+        [Route("api/UpdateCommand", Name = nameof(UpdateCommand))]
         public IActionResult UpdateCommand(UpdateCommandApiViewModel model)
         {
             if (model == null)
@@ -42,7 +44,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("", Name = nameof(DeleteCommand))]
+        [Route("api/DeleteCommand", Name = nameof(DeleteCommand))]
         public IActionResult DeleteCommand(DeleteCommandApiViewModel model)
         {
             if (model == null)
@@ -57,7 +59,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("", Name = nameof(CreateCommand))]
+        [Route("api/CreateCommand", Name = nameof(CreateCommand))]
         public IActionResult CreateCommand(CreateCommandApiViewModel model)
         {
             if (model == null)

@@ -34,6 +34,7 @@
     {
         public ViewModelToDomainMappingProfile()
         {
+            CreateMapForCommand();
             CreateMapForUserStory();
             CreateMapForAggregateProperty();
             CreateMapForEvent();
@@ -48,6 +49,8 @@
             CreateMapForAggregate();
             CreateMapForAcceptanceCriteria();
         }
+
+        private void CreateMapForCommand() { }
 
         private void CreateMapForUserStory()
         {

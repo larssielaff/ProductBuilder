@@ -20,6 +20,7 @@
     {
         public DomainToViewModelMappingProfile()
         {
+            CreateMapForCommand();
             CreateMapForUserStory();
             CreateMapForAggregateProperty();
             CreateMapForEvent();
@@ -33,6 +34,20 @@
             CreateMapForEpic();
             CreateMapForAggregate();
             CreateMapForAcceptanceCriteria();
+        }
+
+        private void CreateMapForCommand()
+        {
+            CreateMap<IEnumerable<Command>, AjaxDataTableViewModel>()
+                .ConstructUsing(x => new AjaxDataTableViewModel()
+                {
+                    Data = x.Select(y => new[]
+                    {
+                        $"<div class=\"ajax-data-table-Command\" data-Id=\"{y.Id}\" data-CommandName=\"{y.CommandName}\" data-RouteTemplate=\"{y.RouteTemplate}\" data-CommandType=\"{y.CommandType}\">{y.CommandName}</div>",
+                        $"<div class=\"ajax-data-table-Command\" data-Id=\"{y.Id}\" data-CommandName=\"{y.CommandName}\" data-RouteTemplate=\"{y.RouteTemplate}\" data-CommandType=\"{y.CommandType}\">{y.RouteTemplate}</div>",
+                        $"<div class=\"ajax-data-table-Command\" data-Id=\"{y.Id}\" data-CommandName=\"{y.CommandName}\" data-RouteTemplate=\"{y.RouteTemplate}\" data-CommandType=\"{y.CommandType}\">{y.CommandType}</div>"
+                    })
+                });
         }
 
         private void CreateMapForUserStory()

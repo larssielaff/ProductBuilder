@@ -2,6 +2,7 @@
 @using ProductBuilder.Application.ViewModels.AggregateApi
 @using ProductBuilder.Application.ViewModels.AggregatePropertyApi
 @using ProductBuilder.Application.ViewModels.EventApi
+@using ProductBuilder.Application.ViewModels.CommandApi
 
 @{
     ViewData["Title"] = "Aggregate";
@@ -12,7 +13,12 @@
         .ajax-data-table-AggregateProperty {
             cursor: pointer;
         }
+
         .ajax-data-table-Event {
+            cursor: pointer;
+        }
+
+        .ajax-data-table-Command {
             cursor: pointer;
         }
     </style>
@@ -218,6 +224,45 @@
             </div>
         </div>
     </div>
+    @* modal-create-Command *@
+    <div id="modal-create-Command" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-Command-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-create-Command-label" class="modal-title">Kommando erstellen</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-CreateCommand *@
+                    <form id="form-CreateCommand" action="@Url.RouteUrl(nameof(CommandApiController.CreateCommand))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-CreateCommand-Command-DomainAggregate" type="text" required="required" hidden="hidden" name="@nameof(CreateCommandApiViewModel.DomainAggregate)" value="@Model.Id" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateCommand-Command-CommandName">Kommando</label>
+                            <input id="input-CreateCommand-Command-CommandName" type="text" class="form-control" required="required" name="@nameof(CreateCommandApiViewModel.CommandName)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateCommand-Command-RouteTemplate">Route</label>
+                            <input id="input-CreateCommand-Command-RouteTemplate" type="text" class="form-control" required="required" name="@nameof(CreateCommandApiViewModel.RouteTemplate)" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-CreateCommand-Command-CommandType">Art</label>
+                            <input id="input-CreateCommand-Command-CommandType" type="text" class="form-control" required="required" name="@nameof(CreateCommandApiViewModel.CommandType)" />
+                        </div>
+                        <button id="button-CreateCommand" type="button" class="btn btn-success pull-right">Kommando erstellen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -293,6 +338,27 @@
                         </tr>
                     </tfoot>
                 </table>
+                <h3>Kommandos</h3>
+                <hr />
+                @* table-Commands *@
+                <table id="table-Commands" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>CommandName</th>
+                            <th>RouteTemplate</th>
+                            <th>CommandType</th>
+                            <th>DomainAggregate</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>CommandName</th>
+                            <th>RouteTemplate</th>
+                            <th>CommandType</th>
+                            <th>DomainAggregate</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
             <div class="panel-footer">footer</div>
         </div>
@@ -334,15 +400,19 @@
                 $buttonUpdateEvent = $('#button-UpdateEvent'),
                 $tableAggregateProperties = $('#table-AggregateProperties'),
                 $tableEvents = $('#table-Events'),
+                $tableCommands = $('#table-Commands'),
                 $modalCreateAggregateProperty = $('#modal-create-AggregateProperty'),
                 $modalDetailAggregateProperty = $('#modal-detail-AggregateProperty'),
                 $modalCreateEvent = $('#modal-create-Event'),
                 $modalDetailEvent = $('#modal-detail-Event'),
+                $modalCreateCommand = $('#modal-create-Command'),
                 $body = $('body'),
                 dataTableAggregateProperties = $tableAggregateProperties.DataTable(),
                 dataTableEvents = $tableEvents.DataTable(),
+                dataTableCommands = $tableCommands.DataTable(),
                 dataTableAggregatePropertiesUrl = '@Url.RouteUrl(nameof(AggregatePropertyApiController.AggregatePropertiesDataTable))',
                 dataTableEventsUrl = '@Url.RouteUrl(nameof(EventApiController.EventsDataTable))',
+                dataTableCommandsUrl = '@Url.RouteUrl(nameof(CommandApiController.CommandsDataTable))',
                 productAggregatesJsonArrayUrl = '@Url.RouteUrl(nameof(AggregateApiController.ProductAggregatesJsonArray))';
 
             function initDataTableAggregateProperties() {
@@ -397,6 +467,22 @@
                             text: 'Ereigniss erstellen',
                             action: function () {
                                 $modalCreateEvent.modal();
+                            }
+                        }
+                    ]
+                });
+            }
+
+            function initDataTableCommands() {
+                dataTableCommands.destroy();
+                dataTableCommands = $('#table-Commands').DataTable({
+                    dom: 'Bfrtip',
+                    ajax: dataTableCommandsUrl,
+                    buttons: [
+                        {
+                            text: 'Kommando erstellen',
+                            action: function () {
+                                $modalCreateCommand.modal();
                             }
                         }
                     ]
@@ -729,10 +815,16 @@
                 $modalDetailEvent.modal();
             });
 
+            $body.on('click', '.ajax-data-table-Command', function () {
+                var $this = $(this),
+                    id = $this.attr('data-Id');
+            });
+
             (function () {
                 initDataTableAggregateProperties();
                 initSelectsLinkedAggregate();
                 initDataTableEvents();
+                initDataTableCommands();
             })();
         });
     </script>

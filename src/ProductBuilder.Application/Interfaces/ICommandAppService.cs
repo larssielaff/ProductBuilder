@@ -6,7 +6,7 @@
 
     public interface ICommandAppService : IDisposable
     {
-        AjaxDataTableViewModel GetDataTableViewModel();
+        AjaxDataTableViewModel GetDataTableViewModel(Guid aggregateId);
 
         void UpdateCommand(UpdateCommandApiViewModel model);
 
