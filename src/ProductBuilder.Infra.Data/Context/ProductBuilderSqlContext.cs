@@ -6,6 +6,8 @@
 
     public class ProductBuilderSqlContext : AsdSqlContext
     {
+        public virtual DbSet<Command> Commands { get; set; }
+
         public virtual DbSet<UserStory> UserStories { get; set; }
 
         public virtual DbSet<AggregateProperty> AggregateProperties { get; set; }
@@ -29,7 +31,7 @@
         public virtual DbSet<Epic> Epics { get; set; }
 
         public virtual DbSet<Aggregate> Aggregates { get; set; }
-
+        
         public virtual DbSet<AcceptanceCriteria> AcceptanceCriterias { get; set; }
 
         public ProductBuilderSqlContext(string connectionString) 
@@ -115,6 +117,12 @@
                 .HasOptional(x => x.Epic)
                 .WithMany(x => x.UserStories)
                 .HasForeignKey(x => x.EpicId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Command>()
+                .HasOptional(x => x.Aggregate)
+                .WithMany(x => x.Commands)
+                .HasForeignKey(x => x.DomainAggregateId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<AggregateProperty>()

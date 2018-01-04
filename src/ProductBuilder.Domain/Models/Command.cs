@@ -12,7 +12,7 @@
 
         public string CommandType { get; set; }
 
-        public Guid? DomainAggregate { get; set; }
+        public Guid? DomainAggregateId { get; set; }
 
         public virtual Aggregate Aggregate { get; set; }
 

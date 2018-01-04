@@ -13,6 +13,6 @@
 
         public string CommandType { get; protected set; }
 
-        public Guid DomainAggregate { get; protected set; }
+        public Guid DomainAggregateId { get; protected set; }
     }
 }
