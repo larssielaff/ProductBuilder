@@ -134,6 +134,7 @@
     <Compile Include="Interfaces\IAggregateAppService.cs" />
     <Compile Include="Interfaces\IAggregatePropertyAppService.cs" />
     <Compile Include="Interfaces\ICommandAppService.cs" />
+    <Compile Include="Interfaces\IDomainCommandArgumentAppService.cs" />
     <Compile Include="Interfaces\IEpicAppService.cs" />
     <Compile Include="Interfaces\IEventAppService.cs" />
     <Compile Include="Interfaces\IQueryAppService.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Services\AggregateAppService.cs" />
     <Compile Include="Services\AggregatePropertyAppService.cs" />
     <Compile Include="Services\CommandAppService.cs" />
+    <Compile Include="Services\DomainCommandArgumentAppService.cs" />
     <Compile Include="Services\EpicAppService.cs" />
     <Compile Include="Services\EventAppService.cs" />
     <Compile Include="Services\ProductAppService.cs" />
@@ -176,6 +178,9 @@
     <Compile Include="ViewModels\CommandApi\DeleteCommandApiViewModel.cs" />
     <Compile Include="ViewModels\CommandApi\UpdateCommandApiViewModel.cs" />
     <Compile Include="ViewModels\Command\DomainCommandViewModel.cs" />
+    <Compile Include="ViewModels\DomainCommandArgumentApi\CreateDomainCommandArgumentApiViewModel.cs" />
+    <Compile Include="ViewModels\DomainCommandArgumentApi\DeleteDomainCommandArgumentApiViewModel.cs" />
+    <Compile Include="ViewModels\DomainCommandArgumentApi\UpdateDomainCommandArgumentApiViewModel.cs" />
     <Compile Include="ViewModels\EpicApi\CreateEpicApiViewModel.cs" />
     <Compile Include="ViewModels\EpicApi\DeleteEpicApiViewModel.cs" />
     <Compile Include="ViewModels\EpicApi\EpicQueryResult.cs" />
