@@ -20,6 +20,8 @@
 
         public virtual Aggregate Aggregate { get; set; }
 
+        public virtual ICollection<DomainCommandArgument> DomainCommandArguments { get; set; }
+
         public Command(Guid id) 
             : this()
         {
@@ -28,6 +30,9 @@
             Id = id;
         }
 
-        protected Command() { }
+        protected Command()
+        {
+            DomainCommandArguments = new HashSet<DomainCommandArgument>();
+        }
     }
 }
