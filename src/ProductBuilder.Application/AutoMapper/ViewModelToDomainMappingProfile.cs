@@ -29,6 +29,8 @@
     using ProductBuilder.Domain.Commands.Query;
     using ProductBuilder.Application.ViewModels.EventApi;
     using ProductBuilder.Domain.Commands.Event;
+    using ProductBuilder.Application.ViewModels.CommandApi;
+    using ProductBuilder.Domain.Commands.Command;
 
     public class ViewModelToDomainMappingProfile : Profile
     {
@@ -50,7 +52,17 @@
             CreateMapForAcceptanceCriteria();
         }
 
-        private void CreateMapForCommand() { }
+        private void CreateMapForCommand()
+        {
+            CreateMap<CreateCommandApiViewModel, CreateCommandCommand>()
+                .ConstructUsing(x => new CreateCommandCommand(x.Id, x.CommandName, x.RouteTemplate, x.CommandType, x.DomainEventId, x.DomainAggregateId, x.DomainAggregateId));
+
+            CreateMap<DeleteCommandApiViewModel, DeleteCommandCommand>()
+                .ConstructUsing(x => new DeleteCommandCommand(x.Id, x.DomainAggregateId));
+
+            CreateMap<UpdateCommandApiViewModel, UpdateCommandCommand>()
+                .ConstructUsing(x => new UpdateCommandCommand(x.Id, x.CommandName, x.RouteTemplate, x.CommandType, x.DomainEventId, x.DomainAggregateId));
+        }
 
         private void CreateMapForUserStory()
         {

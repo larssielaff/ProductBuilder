@@ -6,9 +6,14 @@
 
     public class CreateCommandCommand : CommandCommand
     {
-        public CreateCommandCommand(Guid id, Guid aggregateId)
+        public CreateCommandCommand(Guid id, string commandName, string routeTemplate, string commandType, Guid domainEventId, Guid domainAggregateId, Guid aggregateId)
         {
             Id = id;
+            CommandName = commandName;
+            RouteTemplate = routeTemplate;
+            CommandType = commandType;
+            DomainEventId = domainEventId;
+            DomainAggregateId = domainAggregateId;
             AggregateId = aggregateId;
         }
 

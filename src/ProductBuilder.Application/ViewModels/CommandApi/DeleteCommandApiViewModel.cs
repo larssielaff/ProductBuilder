@@ -6,6 +6,6 @@
     {
         public Guid Id { get; set; }
 
-        public Guid DomainAggregate { get; set; }
+        public Guid DomainAggregateId { get; set; }
     }
 }

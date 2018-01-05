@@ -9,6 +9,7 @@
     using ProductBuilder.Application.ViewModels.EventApi;
     using global::AutoMapper;
     using System;
+    using System.Collections.Generic;
 
     public class EventAppService : AsdAppService, IEventAppService
     {
@@ -25,6 +26,13 @@
             if (aggregateId == Guid.Empty)
                 throw new ArgumentNullException(nameof(aggregateId));
             return Mapper.Map<AjaxDataTableViewModel>(_repository.Find(x => x.AsdAggregateId == aggregateId));
+        }
+
+        public IEnumerable<DomainAggregateEventsJsonArrayApiViewModel> GetDomainAggregateEventsJsonArrayApiViewModel(Guid aggregateId)
+        {
+            if (aggregateId == Guid.Empty)
+                throw new ArgumentNullException(nameof(aggregateId));
+            return Mapper.Map<IEnumerable<DomainAggregateEventsJsonArrayApiViewModel>>(_repository.Find(x => x.AsdAggregateId == aggregateId));
         }
 
         public void CreateEvent(CreateEventApiViewModel model)

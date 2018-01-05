@@ -6,9 +6,13 @@
 
     public class UpdateCommandCommand : CommandCommand
     {
-        public UpdateCommandCommand(Guid id, Guid aggregateId)
+        public UpdateCommandCommand(Guid id, string commandName, string routeTemplate, string commandType, Guid domainEventId, Guid aggregateId)
         {
             Id = id;
+            CommandName = commandName;
+            RouteTemplate = routeTemplate;
+            CommandType = commandType;
+            DomainEventId = domainEventId;
             AggregateId = aggregateId;
         }
 

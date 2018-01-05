@@ -6,8 +6,6 @@
     using Microsoft.AspNetCore.Mvc;
     using System;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis;
 
     [Authorize]
     public class AggregateController : AsdController
@@ -31,49 +29,7 @@
         {
             if (aggregateId == Guid.Empty)
                 return NotFound();
-
-            var namespaceDeclaration = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.ParseName("asd")).NormalizeWhitespace();
-            namespaceDeclaration = namespaceDeclaration.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System")));
-
-            var classDeclaration = SyntaxFactory.ClassDeclaration("Test");
-            classDeclaration = classDeclaration.AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword));
-            classDeclaration = classDeclaration.AddBaseListTypes(SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName("AsdEntity")));
-
-
-            namespaceDeclaration = namespaceDeclaration.AddMembers(classDeclaration);
-
-            var code = namespaceDeclaration.NormalizeWhitespace()
-                .ToFullString();
-
-            ViewBag.Code = code;
-
-
             return View(nameof(AggregateCode), _appService.GetAggregateCodeViewModel(aggregateId));
         }
-    }
-}
-
-namespace ProductBuilder.Domain.Models
-{
-    using Asd.Domain.Core.Models;
-    using System;
-    using System.Collections.Generic;
-
-    public class Query : AsdEntity
-    {
-        public Guid? ProductId { get; set; }
-        public virtual Product Product { get; set; }
-        public string QueryName { get; set; }
-        public Guid? AsdAggregateId { get; set; }
-        public virtual Aggregate Aggregate { get; set; }
-        public string RouteTemplate { get; set; }
-        public Query(Guid id) 
-            : this()
-        {
-            if (id == Guid.Empty)
-                throw new ArgumentNullException(nameof(id));
-            Id = id;
-        }
-        protected Query() { }
     }
 }

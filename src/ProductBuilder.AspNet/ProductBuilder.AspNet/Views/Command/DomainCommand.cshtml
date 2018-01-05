@@ -1,0 +1,161 @@
+﻿@model ProductBuilder.Application.ViewModels.Command.DomainCommandViewModel
+@using ProductBuilder.Application.ViewModels.CommandApi
+
+@{
+    ViewData["Title"] = "DomainCommand";
+}
+
+@section head{ 
+    <style></style>
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Title</h3>
+            </div>
+            <div class="panel-body">
+                <h3>Stammdaten</h3>
+                <hr />
+                @* form-DeleteCommand *@
+                <form id="form-DeleteCommand" action="@Url.RouteUrl(nameof(CommandApiController.DeleteCommand))">
+                    <div>
+                        @Html.AntiForgeryToken()
+                        <input id="input-DeleteCommand-Command-Id" required="required" hidden="hidden" name="@nameof(DeleteCommandApiViewModel.Id)" value="@Model.Id" />
+                        <input id="input-DeleteCommand-Command-DomainAggregate" type="text" required="required" hidden="hidden" name="@nameof(DeleteCommandApiViewModel.DomainAggregateId)" value="@Model.DomainAggregateId" />
+                    </div>
+                    <button id="button-DeleteCommand" type="button" class="btn btn-danger pull-right">Kommando löschen</button>
+                    <div class="clearfix"></div>
+                </form>
+                @* form-UpdateCommand *@
+                <form id="form-UpdateCommand" action="@Url.RouteUrl(nameof(CommandApiController.UpdateCommand))">
+                    <div>
+                        @Html.AntiForgeryToken()
+                        <input id="input-UpdateCommand-Command-Id" required="required" hidden="hidden" name="@nameof(UpdateCommandApiViewModel.Id)" value="@Model.Id" />
+                        <input id="input-UpdateCommand-Command-DomainAggregate" type="text" required="required" hidden="hidden" name="@nameof(UpdateCommandApiViewModel.DomainAggregateId)" value="@Model.DomainAggregateId" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="input-UpdateCommand-Command-CommandName">Kommando</label>
+                        <input id="input-UpdateCommand-Command-CommandName" type="text" class="form-control" required="required" name="@nameof(UpdateCommandApiViewModel.CommandName)" value="@Model.CommandName" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="input-UpdateCommand-Command-RouteTemplate">Route</label>
+                        <input id="input-UpdateCommand-Command-RouteTemplate" type="text" class="form-control" required="required" name="@nameof(UpdateCommandApiViewModel.RouteTemplate)" value="@Model.RouteTemplate" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="select-UpdateCommand-Command-CommandType">Art</label>
+                        <select id="select-UpdateCommand-Command-CommandType" type="text" class="form-control" required="required" name="@nameof(UpdateCommandApiViewModel.CommandType)">
+                            <option value="Create">Create</option>
+                            <option value="Delete">Delete</option>
+                            <option value="Update">Update</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="select-UpdateCommand-Command-DomainEventId">Ereigniss</label>
+                        <select id="select-UpdateCommand-Command-DomainEventId" type="text" class="form-control" required="required" name="@nameof(UpdateCommandApiViewModel.DomainEventId)"></select>
+                    </div>
+                    <button id="button-UpdateCommand" type="button" class="btn btn-success pull-right">Kommando aktualisieren</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+            <div class="panel-footer">footer</div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script type="text/javascript">
+    $(function () { 
+        var $formDeleteCommand = $('#form-DeleteCommand'),
+            $formUpdateCommand = $('#form-UpdateCommand'),
+            $buttonDeleteCommand = $('#button-DeleteCommand'),
+            $buttonUpdateCommand = $('#button-UpdateCommand'),
+            $selectUpdateCommandCommandDomainEventId = $('#select-UpdateCommand-Command-DomainEventId'),
+            $selectUpdateCommandCommandCommandType = $('#select-UpdateCommand-Command-CommandType'),
+            domainEventId = '@Model.DomainEventId',
+            commandType = '@Model.CommandType',
+            domainAggregateEventsJsonArrayUrl = '@Url.RouteUrl(nameof(EventApiController.DomainAggregateEventsJsonArray))';
+
+        function initSelectUpdateCommandCommandDomainEventId() {
+            $.ajax({
+                type: 'GET',
+                url: domainAggregateEventsJsonArrayUrl,
+                success: function (response) {
+                    var itemsProcessed = 0;
+                    $selectUpdateCommandCommandDomainEventId
+                        .find('option')
+                        .remove()
+                        .end();
+                    response.forEach(function (item, index, array) {
+                        var option = '<option value="' + item.id + '">' + item.eventName + '</option>';
+                        $selectUpdateCommandCommandDomainEventId.append(option);
+                        itemsProcessed++;
+                        if (itemsProcessed === array.length) {
+                            $selectUpdateCommandCommandDomainEventId.val(domainEventId);
+                        }
+                    });
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        }
+
+        function initSelectUpdateCommandCommandCommandType() {
+            $selectUpdateCommandCommandCommandType.val(commandType);
+        }
+
+        $buttonDeleteCommand.click(function () {
+            $formDeleteCommand.find('.has-error').each(function () {
+                $(this).removeClass('has-error');
+            });
+            if (!$formDeleteCommand[0].checkValidity()) {
+                $formDeleteCommand.find(':invalid').each(function () {
+                    $(this).parent().addClass('has-error');
+                });
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: $formDeleteCommand.attr('action'),
+                data: $formDeleteCommand.serialize(),
+                success: function (response) {
+                    location.href = response.redirectUrl;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        });
+
+        $buttonUpdateCommand.click(function () {
+            $formUpdateCommand.find('.has-error').each(function () {
+                $(this).removeClass('has-error');
+            });
+            if (!$formUpdateCommand[0].checkValidity()) {
+                $formUpdateCommand.find(':invalid').each(function () {
+                    $(this).parent().addClass('has-error');
+                });
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: $formUpdateCommand.attr('action'),
+                data: $formUpdateCommand.serialize(),
+                success: function () {
+                    $.notify({ message: 'Kommando aktualisiert!' }, { type: 'success' });
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        });
+
+        (function () {
+            initSelectUpdateCommandCommandDomainEventId();
+            initSelectUpdateCommandCommandCommandType();
+        })();
+    });
+</script>
+}

@@ -9,6 +9,7 @@
     using ProductBuilder.Application.ViewModels.CommandApi;
     using global::AutoMapper;
     using System;
+    using ProductBuilder.Application.ViewModels.Command;
 
     public class CommandAppService : AsdAppService, ICommandAppService
     {
@@ -25,6 +26,13 @@
             if (aggregateId == Guid.Empty)
                 throw new ArgumentNullException(nameof(aggregateId));
             return Mapper.Map<AjaxDataTableViewModel>(_repository.Find(x => x.DomainAggregateId == aggregateId));
+        }
+
+        public DomainCommandViewModel GetDomainCommandViewModel(Guid commandId)
+        {
+            if (commandId == Guid.Empty)
+                throw new ArgumentNullException(nameof(commandId));
+            return Mapper.Map<DomainCommandViewModel>(_repository.GetById(commandId));
         }
 
         public void UpdateCommand(UpdateCommandApiViewModel model)
@@ -45,6 +53,8 @@
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
+            if (model.Id == Guid.Empty)
+                model.Id = Guid.NewGuid();
             Bus.SendCommand(Mapper.Map<CreateCommandCommand>(model));
         }
 

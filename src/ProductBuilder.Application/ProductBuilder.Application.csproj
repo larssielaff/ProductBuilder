@@ -175,6 +175,7 @@
     <Compile Include="ViewModels\CommandApi\CreateCommandApiViewModel.cs" />
     <Compile Include="ViewModels\CommandApi\DeleteCommandApiViewModel.cs" />
     <Compile Include="ViewModels\CommandApi\UpdateCommandApiViewModel.cs" />
+    <Compile Include="ViewModels\Command\DomainCommandViewModel.cs" />
     <Compile Include="ViewModels\EpicApi\CreateEpicApiViewModel.cs" />
     <Compile Include="ViewModels\EpicApi\DeleteEpicApiViewModel.cs" />
     <Compile Include="ViewModels\EpicApi\EpicQueryResult.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="ViewModels\EpicApi\UpdateEpicApiViewModel.cs" />
     <Compile Include="ViewModels\EventApi\CreateEventApiViewModel.cs" />
     <Compile Include="ViewModels\EventApi\DeleteEventApiViewModel.cs" />
+    <Compile Include="ViewModels\EventApi\DomainAggregateEventsJsonArrayApiViewModel.cs" />
     <Compile Include="ViewModels\EventApi\UpdateEventApiViewModel.cs" />
     <Compile Include="ViewModels\OkApiViewModel.cs" />
     <Compile Include="ViewModels\ProductApi\CreateProductApiViewModel.cs" />

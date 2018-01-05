@@ -14,5 +14,7 @@
         public string CommandType { get; protected set; }
 
         public Guid DomainAggregateId { get; protected set; }
+
+        public Guid DomainEventId { get; set; }
     }
 }

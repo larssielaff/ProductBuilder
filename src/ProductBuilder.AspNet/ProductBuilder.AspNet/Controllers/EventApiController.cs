@@ -27,6 +27,14 @@
             return Json(_appService.GetDataTableViewModel(aggregateId));
         }
 
+        [Route("api/{productid}/{aggregateid}/domain-aggregate-events-json-array", Name = nameof(DomainAggregateEventsJsonArray))]
+        public IActionResult DomainAggregateEventsJsonArray(Guid aggregateId)
+        {
+            if (aggregateId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetDomainAggregateEventsJsonArrayApiViewModel(aggregateId));
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("api/{productid}/{aggregateId}/create-event", Name = nameof(CreateEvent))]

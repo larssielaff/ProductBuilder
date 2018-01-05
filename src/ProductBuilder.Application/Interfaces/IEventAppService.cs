@@ -3,10 +3,13 @@
     using System;
     using ProductBuilder.Application.ViewModels;
     using ProductBuilder.Application.ViewModels.EventApi;
+    using System.Collections.Generic;
 
     public interface IEventAppService : IDisposable
     {
         AjaxDataTableViewModel GetDataTableViewModel(Guid aggregateId);
+
+        IEnumerable<DomainAggregateEventsJsonArrayApiViewModel> GetDomainAggregateEventsJsonArrayApiViewModel(Guid aggregateId);
 
         void CreateEvent(CreateEventApiViewModel model);
 

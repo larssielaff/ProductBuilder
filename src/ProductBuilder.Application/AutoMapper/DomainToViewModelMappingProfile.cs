@@ -15,6 +15,8 @@
     using ProductBuilder.Application.ViewModels.AggregateApi;
     using ProductBuilder.Application.ViewModels.Query;
     using ProductBuilder.Application.AutoMapper.Extensions;
+    using ProductBuilder.Application.ViewModels.Command;
+    using ProductBuilder.Application.ViewModels.EventApi;
 
     public class DomainToViewModelMappingProfile : Profile
     {
@@ -45,8 +47,20 @@
                     {
                         $"<div class=\"ajax-data-table-Command\" data-Id=\"{y.Id}\" data-CommandName=\"{y.CommandName}\" data-RouteTemplate=\"{y.RouteTemplate}\" data-CommandType=\"{y.CommandType}\">{y.CommandName}</div>",
                         $"<div class=\"ajax-data-table-Command\" data-Id=\"{y.Id}\" data-CommandName=\"{y.CommandName}\" data-RouteTemplate=\"{y.RouteTemplate}\" data-CommandType=\"{y.CommandType}\">{y.RouteTemplate}</div>",
-                        $"<div class=\"ajax-data-table-Command\" data-Id=\"{y.Id}\" data-CommandName=\"{y.CommandName}\" data-RouteTemplate=\"{y.RouteTemplate}\" data-CommandType=\"{y.CommandType}\">{y.CommandType}</div>"
+                        $"<div class=\"ajax-data-table-Command\" data-Id=\"{y.Id}\" data-CommandName=\"{y.CommandName}\" data-RouteTemplate=\"{y.RouteTemplate}\" data-CommandType=\"{y.CommandType}\">{y.CommandType}</div>",
+                        $"<div class=\"ajax-data-table-Command\" data-Id=\"{y.Id}\" data-CommandName=\"{y.CommandName}\" data-RouteTemplate=\"{y.RouteTemplate}\" data-CommandType=\"{y.CommandType}\">{y.Event?.EventName}</div>"
                     })
+                });
+
+            CreateMap<Command, DomainCommandViewModel>()
+                .ConstructUsing(x => new DomainCommandViewModel()
+                {
+                    Id = x.Id,
+                    DomainAggregateId = x.DomainAggregateId,
+                    CommandName = x.CommandName,
+                    CommandType = x.CommandType,
+                    DomainEventId = x.DomainEventId,
+                    RouteTemplate = x.RouteTemplate
                 });
         }
 
@@ -104,6 +118,13 @@
                         $"<div class=\"ajax-data-table-Event\" data-Id=\"{y.Id}\" data-EventName=\"{y.EventName}\">{y.EventName}</div>"
                     })
                 });
+
+            CreateMap<IEnumerable<Event>, IEnumerable<DomainAggregateEventsJsonArrayApiViewModel>>()
+                .ConstructUsing(x => x.Select(y => new DomainAggregateEventsJsonArrayApiViewModel()
+                {
+                    Id = y.Id,
+                    EventName = y.EventName
+                }));
         }
 
         private void CreateMapForTopic()

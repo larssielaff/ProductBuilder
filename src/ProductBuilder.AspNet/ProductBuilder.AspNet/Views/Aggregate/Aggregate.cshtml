@@ -239,7 +239,7 @@
                     <form id="form-CreateCommand" action="@Url.RouteUrl(nameof(CommandApiController.CreateCommand))">
                         <div>
                             @Html.AntiForgeryToken()
-                            <input id="input-CreateCommand-Command-DomainAggregate" type="text" required="required" hidden="hidden" name="@nameof(CreateCommandApiViewModel.DomainAggregate)" value="@Model.Id" />
+                            <input id="input-CreateCommand-Command-DomainAggregate" type="text" required="required" hidden="hidden" name="@nameof(CreateCommandApiViewModel.DomainAggregateId)" value="@Model.Id" />
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="input-CreateCommand-Command-CommandName">Kommando</label>
@@ -250,8 +250,16 @@
                             <input id="input-CreateCommand-Command-RouteTemplate" type="text" class="form-control" required="required" name="@nameof(CreateCommandApiViewModel.RouteTemplate)" />
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="input-CreateCommand-Command-CommandType">Art</label>
-                            <input id="input-CreateCommand-Command-CommandType" type="text" class="form-control" required="required" name="@nameof(CreateCommandApiViewModel.CommandType)" />
+                            <label class="control-label" for="select-CreateCommand-Command-CommandType">Art</label>
+                            <select id="select-CreateCommand-Command-CommandType" type="text" class="form-control" required="required" name="@nameof(CreateCommandApiViewModel.CommandType)">
+                                <option value="Create">Create</option>
+                                <option value="Delete">Delete</option>
+                                <option value="Update">Update</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="select-CreateCommand-Command-DomainEventId">Ereigniss</label>
+                            <select id="select-CreateCommand-Command-DomainEventId" type="text" class="form-control" required="required" name="@nameof(CreateCommandApiViewModel.DomainEventId)"></select>
                         </div>
                         <button id="button-CreateCommand" type="button" class="btn btn-success pull-right">Kommando erstellen</button>
                         <div class="clearfix"></div>
@@ -344,18 +352,18 @@
                 <table id="table-Commands" class="table table-striped">
                     <thead>
                         <tr>
-                            <th>CommandName</th>
-                            <th>RouteTemplate</th>
-                            <th>CommandType</th>
-                            <th>DomainAggregate</th>
+                            <th>Kommando</th>
+                            <th>Route</th>
+                            <th>Art</th>
+                            <th>Ereigniss</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>CommandName</th>
-                            <th>RouteTemplate</th>
-                            <th>CommandType</th>
-                            <th>DomainAggregate</th>
+                            <th>Kommando</th>
+                            <th>Route</th>
+                            <th>Art</th>
+                            <th>Ereigniss</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -376,10 +384,12 @@
                 $formCreateEvent = $('#form-CreateEvent'),
                 $formDeleteEvent = $('#form-DeleteEvent'),
                 $formUpdateEvent = $('#form-UpdateEvent'),
+                $formCreateCommand = $('#form-CreateCommand'),
                 $selectCreateAggregatePropertyAggregatePropertyType = $('#select-CreateAggregateProperty-AggregateProperty-Type'),
                 $selectCreateAggregatePropertyAggregatePropertyLinkedAggregateId = $('#select-CreateAggregateProperty-AggregateProperty-LinkedAggregateId'),
                 $selectUpdateAggregatePropertyAggregatePropertyType = $('#select-UpdateAggregateProperty-AggregateProperty-Type'),
                 $selectUpdateAggregatePropertyAggregatePropertyLinkedAggregateId = $('#select-UpdateAggregateProperty-AggregateProperty-LinkedAggregateId'),
+                $selectCreateCommandCommandDomainEventId = $('#select-CreateCommand-Command-DomainEventId'),
                 $inputCreateAggregatePropertyAggregatePropertyIsAggregateRoot = $('#input-CreateAggregateProperty-AggregateProperty-IsAggregateRoot'),
                 $inputCreateAggregatePropertyAggregatePropertyLinkedAggregateName = $('#input-CreateAggregateProperty-AggregateProperty-LinkedAggregateName'),
                 $inputDeleteAggregatePropertyAggregatePropertyId = $('#input-DeleteAggregateProperty-AggregateProperty-Id'),
@@ -398,6 +408,7 @@
                 $buttonCreateEvent = $('#button-CreateEvent'),
                 $buttonDeleteEvent = $('#button-DeleteEvent'),
                 $buttonUpdateEvent = $('#button-UpdateEvent'),
+                $buttonCreateCommand = $('#button-CreateCommand'),
                 $tableAggregateProperties = $('#table-AggregateProperties'),
                 $tableEvents = $('#table-Events'),
                 $tableCommands = $('#table-Commands'),
@@ -413,7 +424,8 @@
                 dataTableAggregatePropertiesUrl = '@Url.RouteUrl(nameof(AggregatePropertyApiController.AggregatePropertiesDataTable))',
                 dataTableEventsUrl = '@Url.RouteUrl(nameof(EventApiController.EventsDataTable))',
                 dataTableCommandsUrl = '@Url.RouteUrl(nameof(CommandApiController.CommandsDataTable))',
-                productAggregatesJsonArrayUrl = '@Url.RouteUrl(nameof(AggregateApiController.ProductAggregatesJsonArray))';
+                productAggregatesJsonArrayUrl = '@Url.RouteUrl(nameof(AggregateApiController.ProductAggregatesJsonArray))',
+                domainCommandViewUrl = '@Url.RouteUrl(nameof(CommandController.DomainCommand), new { commandId = "commandId" })';
 
             function initDataTableAggregateProperties() {
                 dataTableAggregateProperties.destroy();
@@ -461,7 +473,21 @@
                 dataTableEvents.destroy();
                 dataTableEvents = $tableEvents.DataTable({
                     dom: 'Bfrtip',
-                    ajax: dataTableEventsUrl,
+                    ajax: {
+                        url: dataTableEventsUrl,
+                        complete: function (data) {
+                            $selectCreateCommandCommandDomainEventId.find('option')
+                                .remove()
+                                .end();
+                            data.responseJSON.data.forEach(function (item) {
+                                var $item = $(item[0]),
+                                    id = $item.attr('data-Id'),
+                                    eventName = $item.attr('data-EventName'),
+                                    option = '<option value="' + id + '">' + eventName + '</option>';
+                                $selectCreateCommandCommandDomainEventId.append(option);
+                             });
+                        }
+                    },
                     buttons: [
                         {
                             text: 'Ereigniss erstellen',
@@ -754,6 +780,29 @@
                 });
             });
 
+            $buttonCreateCommand.click(function () {
+                $formCreateCommand.find('.has-error').each(function () {
+                    $(this).removeClass('has-error');
+                });
+                if (!$formCreateCommand[0].checkValidity()) {
+                    $formCreateCommand.find(':invalid').each(function () {
+                        $(this).parent().addClass('has-error');
+                    });
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: $formCreateCommand.attr('action'),
+                    data: $formCreateCommand.serialize(),
+                    success: function (response) {
+                        location.href = response.redirectUrl;
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            });
+
             $body.on('click', '.ajax-data-table-AggregateProperty', function () {
                 var $this = $(this),
                     id = $this.attr('data-Id'),
@@ -818,6 +867,7 @@
             $body.on('click', '.ajax-data-table-Command', function () {
                 var $this = $(this),
                     id = $this.attr('data-Id');
+                location.href = domainCommandViewUrl.replace('commandId', id);
             });
 
             (function () {

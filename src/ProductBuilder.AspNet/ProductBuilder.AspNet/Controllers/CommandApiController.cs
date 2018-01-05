@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System;
     using Microsoft.AspNetCore.Authorization;
+    using ProductBuilder.Application.ViewModels;
 
     [Authorize]
     public class CommandApiController : AsdController
@@ -29,7 +30,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/UpdateCommand", Name = nameof(UpdateCommand))]
+        [Route("api/{productid}/{aggregateid}/{commandid}/update-command", Name = nameof(UpdateCommand))]
         public IActionResult UpdateCommand(UpdateCommandApiViewModel model)
         {
             if (model == null)
@@ -44,7 +45,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/DeleteCommand", Name = nameof(DeleteCommand))]
+        [Route("api/{productid}/{aggregateid}/{commandid}/delete-command", Name = nameof(DeleteCommand))]
         public IActionResult DeleteCommand(DeleteCommandApiViewModel model)
         {
             if (model == null)
@@ -53,22 +54,32 @@
                 return BadRequest();
             _appService.DeleteCommand(model);
             if (IsValidOperation)
-                return Ok();
+                return Ok(new OkApiViewModel()
+                {
+                    RedirectUrl = Url.RouteUrl(nameof(AggregateController.Aggregate))
+                });
             return BadRequest();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/CreateCommand", Name = nameof(CreateCommand))]
+        [Route("api/{productid}/{aggregateid}/create-command", Name = nameof(CreateCommand))]
         public IActionResult CreateCommand(CreateCommandApiViewModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
             if (!ModelState.IsValid)
                 return BadRequest();
+            model.Id = Guid.NewGuid();
             _appService.CreateCommand(model);
             if (IsValidOperation)
-                return Ok();
+                return Ok(new OkApiViewModel()
+                {
+                    RedirectUrl = Url.RouteUrl(nameof(CommandController.DomainCommand), new
+                    {
+                        commandId = model.Id
+                    })
+                });
             return BadRequest();
         }
     }

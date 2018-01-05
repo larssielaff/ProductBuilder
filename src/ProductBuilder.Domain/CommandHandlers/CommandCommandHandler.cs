@@ -36,8 +36,11 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.CommandName = message.CommandName;
+            entity.RouteTemplate = message.RouteTemplate;
+            entity.CommandType = message.CommandType;
+            entity.DomainEventId = message.DomainEventId;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new CommandUpdatedEvent(entity, message.AggregateId));
         }
@@ -55,7 +58,6 @@
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
             _repository.Remove(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new CommandDeletedEvent(entity, message.AggregateId));
         }
@@ -69,9 +71,15 @@
                 NotifyValidationErrors(message);
                 return;
             }
-            var entity = new Command(message.Id) { };
+            var entity = new Command(message.Id)
+            {
+                CommandName = message.CommandName,
+                RouteTemplate = message.RouteTemplate,
+                CommandType = message.CommandType,
+                DomainEventId = message.DomainEventId,
+                DomainAggregateId = message.DomainAggregateId
+            };
             _repository.Add(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new CommandCreatedEvent(entity, message.AggregateId));
         }
