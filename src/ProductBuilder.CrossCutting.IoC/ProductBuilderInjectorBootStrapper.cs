@@ -30,6 +30,8 @@
     using ProductBuilder.Domain.Events.Topic;
     using ProductBuilder.Domain.Commands.UserProfile;
     using ProductBuilder.Domain.Events.UserProfile;
+    using ProductBuilder.Domain.Commands.DomainCommandArgument;
+    using ProductBuilder.Domain.Events.DomainCommandArgument;
     using ProductBuilder.Domain.Commands.Product;
     using ProductBuilder.Domain.Events.Product;
     using ProductBuilder.Domain.Commands.Team;
@@ -59,6 +61,7 @@
             .RegisterEvent()?
             .RegisterTopic()?
             .RegisterUserProfile()?
+            .RegisterDomainCommandArgument()?
             .RegisterProduct()?
             .RegisterTeam()?
             .RegisterQuery()?
@@ -177,6 +180,19 @@
             return services;
         }
 
+        private static IServiceCollection RegisterDomainCommandArgument(this IServiceCollection services)
+        {
+            services?.AddScoped<IDomainCommandArgumentAppService, DomainCommandArgumentAppService>();
+            services?.AddScoped<IDomainCommandArgumentRepository, DomainCommandArgumentRepository>();
+            services?.AddScoped<IAsdHandler<UpdateDomainCommandArgumentCommand>, DomainCommandArgumentCommandHandler>();
+            services?.AddScoped<IAsdHandler<CreateDomainCommandArgumentCommand>, DomainCommandArgumentCommandHandler>();
+            services?.AddScoped<IAsdHandler<DeleteDomainCommandArgumentCommand>, DomainCommandArgumentCommandHandler>();
+            services?.AddScoped<IAsdHandler<DomainCommandArgumentUpdatedEvent>, DomainCommandArgumentEventHandler>();
+            services?.AddScoped<IAsdHandler<DomainCommandArgumentCreatedEvent>, DomainCommandArgumentEventHandler>();
+            services?.AddScoped<IAsdHandler<DomainCommandArgumentDeletedEvent>, DomainCommandArgumentEventHandler>();
+            return services;
+        }
+
         private static IServiceCollection RegisterProduct(this IServiceCollection services)
         {
             services?.AddScoped<IProductAppService, ProductAppService>();
@@ -255,7 +271,7 @@
             services?.AddScoped<IAsdHandler<AggregateUpdatedEvent>, AggregateEventHandler>();
             return services;
         }
-        
+
         private static IServiceCollection RegisterAcceptanceCriteria(this IServiceCollection services)
         {
             services?.AddScoped<IAcceptanceCriteriaAppService, AcceptanceCriteriaAppService>();
