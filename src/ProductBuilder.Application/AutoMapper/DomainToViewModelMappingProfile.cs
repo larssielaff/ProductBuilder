@@ -28,6 +28,7 @@
             CreateMapForEvent();
             CreateMapForTopic();
             CreateMapForUserProfile();
+            CreateMapForDomainCommandArgument();
             CreateMapForProduct();
             CreateMapForTeam();
             CreateMapForQuery();
@@ -155,6 +156,8 @@
                     $"<div class=\"ajax-data-table-UserProfile\" data-Id=\"{z.Id}\" data-EmailAddress=\"{z.EmailAddress}\">{z.EmailAddress}</div>",
                 })));
         }
+
+        private void CreateMapForDomainCommandArgument() { }
 
         private void CreateMapForProduct()
         {

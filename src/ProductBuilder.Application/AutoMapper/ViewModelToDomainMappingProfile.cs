@@ -42,6 +42,7 @@
             CreateMapForEvent();
             CreateMapForTopic();
             CreateMapForUserProfile();
+            CreateMapForDomainCommandArgument();
             CreateMapForProduct();
             CreateMapForTeam();
             CreateMapForQuery();
@@ -137,6 +138,8 @@
         }
 
         private void CreateMapForUserProfile() { }
+
+        private void CreateMapForDomainCommandArgument() { }
 
         private void CreateMapForProduct()
         {
