@@ -6,7 +6,7 @@
 
     public interface IDomainCommandArgumentAppService : IDisposable
     {
-        AjaxDataTableViewModel GetDataTableViewModel();
+        AjaxDataTableViewModel GetDataTableViewModel(Guid commandId);
 
         void UpdateDomainCommandArgument(UpdateDomainCommandArgumentApiViewModel model);
 

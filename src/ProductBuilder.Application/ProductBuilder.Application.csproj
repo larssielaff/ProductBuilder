@@ -166,6 +166,7 @@
     <Compile Include="ViewModels\AggregateApi\CreateAggregateApiViewModel.cs" />
     <Compile Include="ViewModels\AggregateApi\DeleteAggregateApiViewModel.cs" />
     <Compile Include="ViewModels\AggregateApi\UpdateAggregateApiViewModel.cs" />
+    <Compile Include="ViewModels\AggregatePropertyApi\AggregatePropertiesJsonArrayApiViewModel.cs" />
     <Compile Include="ViewModels\AggregatePropertyApi\CreateAggregatePropertyApiViewModel.cs" />
     <Compile Include="ViewModels\AggregatePropertyApi\DeleteAggregatePropertyApiViewModel.cs" />
     <Compile Include="ViewModels\AggregatePropertyApi\UpdateAggregatePropertyApiViewModel.cs" />

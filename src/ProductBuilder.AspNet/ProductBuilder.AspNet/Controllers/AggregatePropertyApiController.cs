@@ -27,6 +27,14 @@
             return Json(_appService.GetDataTableViewModel(aggregateId));
         }
 
+        [Route("api/{productid}/{aggregateid}/aggregate-properties-json-array", Name = nameof(AggregatePropertiesJsonArray))]
+        public IActionResult AggregatePropertiesJsonArray(Guid aggregateId)
+        {
+            if (aggregateId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetAggregatePropertiesJsonArrayApiViewModel(aggregateId));
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken] [Route("api/{productid}/{aggregateid}/update-aggregate-property", Name = nameof(UpdateAggregateProperty))]
         public IActionResult UpdateAggregateProperty(UpdateAggregatePropertyApiViewModel model)

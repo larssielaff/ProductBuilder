@@ -10,6 +10,7 @@
     using global::AutoMapper;
     using System;
     using System.Linq;
+    using System.Collections.Generic;
 
     public class AggregatePropertyAppService : AsdAppService, IAggregatePropertyAppService
     {
@@ -26,6 +27,13 @@
             if (asdAggregateId == Guid.Empty)
                 throw new ArgumentNullException(nameof(asdAggregateId));
             return Mapper.Map<AjaxDataTableViewModel>(_repository.Find(x => x.AsdAggregateId == asdAggregateId).ToList());
+        }
+
+        public IEnumerable<AggregatePropertiesJsonArrayApiViewModel> GetAggregatePropertiesJsonArrayApiViewModel(Guid aggregateId)
+        {
+            if (aggregateId == Guid.Empty)
+                throw new ArgumentNullException(nameof(aggregateId));
+            return Mapper.Map<IEnumerable<AggregatePropertiesJsonArrayApiViewModel>>(_repository.Find(x => x.AsdAggregateId == aggregateId));
         }
 
         public void UpdateAggregate(UpdateAggregatePropertyApiViewModel model)

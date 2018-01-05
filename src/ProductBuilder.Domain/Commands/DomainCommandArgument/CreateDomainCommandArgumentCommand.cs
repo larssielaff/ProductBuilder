@@ -6,9 +6,12 @@
 
     public class CreateDomainCommandArgumentCommand : DomainCommandArgumentCommand
     {
-        public CreateDomainCommandArgumentCommand(Guid id, Guid aggregateId)
+        public CreateDomainCommandArgumentCommand(Guid id, Guid domainAggregatePropertyId, Guid domainCommandId, Guid aggregateId)
         {
-            Id = id; AggregateId = aggregateId;
+            Id = id;
+            DomainAggregatePropertyId = domainAggregatePropertyId;
+            DomainCommandId = domainCommandId;
+            AggregateId = aggregateId;
         }
 
         public override bool IsValid()

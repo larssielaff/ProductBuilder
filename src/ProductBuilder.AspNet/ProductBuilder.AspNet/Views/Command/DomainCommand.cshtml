@@ -1,13 +1,94 @@
 ﻿@model ProductBuilder.Application.ViewModels.Command.DomainCommandViewModel
 @using ProductBuilder.Application.ViewModels.CommandApi
+@using ProductBuilder.Application.ViewModels.DomainCommandArgumentApi
 
 @{
     ViewData["Title"] = "DomainCommand";
 }
 
 @section head{ 
-    <style></style>
+    <style>
+        .ajax-data-table-DomainCommandArgument {
+            cursor: pointer;
+        }
+    </style>
 }
+
+<div>
+    @* modal-create-DomainCommandArgument *@
+    <div id="modal-create-DomainCommandArgument" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-create-DomainCommandArgument-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-create-DomainCommandArgument-label" class="modal-title">Befehlsargument erstellen</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-CreateDomainCommandArgument *@
+                    <form id="form-CreateDomainCommandArgument" action="@Url.RouteUrl(nameof(DomainCommandArgumentApiController.CreateDomainCommandArgument))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-CreateDomainCommandArgument-DomainCommandArgument-DomainCommandId" type="text" required="required" hidden="hidden" name="@nameof(CreateDomainCommandArgumentApiViewModel.DomainCommandId)" value="@Model.Id" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="select-CreateDomainCommandArgument-DomainCommandArgument-DomainAggregatePropertyId">Property</label>
+                            <select id="select-CreateDomainCommandArgument-DomainCommandArgument-DomainAggregatePropertyId" type="text" class="form-control" required="required" name="@nameof(CreateDomainCommandArgumentApiViewModel.DomainAggregatePropertyId)"></select>
+                        </div>
+                        <button id="button-CreateDomainCommandArgument" type="button" class="btn btn-success pull-right">Befehlsargument erstellen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* modal-detail-DomainCommandArgument *@
+    <div id="modal-detail-DomainCommandArgument" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-detail-DomainCommandArgument-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="modal-detail-DomainCommandArgument-label" class="modal-title">Befehlsargument</h4>
+                </div>
+                <div class="modal-body">
+                    @* form-DeleteDomainCommandArgument *@
+                    <form id="form-DeleteDomainCommandArgument" action="@Url.RouteUrl(nameof(DomainCommandArgumentApiController.DeleteDomainCommandArgument))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-DeleteDomainCommandArgument-DomainCommandArgument-Id" required="required" hidden="hidden" name="@nameof(DeleteDomainCommandArgumentApiViewModel.Id)" />
+                            <input id="input-DeleteDomainCommandArgument-DomainCommandArgument-DomainCommandId" type="text" required="required" hidden="hidden" name="@nameof(DeleteDomainCommandArgumentApiViewModel.DomainCommandId)" value="@Model.Id" />
+                        </div>
+                        <button id="button-DeleteDomainCommandArgument" type="button" class="btn btn-danger pull-right">Befehlsargument löschen</button>
+                        <div class="clearfix"></div>
+                    </form>
+                    @* form-UpdateDomainCommandArgument *@
+                    <form id="form-UpdateDomainCommandArgument" action="@Url.RouteUrl(nameof(DomainCommandArgumentApiController.UpdateDomainCommandArgument))">
+                        <div>
+                            @Html.AntiForgeryToken()
+                            <input id="input-UpdateDomainCommandArgument-DomainCommandArgument-Id" required="required" hidden="hidden" name="@nameof(UpdateDomainCommandArgumentApiViewModel.Id)" />
+                            <input id="input-UpdateDomainCommandArgument-DomainCommandArgument-DomainCommandId" type="text" required="required" hidden="hidden" name="@nameof(UpdateDomainCommandArgumentApiViewModel.DomainCommandId)" value="@Model.Id" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="select-UpdateDomainCommandArgument-DomainCommandArgument-DomainAggregatePropertyId">Property</label>
+                            <select id="select-UpdateDomainCommandArgument-DomainCommandArgument-DomainAggregatePropertyId" type="text" class="form-control" required="required" name="@nameof(UpdateDomainCommandArgumentApiViewModel.DomainAggregatePropertyId)"></select>
+                        </div>
+                        <button id="button-UpdateDomainCommandArgument" type="button" class="btn btn-success pull-right">Befehlsargument aktualisieren</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-xs-12">
@@ -58,6 +139,21 @@
                     <button id="button-UpdateCommand" type="button" class="btn btn-success pull-right">Kommando aktualisieren</button>
                     <div class="clearfix"></div>
                 </form>
+                <h3>Befehlsargumente</h3>
+                <hr />
+                @* table-DomainCommandArguments *@
+                <table id="table-DomainCommandArguments" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Property</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
             <div class="panel-footer">footer</div>
         </div>
@@ -66,16 +162,33 @@
 
 @section scripts{
 <script type="text/javascript">
-    $(function () { 
+    $(function () {
         var $formDeleteCommand = $('#form-DeleteCommand'),
             $formUpdateCommand = $('#form-UpdateCommand'),
+            $formCreateDomainCommandArgument = $('#form-CreateDomainCommandArgument'),
+            $formDeleteDomainCommandArgument = $('#form-DeleteDomainCommandArgument'),
+            $formUpdateDomainCommandArgument = $('#form-UpdateDomainCommandArgument'),
             $buttonDeleteCommand = $('#button-DeleteCommand'),
             $buttonUpdateCommand = $('#button-UpdateCommand'),
+            $buttonCreateDomainCommandArgument = $('#button-CreateDomainCommandArgument'),
+            $buttonDeleteDomainCommandArgument = $('#button-DeleteDomainCommandArgument'),
+            $buttonUpdateDomainCommandArgument = $('#button-UpdateDomainCommandArgument'),
             $selectUpdateCommandCommandDomainEventId = $('#select-UpdateCommand-Command-DomainEventId'),
             $selectUpdateCommandCommandCommandType = $('#select-UpdateCommand-Command-CommandType'),
+            $selectCreateDomainCommandArgumentDomainCommandArgumentDomainAggregatePropertyId = $('#select-CreateDomainCommandArgument-DomainCommandArgument-DomainAggregatePropertyId'),
+            $selectUpdateDomainCommandArgumentDomainCommandArgumentDomainAggregatePropertyId = $('#select-UpdateDomainCommandArgument-DomainCommandArgument-DomainAggregatePropertyId'),
+            $inputDeleteDomainCommandArgumentDomainCommandArgumentId = $('#input-DeleteDomainCommandArgument-DomainCommandArgument-Id'),
+            $inputUpdateDomainCommandArgumentDomainCommandArgumentId = $('#input-UpdateDomainCommandArgument-DomainCommandArgument-Id'),
+            $tableDomainCommandArguments = $('#table-DomainCommandArguments'),
+            $modalCreateDomainCommandArgument = $('#modal-create-DomainCommandArgument'),
+            $modalDetailDomainCommandArgument = $('#modal-detail-DomainCommandArgument'),
+            $body = $('body'),
+            dataTableDomainCommandArguments = $tableDomainCommandArguments.DataTable(),
             domainEventId = '@Model.DomainEventId',
             commandType = '@Model.CommandType',
-            domainAggregateEventsJsonArrayUrl = '@Url.RouteUrl(nameof(EventApiController.DomainAggregateEventsJsonArray))';
+            dataTableDomainCommandArgumentsUrl = '@Url.RouteUrl(nameof(DomainCommandArgumentApiController.DomainCommandArgumentsDataTable))',
+            domainAggregateEventsJsonArrayUrl = '@Url.RouteUrl(nameof(EventApiController.DomainAggregateEventsJsonArray))',
+            aggregatePropertiesJsonArrayUrl = '@Url.RouteUrl(nameof(AggregatePropertyApiController.AggregatePropertiesJsonArray))';
 
         function initSelectUpdateCommandCommandDomainEventId() {
             $.ajax({
@@ -104,6 +217,49 @@
 
         function initSelectUpdateCommandCommandCommandType() {
             $selectUpdateCommandCommandCommandType.val(commandType);
+        }
+
+        function initDataTableDomainCommandArguments() {
+            dataTableDomainCommandArguments.destroy();
+            dataTableDomainCommandArguments = $tableDomainCommandArguments.DataTable({
+                dom: 'Bfrtip',
+                ajax: dataTableDomainCommandArgumentsUrl,
+                buttons: [
+                    {
+                        text: 'Befehlsargument erstellen',
+                        action: function () {
+                            $modalCreateDomainCommandArgument.modal();
+                        }
+                    }
+                ]
+            });
+        }
+
+        function initSelectsDomainAggregateProperty() {
+            $.ajax({
+                type: 'GET',
+                url: aggregatePropertiesJsonArrayUrl,
+                success: function (response) {
+                    $selectCreateDomainCommandArgumentDomainCommandArgumentDomainAggregatePropertyId
+                        .find('option')
+                        .remove()
+                        .end();
+                    $selectUpdateDomainCommandArgumentDomainCommandArgumentDomainAggregatePropertyId
+                        .find('option')
+                        .remove()
+                        .end();
+                    response.forEach(function (item) {
+                        var option = '<option value="' + item.id + '">' + item.name + '</option>';
+                        $selectCreateDomainCommandArgumentDomainCommandArgumentDomainAggregatePropertyId
+                            .append(option);
+                        $selectUpdateDomainCommandArgumentDomainCommandArgumentDomainAggregatePropertyId
+                            .append(option);
+                    });
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
         }
 
         $buttonDeleteCommand.click(function () {
@@ -152,9 +308,97 @@
             });
         });
 
+        $buttonCreateDomainCommandArgument.click(function () {
+            $formCreateDomainCommandArgument.find('.has-error').each(function () {
+                $(this).removeClass('has-error');
+            });
+            if (!$formCreateDomainCommandArgument[0].checkValidity()) {
+                $formCreateDomainCommandArgument.find(':invalid').each(function () {
+                    $(this).parent().addClass('has-error');
+                });
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: $formCreateDomainCommandArgument.attr('action'),
+                data: $formCreateDomainCommandArgument.serialize(),
+                success: function () {
+                    $formCreateDomainCommandArgument[0].reset();
+                    initDataTableDomainCommandArguments();
+                    $modalCreateDomainCommandArgument.modal('hide');
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        });
+
+        $buttonDeleteDomainCommandArgument.click(function () {
+            $formDeleteDomainCommandArgument.find('.has-error').each(function () {
+                $(this).removeClass('has-error');
+            });
+            if (!$formDeleteDomainCommandArgument[0].checkValidity()) {
+                $formDeleteDomainCommandArgument.find(':invalid').each(function () {
+                    $(this).parent().addClass('has-error');
+                });
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: $formDeleteDomainCommandArgument.attr('action'),
+                data: $formDeleteDomainCommandArgument.serialize(),
+                success: function () {
+                    $formDeleteDomainCommandArgument[0].reset();
+                    initDataTableDomainCommandArguments();
+                    $modalDetailDomainCommandArgument.modal('hide');
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        });
+
+        $buttonUpdateDomainCommandArgument.click(function () {
+            $formUpdateDomainCommandArgument.find('.has-error').each(function () {
+                $(this).removeClass('has-error');
+            });
+            if (!$formUpdateDomainCommandArgument[0].checkValidity()) {
+                $formUpdateDomainCommandArgument.find(':invalid').each(function () {
+                    $(this).parent().addClass('has-error');
+                });
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: $formUpdateDomainCommandArgument.attr('action'),
+                data: $formUpdateDomainCommandArgument.serialize(),
+                success: function () {
+                    $formUpdateDomainCommandArgument[0].reset();
+                    initDataTableDomainCommandArguments();
+                    $modalDetailDomainCommandArgument.modal('hide');
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        });
+
+        $body.on('click', '.ajax-data-table-DomainCommandArgument', function () {
+            var $this = $(this),
+                id = $this.attr('data-Id'),
+                domainAggregatePropertyId = $this.attr('data-DomainAggregatePropertyId');
+
+            $inputDeleteDomainCommandArgumentDomainCommandArgumentId.val(id);
+            $inputUpdateDomainCommandArgumentDomainCommandArgumentId.val(id);
+            $selectUpdateDomainCommandArgumentDomainCommandArgumentDomainAggregatePropertyId.val(domainAggregatePropertyId);
+            $modalDetailDomainCommandArgument.modal();
+        });
+
         (function () {
             initSelectUpdateCommandCommandDomainEventId();
             initSelectUpdateCommandCommandCommandType();
+            initDataTableDomainCommandArguments();
+            initSelectsDomainAggregateProperty();
         })();
     });
 </script>

@@ -36,8 +36,8 @@
             var entity = _repository.GetById(message.Id);
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
+            entity.DomainAggregatePropertyId = message.DomainAggregatePropertyId;
             _repository.Update(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new DomainCommandArgumentUpdatedEvent(entity, message.AggregateId));
         }
@@ -51,9 +51,12 @@
                 NotifyValidationErrors(message);
                 return;
             }
-            var entity = new DomainCommandArgument(message.Id) { };
+            var entity = new DomainCommandArgument(message.Id)
+            {
+                DomainAggregatePropertyId = message.DomainAggregatePropertyId,
+                DomainCommandId = message.DomainCommandId
+            };
             _repository.Add(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new DomainCommandArgumentCreatedEvent(entity, message.AggregateId));
         }
@@ -71,7 +74,6 @@
             if (entity == null)
                 throw new NullReferenceException(nameof(entity));
             _repository.Remove(entity);
-            throw new NotImplementedException();
             if (Commit())
                 Bus.RaiseEvent(new DomainCommandArgumentDeletedEvent(entity, message.AggregateId));
         }

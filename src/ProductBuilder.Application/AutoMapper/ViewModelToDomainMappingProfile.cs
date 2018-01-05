@@ -31,6 +31,8 @@
     using ProductBuilder.Domain.Commands.Event;
     using ProductBuilder.Application.ViewModels.CommandApi;
     using ProductBuilder.Domain.Commands.Command;
+    using ProductBuilder.Application.ViewModels.DomainCommandArgumentApi;
+    using ProductBuilder.Domain.Commands.DomainCommandArgument;
 
     public class ViewModelToDomainMappingProfile : Profile
     {
@@ -139,7 +141,17 @@
 
         private void CreateMapForUserProfile() { }
 
-        private void CreateMapForDomainCommandArgument() { }
+        private void CreateMapForDomainCommandArgument()
+        {
+            CreateMap<CreateDomainCommandArgumentApiViewModel, CreateDomainCommandArgumentCommand>()
+                .ConstructUsing(x => new CreateDomainCommandArgumentCommand(x.Id, x.DomainAggregatePropertyId, x.DomainCommandId, x.DomainCommandId));
+
+            CreateMap<DeleteDomainCommandArgumentApiViewModel, DeleteDomainCommandArgumentCommand>()
+                .ConstructUsing(x => new DeleteDomainCommandArgumentCommand(x.Id, x.DomainCommandId));
+
+            CreateMap<UpdateDomainCommandArgumentApiViewModel, UpdateDomainCommandArgumentCommand>()
+                .ConstructUsing(x => new UpdateDomainCommandArgumentCommand(x.Id, x.DomainAggregatePropertyId, x.DomainCommandId));
+        }
 
         private void CreateMapForProduct()
         {

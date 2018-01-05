@@ -19,15 +19,17 @@
             _appService = appService ?? throw new ArgumentNullException(nameof(appService));
         }
 
-        [Route("api/DomainCommandArgumentsDataTable", Name = nameof(DomainCommandArgumentsDataTable))]
-        public IActionResult DomainCommandArgumentsDataTable()
+        [Route("api/{productid}/{aggregateid}/{commandid}/domain-command-arguments-data-table", Name = nameof(DomainCommandArgumentsDataTable))]
+        public IActionResult DomainCommandArgumentsDataTable(Guid commandId)
         {
-            return Json(_appService.GetDataTableViewModel());
+            if (commandId == Guid.Empty)
+                return NotFound();
+            return Json(_appService.GetDataTableViewModel(commandId));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/UpdateDomainCommandArgument", Name = nameof(UpdateDomainCommandArgument))]
+        [Route("api/{productid}/{aggregateid}/{commandid}/update-domain-command-argument", Name = nameof(UpdateDomainCommandArgument))]
         public IActionResult UpdateDomainCommandArgument(UpdateDomainCommandArgumentApiViewModel model)
         {
             if (model == null)
@@ -42,7 +44,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/CreateDomainCommandArgument", Name = nameof(CreateDomainCommandArgument))]
+        [Route("api/{productid}/{aggregateid}/{commandid}/create-domain-command-argument", Name = nameof(CreateDomainCommandArgument))]
         public IActionResult CreateDomainCommandArgument(CreateDomainCommandArgumentApiViewModel model)
         {
             if (model == null)
@@ -57,7 +59,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("api/DeleteDomainCommandArgument", Name = nameof(DeleteDomainCommandArgument))]
+        [Route("api/{productid}/{aggregateid}/{commandid}/delete-domain-command-argument", Name = nameof(DeleteDomainCommandArgument))]
         public IActionResult DeleteDomainCommandArgument(DeleteDomainCommandArgumentApiViewModel model)
         {
             if (model == null)

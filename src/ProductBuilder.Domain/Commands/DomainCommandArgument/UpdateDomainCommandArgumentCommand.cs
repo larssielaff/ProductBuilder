@@ -6,9 +6,10 @@
 
     public class UpdateDomainCommandArgumentCommand : DomainCommandArgumentCommand
     {
-        public UpdateDomainCommandArgumentCommand(Guid id, Guid aggregateId)
+        public UpdateDomainCommandArgumentCommand(Guid id, Guid domainAggregatePropertyId, Guid aggregateId)
         {
             Id = id;
+            DomainAggregatePropertyId = domainAggregatePropertyId;
             AggregateId = aggregateId;
         }
 

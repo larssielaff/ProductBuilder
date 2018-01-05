@@ -17,6 +17,7 @@
     using ProductBuilder.Application.AutoMapper.Extensions;
     using ProductBuilder.Application.ViewModels.Command;
     using ProductBuilder.Application.ViewModels.EventApi;
+    using ProductBuilder.Application.ViewModels.AggregatePropertyApi;
 
     public class DomainToViewModelMappingProfile : Profile
     {
@@ -107,6 +108,13 @@
                         $"<div class=\"ajax-data-table-AggregateProperty\" data-Id=\"{y.Id}\" data-Name=\"{y.Name}\" data-Type=\"{y.Type}\" data-LinkedAggregateId=\"{y.LinkedAggregateId}\" data-LinkedAggregateName=\"{y.LinkedAggregateName}\" data-IsAggregateRoot=\"{y.IsAggregateRoot.ToString().ToLower()}\">{y.IsAggregateRoot}</div>"
                     })
                 });
+
+            CreateMap<IEnumerable<AggregateProperty>, IEnumerable<AggregatePropertiesJsonArrayApiViewModel>>()
+                .ConstructUsing(x => x.Select(y => new AggregatePropertiesJsonArrayApiViewModel()
+                {
+                    Id = y.Id,
+                    Name = y.Name
+                }));
         }
 
         private void CreateMapForEvent()
@@ -157,7 +165,17 @@
                 })));
         }
 
-        private void CreateMapForDomainCommandArgument() { }
+        private void CreateMapForDomainCommandArgument()
+        {
+            CreateMap<IEnumerable<DomainCommandArgument>, AjaxDataTableViewModel>()
+                .ConstructUsing(x => new AjaxDataTableViewModel()
+                {
+                    Data = x.Select(y => new[] 
+                    {
+                        $"<div class=\"ajax-data-table-DomainCommandArgument\" data-Id=\"{y.Id}\" data-DomainAggregatePropertyId=\"{y.DomainAggregatePropertyId}\">{y.AggregateProperty?.Name}</div>"
+                    })
+                });
+        }
 
         private void CreateMapForProduct()
         {
