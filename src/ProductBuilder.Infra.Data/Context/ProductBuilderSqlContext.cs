@@ -18,6 +18,8 @@
 
         public virtual DbSet<UserProfile> UserProfiles { get; set; }
 
+        public virtual DbSet<DomainCommandArgument> DomainCommandArguments { get; set; }
+
         public virtual DbSet<Product> Products { get; set; }
 
         public virtual DbSet<Team> Teams { get; set; }
@@ -31,7 +33,7 @@
         public virtual DbSet<Epic> Epics { get; set; }
 
         public virtual DbSet<Aggregate> Aggregates { get; set; }
-        
+
         public virtual DbSet<AcceptanceCriteria> AcceptanceCriterias { get; set; }
 
         public ProductBuilderSqlContext(string connectionString) 
@@ -41,10 +43,22 @@
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProductBuilderSqlContext, ProductBuilderSqlMigrationsConfiguration>(true));
 
+            modelBuilder.Entity<DomainCommandArgument>()
+                .HasOptional(x => x.Command)
+                .WithMany(x => x.DomainCommandArguments)
+                .HasForeignKey(x => x.DomainCommandId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<AcceptanceCriteria>()
                 .HasOptional(x => x.UserStory)
                 .WithMany(x => x.AcceptanceCriterias)
                 .HasForeignKey(x => x.UserStoryId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<DomainCommandArgument>()
+                .HasOptional(x => x.AggregateProperty)
+                .WithMany(x => x.DomainCommandArguments)
+                .HasForeignKey(x => x.DomainAggregatePropertyId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Command>()
