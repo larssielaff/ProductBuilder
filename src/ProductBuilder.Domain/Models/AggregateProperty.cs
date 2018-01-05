@@ -22,6 +22,8 @@
 
         public string Type { get; set; }
 
+        public virtual ICollection<DomainCommandArgument> DomainCommandArguments { get; set; }
+
         public AggregateProperty(Guid id) 
             : this()
         {
@@ -30,6 +32,9 @@
             Id = id;
         }
 
-        protected AggregateProperty() { }
+        protected AggregateProperty()
+        {
+            DomainCommandArguments = new HashSet<DomainCommandArgument>();
+        }
     }
 }
