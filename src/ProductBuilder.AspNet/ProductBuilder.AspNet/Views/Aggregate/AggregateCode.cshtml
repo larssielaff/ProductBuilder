@@ -123,6 +123,45 @@
                             </div>
                         </div>
                     }
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="aggregate-eventhandler-heading">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#code" href="#aggregate-eventhandler" aria-expanded="false" aria-controls="aggregate-eventhandler">
+                                    @string.Format($"{Model.AggregateEventHandlerClasseName}.cs")
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="aggregate-eventhandler" class="panel-collapse collapse" role="tabpanel" aria-labelledby="aggregate-eventhandler-heading">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <pre class="prettyprint">@Model.AggregateEventHandlerCode</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @foreach (var domainCommand in Model.DomainCommands)
+                    {
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="@string.Format($"domain-command-{domainCommand.Key}")-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#code" href="#@string.Format($"domain-command-{domainCommand.Key}")" aria-expanded="false" aria-controls="@string.Format($"domain-command-{domainCommand.Key}")">
+                                        @string.Format($"{domainCommand.Key}.cs")
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="@string.Format($"domain-command-{domainCommand.Key}")" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@string.Format($"domain-command-{domainCommand.Key}")-heading">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <pre class="prettyprint">@domainCommand.Value</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
             <div class="panel-footer">

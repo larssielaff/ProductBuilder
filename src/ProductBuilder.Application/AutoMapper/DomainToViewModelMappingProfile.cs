@@ -337,7 +337,12 @@
                     AggregateRepositoryCode = x.ToAggregateRepositoryCode(),
                     DomainEvents = x.Events
                         .Where(y => !y.Deleted)
-                        .ToDictionary(y => $"{y.EventName}Event", y => y.ToDomainEventCode())
+                        .ToDictionary(y => $"{y.EventName}Event", y => y.ToDomainEventCode()),
+                    AggregateEventHandlerClasseName = $"{x.Name}EventHandler",
+                    AggregateEventHandlerCode = x.ToAggregateEventHandlerCode(),
+                    DomainCommands = x.Commands
+                        .Where(y => !y.Deleted)
+                        .ToDictionary(y => $"{y.CommandName}Command", y => y.ToDomainCommandCode())
                 });
         }
 

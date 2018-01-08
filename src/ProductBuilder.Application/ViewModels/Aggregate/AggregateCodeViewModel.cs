@@ -25,5 +25,11 @@ namespace ProductBuilder.Application.ViewModels.Aggregate
         public string AggregateRepositoryCode { get; set; }
         
         public IDictionary<string, string> DomainEvents { get; set; }
+
+        public IDictionary<string, string> DomainCommands { get; set; }
+
+        public string AggregateEventHandlerClasseName { get; set; }
+
+        public string AggregateEventHandlerCode { get; set; }
     }
 }

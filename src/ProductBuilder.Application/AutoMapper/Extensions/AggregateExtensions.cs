@@ -189,6 +189,44 @@
                 .ToFullString();
         }
 
+        public static string ToDomainCommandCode(this Command domainCommand)
+        {
+            if (domainCommand == null)
+                throw new ArgumentNullException(nameof(domainCommand));
+
+            var domainCommandClass = GetDomainCommandClass(domainCommand);
+            var domainCommandClassNamespace = GetNamespace($"{domainCommand.Aggregate?.Product?.Title}.Domain.Commands.{domainCommand.Aggregate?.Name}")
+                .WithUsings(GetUsings($"{domainCommand.Aggregate?.Product?.Title}.Domain.Commands.{domainCommand.Aggregate?.Name}.Base", $"{domainCommand.Aggregate?.Product?.Title}.Domain.Validations.{domainCommand.Aggregate?.Name}"))
+                .WithMembers(GetMembers(domainCommandClass));
+
+            return CompilationUnit()
+                .WithMembers(GetMembers(domainCommandClass))
+                .NormalizeWhitespace()
+                .ToFullString();
+        }
+
+        public static string ToAggregateEventHandlerCode(this Aggregate aggregate)
+        {
+            if (aggregate == null)
+                throw new ArgumentNullException(nameof(aggregate));
+
+            var aggregateEventHandlerClass = GetAggregateEventHandlerClass(aggregate);
+            var aggregateEventHandlerClassNamespace = GetNamespace($"{aggregate.Product?.Title}.Domain.EventHandlers")
+                .WithUsings(GetUsings("Asd.Domain.Core.Events"));
+
+            if (aggregate.Events.Count > 0)
+                aggregateEventHandlerClassNamespace = aggregateEventHandlerClassNamespace
+                    .WithUsings(GetUsings($"{aggregate.Product?.Title}.Domain.Events.{aggregate.Name}"));
+
+            aggregateEventHandlerClassNamespace = aggregateEventHandlerClassNamespace
+                .WithMembers(GetMembers(aggregateEventHandlerClass));
+
+            return CompilationUnit()
+                .WithMembers(GetMembers(aggregateEventHandlerClassNamespace))
+                .NormalizeWhitespace()
+                .ToFullString();
+        }
+
         private static SyntaxList<UsingDirectiveSyntax> AddUsings2(params string[] usings)
         {
             if (usings == null)
@@ -428,6 +466,129 @@
                 .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
                 .WithBaseList(GetDomainEventBaseList())
                 .WithMembers(SingletonList<MemberDeclarationSyntax>(GetDomainEventConstructor(eventName)));
+        }
+
+        private static ClassDeclarationSyntax GetDomainCommandClass(Command domainCommand)
+        {
+            if (domainCommand == null)
+                throw new ArgumentNullException(nameof(domainCommand));
+
+            return ClassDeclaration($"{domainCommand.CommandName}Command")
+                .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                .WithBaseList(BaseList(SingletonSeparatedList<BaseTypeSyntax>(SimpleBaseType(IdentifierName($"{domainCommand.Aggregate?.Name}Command")))))
+                .WithMembers(List(new MemberDeclarationSyntax[]
+                {
+                    GetDomainCommandClassConstructor($"{domainCommand.CommandName}Command", domainCommand.DomainCommandArguments),
+                    GetDomainCommandClassIsValidMethod(domainCommand.Aggregate?.Name)
+                }));
+        }
+
+        private static MethodDeclarationSyntax GetDomainCommandClassIsValidMethod(string domainAggregateName)
+        {
+            if (string.IsNullOrWhiteSpace(domainAggregateName))
+                throw new ArgumentNullException(nameof(domainAggregateName));
+
+            var returnStatement = ReturnStatement(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("ValidationResult"), IdentifierName("IsValid")));
+            var thisExpression = ArgumentList(SingletonSeparatedList(Argument(ThisExpression())));
+
+            var domainCommandArgumentValidatorOfDomainCommandArgumentValidator = GenericName(Identifier($"{domainAggregateName}Validator"))
+                .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList<TypeSyntax>(IdentifierName($"{domainAggregateName}Command"))));
+            var domainCommandValidatorCreationExpression = ObjectCreationExpression(domainCommandArgumentValidatorOfDomainCommandArgumentValidator)
+                .WithArgumentList(ArgumentList());
+            var invocationExpression = InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, domainCommandValidatorCreationExpression, IdentifierName("Validate")));
+            var assignmentExpression = AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName("ValidationResult"), invocationExpression.WithArgumentList(thisExpression));
+
+            return MethodDeclaration(PredefinedType(Token(SyntaxKind.BoolKeyword)), Identifier("IsValid"))
+                .WithModifiers(TokenList(new[]
+                {
+                    Token(SyntaxKind.PublicKeyword),
+                    Token(SyntaxKind.OverrideKeyword)
+                }))
+                .WithBody(Block(ExpressionStatement(assignmentExpression), returnStatement));
+        }
+
+        private static ConstructorDeclarationSyntax GetDomainCommandClassConstructor(string constructorIdentifier, IEnumerable<DomainCommandArgument> domainCommandArguments)
+        {
+            if (domainCommandArguments == null)
+                throw new ArgumentNullException(nameof(domainCommandArguments));
+            if (string.IsNullOrWhiteSpace(constructorIdentifier))
+                throw new ArgumentNullException(nameof(constructorIdentifier));
+
+            var commandArgs = new List<SyntaxNodeOrToken>
+            {
+                Parameter(Identifier("id")).WithType(IdentifierName("Guid")),
+                Token(SyntaxKind.CommaToken)
+            };
+            var commandArgsAssignments = new List<StatementSyntax>()
+            {
+                ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName("Id"), IdentifierName("id"))),
+                ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName("AggregateId"), IdentifierName("aggregateId")))
+            };
+
+            domainCommandArguments
+                .OrderBy(x => x.AggregateProperty.Name)
+                .ThenBy(x => x.AggregateProperty.Type)
+                .ToList()
+                .ForEach(x => 
+                {
+                    var propertyName = x.AggregateProperty.Name.First().ToString().ToLower() + x.AggregateProperty.Name.Substring(1);
+
+                    commandArgs.Add(Parameter(Identifier(propertyName)).WithType(IdentifierName(x.AggregateProperty.Type)));
+                    commandArgs.Add(Token(SyntaxKind.CommaToken));
+
+                    commandArgsAssignments.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(x.AggregateProperty.Name), IdentifierName(propertyName))));
+                });
+
+            commandArgs.Add(Parameter(Identifier("aggregateId")).WithType(IdentifierName("Guid")));
+            
+            return ConstructorDeclaration(Identifier(constructorIdentifier))
+                .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                .WithParameterList(ParameterList(SeparatedList<ParameterSyntax>(commandArgs)))
+                .WithBody(Block(commandArgsAssignments));
+        }
+
+        private static ClassDeclarationSyntax GetAggregateEventHandlerClass(Aggregate domainAggregate)
+        {
+            if (domainAggregate == null)
+                throw new ArgumentNullException(nameof(domainAggregate));
+
+            return ClassDeclaration($"{domainAggregate.Name}EventHandler")
+                .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                .WithBaseList(GetAggregateEventHandlerBaseList(domainAggregate.Events))
+                .WithMembers(List(GetAggregateEventHandlerImplementations(domainAggregate.Events)));
+        }
+
+        private static IEnumerable<MemberDeclarationSyntax> GetAggregateEventHandlerImplementations(IEnumerable<Event> domainEvents)
+        {
+            if (domainEvents == null)
+                throw new ArgumentNullException(nameof(domainEvents));
+
+            return domainEvents.Select(x => 
+            {
+                return MethodDeclaration(PredefinedType(Token(SyntaxKind.VoidKeyword)), Identifier("Handle"))
+                    .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                    .WithParameterList(ParameterList(SingletonSeparatedList(Parameter(Identifier("message")).WithType(IdentifierName($"{x.EventName}Event")))))
+                    .WithBody(Block());
+            });
+        }
+
+        private static BaseListSyntax GetAggregateEventHandlerBaseList(IEnumerable<Event> domainEvents)
+        {
+            if (domainEvents == null)
+                throw new ArgumentNullException(nameof(domainEvents));
+            var items = new List<SyntaxNodeOrToken>();
+            for(var i = 0; i < domainEvents.Count(); ++i)
+            {
+                var eventIdentifierName = IdentifierName($"{domainEvents.ElementAt(i).EventName}Event");
+                var eventSingletonSeparatedList = SingletonSeparatedList<TypeSyntax>(eventIdentifierName);
+                var eventGenericName = GenericName(Identifier("IAsdHandler"))
+                    .WithTypeArgumentList(TypeArgumentList(eventSingletonSeparatedList));
+
+                items.Add(SimpleBaseType(eventGenericName));
+                if ((i + 1) != domainEvents.Count())
+                    items.Add(Token(SyntaxKind.CommaToken));
+            }
+            return BaseList(SeparatedList<BaseTypeSyntax>(items));
         }
 
         private static BaseListSyntax GetDomainEventBaseList()
