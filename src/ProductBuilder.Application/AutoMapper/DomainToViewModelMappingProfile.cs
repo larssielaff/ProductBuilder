@@ -344,7 +344,10 @@
                         .Where(y => !y.Deleted)
                         .ToDictionary(y => $"{y.CommandName}Command", y => y.ToDomainCommandCode()),
                     AggregateCommandHandlerClasseName = $"{x.Name}CommandHandler",
-                    AggregateCommandHandlerCode = x.ToAggregateCommandHandlerCode()
+                    AggregateCommandHandlerCode = x.ToAggregateCommandHandlerCode(),
+                    ApiViewModels = x.Commands
+                        .Where(y => !y.Deleted)
+                        .ToDictionary(y => $"{y.CommandName}ApiViewModel", y => y.ToApiViewModelCode())
                 });
         }
 

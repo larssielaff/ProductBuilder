@@ -199,7 +199,7 @@
                 .WithMembers(GetMembers(domainCommandClass));
 
             return CompilationUnit()
-                .WithMembers(GetMembers(domainCommandClass))
+                .WithMembers(GetMembers(domainCommandClassNamespace))
                 .NormalizeWhitespace()
                 .ToFullString();
         }
@@ -250,7 +250,82 @@
                 .NormalizeWhitespace()
                 .ToFullString();
         }
-        
+
+        public static string ToApiViewModelCode(this Command domainCommand)
+        {
+            if (domainCommand == null)
+                throw new ArgumentNullException(nameof(domainCommand));
+
+            var properties = new List<MemberDeclarationSyntax>()
+            {
+                PropertyDeclaration(
+                        IdentifierName("Guid"),
+                        Identifier("Id"))
+                        .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                        .WithAccessorList(AccessorList(List(new AccessorDeclarationSyntax[]
+                        {
+                            AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                                .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
+                            AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
+                                .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+                        })))
+            };
+
+            domainCommand.DomainCommandArguments
+                .Where(x => !x.Deleted)
+                .ToList()
+                .ForEach(x => 
+                {
+                    properties.Add(PropertyDeclaration(
+                        IdentifierName(x.AggregateProperty.Type),
+                        Identifier(x.AggregateProperty.Name))
+                        .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                        .WithAccessorList(AccessorList(List(new AccessorDeclarationSyntax[]
+                        {
+                            AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                                .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
+                            AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
+                                .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+                        }))));
+                });
+
+            var aggregateRoot = domainCommand.DomainCommandArguments
+                .Where(x => !x.Deleted && x.AggregateProperty.IsAggregateRoot)
+                .SingleOrDefault()?.AggregateProperty;
+            if(aggregateRoot == null)
+            {
+                aggregateRoot = domainCommand.Aggregate.AggregateProperties
+                    .Where(y => !y.Deleted && y.IsAggregateRoot)
+                    .SingleOrDefault();
+
+                if(aggregateRoot != null)
+                    properties.Add(PropertyDeclaration(
+                        IdentifierName(aggregateRoot.Type),
+                        Identifier(aggregateRoot.Name))
+                            .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                            .WithAccessorList(AccessorList(List(new AccessorDeclarationSyntax[]
+                            {
+                                AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
+                                AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
+                                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+                        }))));
+            }
+
+            var apiViewModelClass = ClassDeclaration($"{domainCommand.CommandName}ApiViewModel")
+                .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                .WithMembers(List(properties));
+            var apiViewModelClassNamespace = GetNamespace($"{domainCommand.Aggregate?.Product?.Title}.Application.ViewModels.{domainCommand.CommandName}Api")
+                .WithUsings(GetUsings("System"))
+                .WithMembers(GetMembers(apiViewModelClass));
+
+            return CompilationUnit()
+                .WithMembers(GetMembers(apiViewModelClassNamespace))
+                .NormalizeWhitespace()
+                .ToFullString();
+        }
+
+
         private static ExpressionStatementSyntax GetAssignmentExpression(string leftExpression, string rightExpression)
         {
             if (string.IsNullOrWhiteSpace(leftExpression))

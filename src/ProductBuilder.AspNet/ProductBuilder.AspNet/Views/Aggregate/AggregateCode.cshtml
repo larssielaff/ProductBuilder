@@ -180,6 +180,27 @@
                             </div>
                         </div>
                     </div>
+                    @foreach (var apiViewModel in Model.ApiViewModels)
+                    {
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="@string.Format($"apiviewmodel-{apiViewModel.Key}")-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#code" href="#@string.Format($"apiviewmodel-{apiViewModel.Key}")" aria-expanded="false" aria-controls="@string.Format($"apiviewmodel-{apiViewModel.Key}")">
+                                        @string.Format($"{apiViewModel.Key}.cs")
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="@string.Format($"apiviewmodel-{apiViewModel.Key}")" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@string.Format($"apiviewmodel-{apiViewModel.Key}")-heading">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <pre class="prettyprint">@apiViewModel.Value</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
             <div class="panel-footer">
