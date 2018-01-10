@@ -342,7 +342,9 @@
                     AggregateEventHandlerCode = x.ToAggregateEventHandlerCode(),
                     DomainCommands = x.Commands
                         .Where(y => !y.Deleted)
-                        .ToDictionary(y => $"{y.CommandName}Command", y => y.ToDomainCommandCode())
+                        .ToDictionary(y => $"{y.CommandName}Command", y => y.ToDomainCommandCode()),
+                    AggregateCommandHandlerClasseName = $"{x.Name}CommandHandler",
+                    AggregateCommandHandlerCode = x.ToAggregateCommandHandlerCode()
                 });
         }
 

@@ -162,6 +162,24 @@
                             </div>
                         </div>
                     }
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="aggregate-commandhandler-heading">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#code" href="#aggregate-commandhandler" aria-expanded="false" aria-controls="aggregate-commandhandler">
+                                    @string.Format($"{Model.AggregateCommandHandlerClasseName}.cs")
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="aggregate-commandhandler" class="panel-collapse collapse" role="tabpanel" aria-labelledby="aggregate-commandhandler-heading">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <pre class="prettyprint">@Model.AggregateCommandHandlerCode</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="panel-footer">

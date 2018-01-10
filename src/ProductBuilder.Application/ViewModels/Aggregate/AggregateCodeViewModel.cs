@@ -31,5 +31,9 @@ namespace ProductBuilder.Application.ViewModels.Aggregate
         public string AggregateEventHandlerClasseName { get; set; }
 
         public string AggregateEventHandlerCode { get; set; }
+
+        public string AggregateCommandHandlerClasseName { get; set; }
+
+        public string AggregateCommandHandlerCode { get; set; }
     }
 }
