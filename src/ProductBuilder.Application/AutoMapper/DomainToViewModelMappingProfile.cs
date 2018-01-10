@@ -349,7 +349,9 @@
                         .Where(y => !y.Deleted)
                         .ToDictionary(y => $"{y.CommandName}ApiViewModel", y => y.ToApiViewModelCode()),
                     IAggregateAppServiceInterfaceName = $"I{x.Name}AppService",
-                    IAggregateAppServiceInterfaceCode = x.ToIAggregateAppServiceInterfaceCode()
+                    IAggregateAppServiceInterfaceCode = x.ToIAggregateAppServiceInterfaceCode(),
+                    AggregateAppServiceClassName = $"{x.Name}AppService",
+                    AggregateAppServiceCode = x.ToAggregateAppServiceCode()
                 });
         }
 

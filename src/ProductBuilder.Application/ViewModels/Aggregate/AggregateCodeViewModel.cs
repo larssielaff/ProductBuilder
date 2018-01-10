@@ -41,5 +41,9 @@ namespace ProductBuilder.Application.ViewModels.Aggregate
         public string IAggregateAppServiceInterfaceName { get; set; }
 
         public string IAggregateAppServiceInterfaceCode { get; set; }
+
+        public string AggregateAppServiceClassName { get; set; }
+
+        public string AggregateAppServiceCode { get; set; }
     }
 }

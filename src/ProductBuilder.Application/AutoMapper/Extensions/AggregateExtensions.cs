@@ -361,6 +361,180 @@
                 .ToFullString();
         }
 
+        public static string ToAggregateAppServiceCode(this Aggregate domainAggregate)
+        {
+            if (domainAggregate == null)
+                throw new ArgumentNullException(nameof(domainAggregate));
+
+            var classMembers = new List<MemberDeclarationSyntax>()
+            {
+                // private readonly IFooRepository _repository;
+                FieldDeclaration(VariableDeclaration(IdentifierName($"I{domainAggregate.Name}Repository"))
+                    .WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier("_repository")))))
+                        .WithModifiers(TokenList(new []
+                        {
+                            Token(SyntaxKind.PrivateKeyword),
+                            Token(SyntaxKind.ReadOnlyKeyword)
+                        })),
+                // public FooAppService (IAsdBus bus, IMapper mapper, IFooRepository repository)
+                ConstructorDeclaration(Identifier($"{domainAggregate.Name}AppService"))
+                    .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                    .WithParameterList(ParameterList(SeparatedList<ParameterSyntax>(new SyntaxNodeOrToken[]
+                    {
+                        Parameter(Identifier("bus"))
+                            .WithType(IdentifierName("IAsdBus")),
+                        Token(SyntaxKind.CommaToken),
+                        Parameter(Identifier("mapper"))
+                            .WithType(IdentifierName("IMapper")),
+                        Token(SyntaxKind.CommaToken),
+                        Parameter(Identifier("repository"))
+                            .WithType(IdentifierName($"I{domainAggregate.Name}Repository"))
+                    })))
+                    // : base(bus, mapper)
+                    .WithInitializer(ConstructorInitializer(
+                        SyntaxKind.BaseConstructorInitializer,
+                        ArgumentList(SeparatedList<ArgumentSyntax>(new SyntaxNodeOrToken[]
+                        {
+                            Argument(IdentifierName("bus")),
+                            Token(SyntaxKind.CommaToken),
+                            Argument(IdentifierName("mapper"))
+                        }))))
+                    // { if (repository == null) throw new ArgumentNullException(nameof(repository)); _repository = repository; }
+                    .WithBody(Block(IfStatement(BinaryExpression(
+                        SyntaxKind.EqualsExpression,
+                        IdentifierName("repository"),
+                        LiteralExpression(SyntaxKind.NullLiteralExpression)),
+                            ThrowStatement(ObjectCreationExpression(IdentifierName("ArgumentNullException"))
+                                .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(InvocationExpression(IdentifierName("nameof"))
+                                    .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(IdentifierName("repository"))))))))))),
+                        ExpressionStatement(AssignmentExpression(
+                            SyntaxKind.SimpleAssignmentExpression,
+                            IdentifierName("_repository"),
+                            IdentifierName("repository")))))
+
+            };
+
+            domainAggregate.Commands
+                .Where(x => !x.Deleted)
+                .ToList()
+                .ForEach(x => 
+                {
+                    switch (x.CommandType.ToLower())
+                    {
+                        case "create":
+                            classMembers.Add(MethodDeclaration(PredefinedType(Token(
+                                SyntaxKind.VoidKeyword)), 
+                                Identifier(x.CommandName))
+                                    .WithModifiers(TokenList(Token(
+                                        SyntaxKind.PublicKeyword)))
+                                            .WithParameterList(ParameterList(SingletonSeparatedList(Parameter(Identifier("model"))
+                                                .WithType(IdentifierName($"{x.CommandName}ApiViewModel")))))
+                                                    .WithBody(Block(IfStatement(BinaryExpression(
+                                                        SyntaxKind.EqualsExpression, 
+                                                        IdentifierName("model"), 
+                                                        LiteralExpression(SyntaxKind.NullLiteralExpression)), 
+                                                            ThrowStatement(ObjectCreationExpression(IdentifierName("ArgumentNullException"))
+                                                                .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(InvocationExpression(IdentifierName("nameof"))
+                                                                    .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(IdentifierName("model"))))))))))), 
+                                                                        IfStatement(BinaryExpression(
+                                                                            SyntaxKind.EqualsExpression, 
+                                                                            MemberAccessExpression(
+                                                                                SyntaxKind.SimpleMemberAccessExpression, 
+                                                                                IdentifierName("model"), 
+                                                                                IdentifierName("Id")), 
+                                                                            MemberAccessExpression(
+                                                                                SyntaxKind.SimpleMemberAccessExpression, 
+                                                                                IdentifierName("Guid"),
+                                                                                IdentifierName("Empty"))), 
+                                                                                ExpressionStatement(AssignmentExpression(
+                                                                                    SyntaxKind.SimpleAssignmentExpression, 
+                                                                                    MemberAccessExpression(
+                                                                                        SyntaxKind.SimpleMemberAccessExpression, 
+                                                                                        IdentifierName("model"), 
+                                                                                        IdentifierName("Id")), 
+                                                                                    InvocationExpression(MemberAccessExpression(
+                                                                                        SyntaxKind.SimpleMemberAccessExpression, 
+                                                                                        IdentifierName("Guid"), 
+                                                                                        IdentifierName("NewGuid")))))), 
+                                                                        ExpressionStatement(InvocationExpression(MemberAccessExpression(
+                                                                            SyntaxKind.SimpleMemberAccessExpression, 
+                                                                            IdentifierName("Bus"), 
+                                                                            IdentifierName("SendCommand")))
+                                                                                .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(InvocationExpression(MemberAccessExpression(
+                                                                                    SyntaxKind.SimpleMemberAccessExpression, 
+                                                                                    IdentifierName("Mapper"), 
+                                                                                    GenericName(Identifier("Map"))
+                                                                                        .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList<TypeSyntax>(IdentifierName($"{x.CommandName}Command"))))))
+                                                                                            .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(IdentifierName("model")))))))))))));
+                            break;
+                        default:
+                            classMembers.Add(MethodDeclaration(PredefinedType(Token(SyntaxKind.VoidKeyword)), 
+                                Identifier(x.CommandName))
+                                    .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                                    .WithParameterList(ParameterList(SingletonSeparatedList(Parameter(Identifier("model"))
+                                        .WithType(IdentifierName($"{x.CommandName}ApiViewModel")))))
+                                    .WithBody(Block(IfStatement(BinaryExpression(
+                                        SyntaxKind.EqualsExpression,
+                                        IdentifierName("model"), 
+                                        LiteralExpression(SyntaxKind.NullLiteralExpression)),
+                                        ThrowStatement(ObjectCreationExpression(IdentifierName("ArgumentNullException"))
+                                            .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(InvocationExpression(IdentifierName("nameof"))
+                                                .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(IdentifierName("model"))))))))))),
+                                                ExpressionStatement(InvocationExpression(MemberAccessExpression(
+                                                    SyntaxKind.SimpleMemberAccessExpression, 
+                                                    IdentifierName("Bus"), 
+                                                    IdentifierName("SendCommand")))
+                                                        .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(InvocationExpression(MemberAccessExpression(
+                                                            SyntaxKind.SimpleMemberAccessExpression,
+                                                            IdentifierName("Mapper"),
+                                                            GenericName(Identifier("Map"))
+                                                                .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList<TypeSyntax>(IdentifierName($"{x.CommandName}Command"))))))
+                                                                .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(IdentifierName("model")))))))))))));
+                            break;
+                    }
+                });
+
+            classMembers.Add(MethodDeclaration(PredefinedType(
+                Token(SyntaxKind.VoidKeyword)),
+                Identifier("Dispose"))
+                    .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                        .WithBody(Block(SingletonList<StatementSyntax>(ExpressionStatement(InvocationExpression(MemberAccessExpression(
+                            SyntaxKind.SimpleMemberAccessExpression,
+                            IdentifierName("GC"),
+                            IdentifierName("SuppressFinalize")))
+                                .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(ThisExpression())))))))));
+
+            var aggregateAppServiceClass = ClassDeclaration($"{domainAggregate.Name}AppService")
+                .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                .WithBaseList(BaseList(SeparatedList<BaseTypeSyntax>(new SyntaxNodeOrToken[]
+                {
+                    SimpleBaseType(IdentifierName("AsdAppService")),Token(SyntaxKind.CommaToken),
+                    SimpleBaseType(IdentifierName($"I{domainAggregate.Name}AppService"))
+                })))
+                .WithMembers(List(classMembers));
+            var aggregateAppServiceClassNamespace = GetNamespace($"{domainAggregate.Product?.Title}.Application.Services")
+                .WithUsings(GetUsings(
+                    "Asd.Application.Services",
+                    "Asd.Domain.Core.Bus",
+                    "global::AutoMapper",
+                    "System",
+                    "System.Linq",
+                    $"{domainAggregate.Product?.Title}.Application.Interfaces",
+                    $"{domainAggregate.Product?.Title}.Domain.Interfaces"))
+                .WithMembers(GetMembers(aggregateAppServiceClass));
+
+            if (domainAggregate.Commands.Count > 0)
+                aggregateAppServiceClassNamespace = aggregateAppServiceClassNamespace
+                    .WithUsings(GetUsings(
+                        $"{domainAggregate.Product?.Title}.Domain.Commands.{domainAggregate.Name}",
+                        $"{domainAggregate.Product?.Title}.Application.ViewModels.{domainAggregate.Name}Api"));
+
+            return CompilationUnit()
+                .WithMembers(GetMembers(aggregateAppServiceClassNamespace))
+                .NormalizeWhitespace()
+                .ToFullString();
+        }
+
         private static ExpressionStatementSyntax GetAssignmentExpression(string leftExpression, string rightExpression)
         {
             if (string.IsNullOrWhiteSpace(leftExpression))
