@@ -325,6 +325,41 @@
                 .ToFullString();
         }
 
+        public static string ToIAggregateAppServiceInterfaceCode(this Aggregate domainAggregate)
+        {
+            if (domainAggregate == null)
+                throw new ArgumentNullException(nameof(domainAggregate));
+
+            var commands = new List<MemberDeclarationSyntax>();
+            domainAggregate.Commands
+                .Where(x => !x.Deleted)
+                .ToList()
+                .ForEach(x => 
+                {
+                    commands.Add(MethodDeclaration(PredefinedType(Token(
+                        SyntaxKind.VoidKeyword)), 
+                        Identifier(x.CommandName))
+                            .WithParameterList(ParameterList(SingletonSeparatedList(Parameter(Identifier("model"))
+                            .WithType(IdentifierName($"{x.CommandName}ApiViewModel")))))
+                            .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
+                });
+
+            var iAggregateAppServiceInterface = InterfaceDeclaration($"I{domainAggregate.Name}AppService")
+                .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                .WithBaseList(BaseList(SingletonSeparatedList<BaseTypeSyntax>(SimpleBaseType(IdentifierName("IDisposable")))))
+                .WithMembers(List(commands));
+            var iAggregateAppServiceInterfaceNamespace = GetNamespace($"{domainAggregate.Product?.Title}.Application.Interfaces")
+                .WithUsings(GetUsings("System"))
+                .WithMembers(GetMembers(iAggregateAppServiceInterface));
+            if (commands.Count > 0)
+                iAggregateAppServiceInterfaceNamespace = iAggregateAppServiceInterfaceNamespace
+                    .WithUsings(GetUsings($"{domainAggregate.Product?.Title}.Application.ViewModels.{domainAggregate.Name}Api"));
+
+            return CompilationUnit()
+                .WithMembers(GetMembers(iAggregateAppServiceInterfaceNamespace))
+                .NormalizeWhitespace()
+                .ToFullString();
+        }
 
         private static ExpressionStatementSyntax GetAssignmentExpression(string leftExpression, string rightExpression)
         {

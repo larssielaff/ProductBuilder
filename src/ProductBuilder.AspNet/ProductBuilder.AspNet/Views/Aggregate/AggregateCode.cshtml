@@ -201,6 +201,24 @@
                             </div>
                         </div>
                     }
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="i-aggregate-app-service-interface-heading">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#code" href="#i-aggregate-app-service-interface" aria-expanded="false" aria-controls="i-aggregate-app-service-interface">
+                                    @string.Format($"{Model.IAggregateAppServiceInterfaceName}.cs")
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="i-aggregate-app-service-interface" class="panel-collapse collapse" role="tabpanel" aria-labelledby="i-aggregate-app-service-interface-heading">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <pre class="prettyprint">@Model.IAggregateAppServiceInterfaceCode</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="panel-footer">

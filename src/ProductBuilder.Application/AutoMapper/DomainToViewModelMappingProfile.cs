@@ -347,7 +347,9 @@
                     AggregateCommandHandlerCode = x.ToAggregateCommandHandlerCode(),
                     ApiViewModels = x.Commands
                         .Where(y => !y.Deleted)
-                        .ToDictionary(y => $"{y.CommandName}ApiViewModel", y => y.ToApiViewModelCode())
+                        .ToDictionary(y => $"{y.CommandName}ApiViewModel", y => y.ToApiViewModelCode()),
+                    IAggregateAppServiceInterfaceName = $"I{x.Name}AppService",
+                    IAggregateAppServiceInterfaceCode = x.ToIAggregateAppServiceInterfaceCode()
                 });
         }
 

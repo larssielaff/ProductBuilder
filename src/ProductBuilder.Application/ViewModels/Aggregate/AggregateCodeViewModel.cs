@@ -37,5 +37,9 @@ namespace ProductBuilder.Application.ViewModels.Aggregate
         public string AggregateCommandHandlerCode { get; set; }
 
         public IDictionary<string, string> ApiViewModels { get; set; }
+
+        public string IAggregateAppServiceInterfaceName { get; set; }
+
+        public string IAggregateAppServiceInterfaceCode { get; set; }
     }
 }
